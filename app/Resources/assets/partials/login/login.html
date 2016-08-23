@@ -5,7 +5,7 @@
     <div class="fields">
         <div class="input-group">
             <span class="input-group-addon" id="addon1"><i class="fa fa-user"></i></span>
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="addon1">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="addon1" ng-change="vm.checkUser()" ng-model="vm.username" ng-model-options="{ debounce: 500 }">
         </div>
 
         <div class="input-group">
@@ -15,5 +15,5 @@
     </div>
 
     <button class="btn btn-gray pull-left">Forgot password?</button>
-    <button class="btn btn-primary pull-right"><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
+    <button class="btn btn-primary pull-right" ng-click="vm.login()"><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
 </div>
