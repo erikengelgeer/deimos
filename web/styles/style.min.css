@@ -1,2 +1,80 @@
+.btn {
+  box-shadow: none !important;
+  outline: 0 !important;
+  transition: all .15s ease-in-out; }
+  .btn span + i {
+    margin-left: 10px; }
+
+.btn-primary {
+  color: #fff;
+  background-color: #06AECE;
+  border-color: #06AECE; }
+  .btn-primary:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: #0599b5;
+    border-color: #0599b5; }
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #0599b5;
+    border-color: #0599b5; }
+  .btn-primary:active, .btn-primary.active,
+  .open > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #058da6;
+    border-color: #058da6; }
+    .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus,
+    .open > .btn-primary.dropdown-toggle:hover,
+    .open > .btn-primary.dropdown-toggle:focus,
+    .open > .btn-primary.dropdown-toggle.focus {
+      color: #fff;
+      background-color: #058da6;
+      border-color: #058da6; }
+  .btn-primary:active, .btn-primary.active,
+  .open > .btn-primary.dropdown-toggle {
+    background-image: none; }
+  .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus,
+  fieldset[disabled] .btn-primary:hover,
+  fieldset[disabled] .btn-primary:focus,
+  fieldset[disabled] .btn-primary.focus {
+    background-color: #06AECE;
+    border-color: #06AECE; }
+  .btn-primary .badge {
+    color: #06AECE;
+    background-color: #fff; }
+
+.reset-password,
+.login {
+  padding: 60px 30px;
+  background-color: #fff;
+  width: 480px;
+  position: absolute;
+  top: 144px;
+  left: 50%;
+  margin-left: -240px;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1), 0 3px 15px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 3px; }
+  .reset-password h3,
+  .login h3 {
+    margin-top: 0; }
+  .reset-password h4,
+  .login h4 {
+    margin-bottom: 40px;
+    color: rgba(0, 0, 0, 0.5); }
+  .reset-password .fields,
+  .login .fields {
+    margin-bottom: 40px; }
+    .reset-password .fields .input-group,
+    .login .fields .input-group {
+      margin-bottom: 20px; }
+      .reset-password .fields .input-group .input-group-addon i,
+      .login .fields .input-group .input-group-addon i {
+        width: 25px;
+        text-align: center; }
+  .reset-password:after,
+  .login:after {
+    content: ' ';
+    display: table;
+    clear: both; }
+
 body {
   background-color: #f3f3f3; }

@@ -1,0 +1,16 @@
+.btn {
+    box-shadow: none !important;
+    outline: 0 !important;
+
+    transition: all .15s ease-in-out;
+
+    span {
+        + i {
+            margin-left: 10px;
+        }
+    }
+}
+
+.btn-primary {
+    @include button-variant(#fff, $primary-color, $primary-color);
+}

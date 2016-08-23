@@ -1,0 +1,42 @@
+.reset-password,
+.login {
+    padding: 60px 30px;
+    background-color: #fff;
+    width: 480px;
+
+    position: absolute;
+    top: 144px;
+    left: 50%;
+
+    margin-left: -240px;
+
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, .1), 0 3px 15px 2px rgba(0, 0, 0, .05);
+    border-radius: 3px;
+
+    h3 {
+        margin-top: 0;
+    }
+    h4 {
+        margin-bottom: 40px;
+        color: rgba(0, 0, 0, .5);
+    }
+
+    .fields {
+        margin-bottom: 40px;
+        .input-group {
+            margin-bottom: 20px;
+            .input-group-addon {
+                i {
+                    width: 25px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    &:after {
+        content: ' ';
+        display: table;
+        clear: both;
+    }
+}

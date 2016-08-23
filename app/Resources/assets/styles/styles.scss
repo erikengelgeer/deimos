@@ -1,5 +1,9 @@
 @import "variables/colors";
+@import "mixins/buttons";
+
+@import "components/buttons";
 @import "components/nav";
+@import "components/login";
 
 body {
     background-color: $body-color;

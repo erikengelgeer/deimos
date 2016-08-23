@@ -12,10 +12,11 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
     $compileProvider.debugInfoEnabled(true);
     $urlRouterProvider.otherwise("/");
 
+    // TODO: change this back to index
     $stateProvider
         .state('index', {
             url: "/",
-            templateUrl: "partials/index.html",
+            templateUrl: "partials/login/login.html",
             controller: "HomeController",
             controllerAs: "vm"
         })
