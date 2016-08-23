@@ -5,7 +5,7 @@ function menu() {
 
     return {
         restrict: "A",
-        templateUrl: "partials/nav",
+        templateUrl: "partials/nav.html",
         scope: {},
         controller: function ($scope, $rootScope) {
 
