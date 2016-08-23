@@ -2,6 +2,7 @@
 
 {% block body %}
     <div class="loading" ng-if="$root.loading"></div>
+    <div menu></div>
     <div ui-view ng-hide="$root.loading"></div>
 {% endblock %}
 

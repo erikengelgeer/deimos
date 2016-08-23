@@ -4,6 +4,13 @@ var dependencies = [
 
 function AppRun($rootScope) {
     $rootScope.loading = true;
+    // $rootScope.tasks = [
+    //     {
+    //         startTime:"12:00",
+    //         endTime:"13:00",
+    //         taskName:"Deimos design"
+    //     }
+    // ];
 }
 
 function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
