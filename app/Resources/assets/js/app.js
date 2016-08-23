@@ -19,6 +19,12 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "HomeController",
             controllerAs: "vm"
         })
+        .state('login', {
+            url: "/login",
+            templateUrl: "partials/login/login.html",
+            controller: "LoginController",
+            controllerAs: "vm"
+        })
     ;
 }
 
