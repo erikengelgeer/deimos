@@ -1,6 +1,9 @@
 @import "variables/colors";
 @import "components/nav";
+@import "components/modal";
+@import "components/tasks";
 
 body {
     background-color: $body-color;
 }
+
