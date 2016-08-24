@@ -1,0 +1,95 @@
+.schedule-container {
+  margin: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+}
+
+.schedule {
+  .heading {
+    height: 58px;
+    width: 100%;
+    background-color: #eff0f1;
+    border: 1px solid #ddd;
+    border-right: 0;
+
+    .item {
+      height: 58px;
+      border-right: 1px solid #ddd;
+      float: left;
+      text-align: center;
+      padding: 8px 0;
+      color: #999;
+
+      &:first-child {
+        line-height: 58px;
+        padding: 0;
+      }
+    }
+
+    &:after {
+      content: ' ';
+      display: table;
+      clear: both;
+    }
+  }
+
+  .body {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-right: 0;
+    border-bottom: 0;
+
+    .body-row {
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        min-height: 52px;
+        border-right: 1px solid #ddd;
+        float: left;
+
+        display: flex;
+        flex-wrap: inherit;
+        align-items: flex-start;
+        align-content: flex-start;
+
+        &:hover {
+          .shift {
+            .actions {
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+        }
+
+        &:first-child {
+          padding: 4px 8px;
+        }
+      }
+
+      &:after {
+        content: ' ';
+        display: table;
+        clear: both;
+      }
+    }
+  }
+
+  &.active {
+    .heading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .body {
+      margin-top: 58px;
+    }
+  }
+}
