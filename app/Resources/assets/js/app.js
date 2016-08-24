@@ -32,6 +32,18 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "LoginController",
             controllerAs: "vm"
         })
+        .state('change-password', {
+            url: "/change-password",
+            templateUrl: "partials/login/change-password.html",
+            controller: "ChangePasswordController",
+            controllerAs: "vm"
+        })
+        .state('reset-password', {
+            url: "/reset-password",
+            templateUrl: "partials/login/reset-password.html",
+            controller: "ResetPasswordController",
+            controllerAs: "vm"
+        })
     ;
 }
 
