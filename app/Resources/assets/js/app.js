@@ -2,8 +2,9 @@ var dependencies = [
     "ui.router",
 ];
 
-function AppRun($rootScope) {
+function AppRun($rootScope, $state) {
     $rootScope.loading = true;
+    $rootScope.$state = $state;
     // $rootScope.tasks = [
     //     {
     //         startTime:"12:00",
