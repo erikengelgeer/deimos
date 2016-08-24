@@ -24,6 +24,10 @@ paths.libs = [
     "node_modules/lodash/lodash.min.js",
 ];
 
+paths.zxcvbn = [
+    "node_modules/zxcvbn/dist/zxcvbn.js",
+];
+
 paths.scrips = [
     paths.assets + "js/**"
 ];
@@ -48,6 +52,12 @@ gulp.task('libs', function () {
     return gulp.src(paths.libs)
         .pipe(concat('libs.min.js'))
         .pipe(gulp.dest(paths.web + "libs"));
+});
+
+gulp.task('zxcvbn', function () {
+   return gulp.src(paths.zxcvbn)
+       .pipe(concat('zxcvbn.min.js'))
+       .pipe(gulp.dest(paths.web + "libs"));
 });
 
 gulp.task('scripts', function () {
@@ -82,10 +92,11 @@ gulp.task('images', function () {
 });
 
 
-gulp.task('build', ['libs', 'scripts', 'basecss', 'styles', 'partials', 'images']);
+gulp.task('build', ['libs', 'zxcvbn', 'scripts', 'basecss', 'styles', 'partials', 'images']);
 
 gulp.task('watch', ['build'], function () {
     gulp.watch(paths.libs, ['libs']);
+    gulp.watch(paths.zxcvbn, ['zxcvbn']);
     gulp.watch(paths.basecss, ['basecss']);
     gulp.watch(paths.styles, ['styles']);
     gulp.watch(paths.scrips, ['scripts']);

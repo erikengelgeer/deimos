@@ -32,6 +32,12 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "LoginController",
             controllerAs: "vm"
         })
+        .state('profile',{
+            url: "/profile",
+            templateUrl: "partials/profile/profile.html",
+            controller: "ProfileController",
+            controllerAs: "vm"
+        })
     ;
 }
 

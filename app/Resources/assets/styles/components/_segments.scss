@@ -1,0 +1,15 @@
+.segment {
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 20px 0;
+
+    &.darker-bg {
+        background-color: #f3f3f3;
+    }
+
+    &.light-bg {
+        background: #fff;
+    }
+}
+
+
