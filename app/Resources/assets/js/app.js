@@ -2,8 +2,9 @@ var dependencies = [
     "ui.router",
 ];
 
-function AppRun($rootScope) {
+function AppRun($rootScope, $state) {
     $rootScope.loading = true;
+    $rootScope.$state = $state;
     // $rootScope.tasks = [
     //     {
     //         startTime:"12:00",
@@ -30,6 +31,18 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             url: "/login",
             templateUrl: "partials/login/login.html",
             controller: "LoginController",
+            controllerAs: "vm"
+        })
+        .state('change-password', {
+            url: "/change-password",
+            templateUrl: "partials/login/change-password.html",
+            controller: "ChangePasswordController",
+            controllerAs: "vm"
+        })
+        .state('reset-password', {
+            url: "/reset-password",
+            templateUrl: "partials/login/reset-password.html",
+            controller: "ResetPasswordController",
             controllerAs: "vm"
         })
     ;

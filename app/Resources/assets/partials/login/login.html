@@ -8,12 +8,13 @@
             <input type="text" class="form-control" placeholder="Username" aria-describedby="addon1" ng-change="vm.checkUser()" ng-model="vm.username" ng-model-options="{ debounce: 500 }">
         </div>
 
-        <div class="input-group">
+        <div class="input-group" ng-if="vm.hasPassword">
             <span class="input-group-addon" id="addon2"><i class="fa fa-lock"></i></span>
-            <input type="password" class="form-control" placeholder="Password" aria-describedby="addon2">
+            <input type="password" class="form-control" placeholder="Password" aria-describedby="addon2" ng-model="vm.password">
         </div>
     </div>
 
-    <button class="btn btn-gray pull-left">Forgot password?</button>
-    <button class="btn btn-primary pull-right" ng-click="vm.login()"><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
+    <button class="btn btn-gray pull-left" ng-if="vm.hasPassword">Forgot password?</button>
+    <button class="btn btn-primary pull-right" ng-click="vm.login()" ng-if="vm.hasPassword" ><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
+    <button class="btn btn-primary pull-right" ng-click="vm.login()" ng-if="!vm.hasPassword" ><span>Continue</span> <i class="fa fa-caret-right"></i></button>
 </div>
