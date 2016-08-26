@@ -14,3 +14,7 @@
 .btn-primary {
     @include button-variant(#fff, $primary-color, $primary-color);
 }
+
+.btn-gray {
+    @include button-variant(#444, $gray-color, $gray-color);
+}
