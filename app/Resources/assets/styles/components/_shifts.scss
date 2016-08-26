@@ -1,0 +1,73 @@
+shift-container {
+  .shift {
+    margin-bottom: 20px;
+    height: 32px;
+    line-height: 32px;
+    padding:0;
+  }
+}
+
+.shift {
+  width: 100%;
+  padding: 0 8px;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+  height: 28px;
+  line-height: 28px;
+  position: relative;
+
+  .actions {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition: all .15s ease-in-out;
+    i {
+      border: 1px solid #ddd;
+      background-color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      text-align: center;
+      line-height: 18px;
+      float: left;
+      margin: 0;
+      color: #aaa;
+      cursor: pointer;
+
+      transition: all .15s ease-in-out;
+
+      + i {
+        margin-left: 5px;
+      }
+
+      &:hover {
+        background-color: #e8e8e8;
+        color: #969696;
+      }
+    }
+  }
+
+  i {
+    margin-right: 5px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+
+    &.state-1 {
+      color: $shift-state-1;
+    }
+
+    &.state-2 {
+      color: $shift-state-2;
+    }
+
+    &.state-3 {
+      color: $shift-state-3;
+    }
+  }
+
+}
