@@ -1,3 +1,4 @@
+/*
 .management {
     background-color: #f3f3f3;
 
@@ -72,4 +73,36 @@
         display: block;
     }
 
+}*/
+.management {
+
+    .management-menu {
+        width: 155px;
+        height: 100%;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        background-color: #F9F9F9;
+
+        .list-header {
+            font-size: 16px;
+            padding-left: 10px;
+        }
+
+        li {
+            padding-left: 25px;
+            padding-top: 8px;
+        }
+
+        i {
+            padding-right: 10px;
+        }
+    }
+
+    .container {
+        margin-left: 175px;
+        margin-top: 20px;
+        width: 90%;
+        height: 1000px;
+    }
 }
