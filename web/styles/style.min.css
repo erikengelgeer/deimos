@@ -42,6 +42,43 @@
     color: #06AECE;
     background-color: #fff; }
 
+.btn-gray {
+  color: #444;
+  background-color: #ddd;
+  border-color: #ddd; }
+  .btn-gray:focus, .btn-gray.focus {
+    color: #444;
+    background-color: #d0d0d0;
+    border-color: #d0d0d0; }
+  .btn-gray:hover {
+    color: #444;
+    background-color: #d0d0d0;
+    border-color: #d0d0d0; }
+  .btn-gray:active, .btn-gray.active,
+  .open > .btn-gray.dropdown-toggle {
+    color: #444;
+    background-color: #c9c9c9;
+    border-color: #c9c9c9; }
+    .btn-gray:active:hover, .btn-gray:active:focus, .btn-gray:active.focus, .btn-gray.active:hover, .btn-gray.active:focus, .btn-gray.active.focus,
+    .open > .btn-gray.dropdown-toggle:hover,
+    .open > .btn-gray.dropdown-toggle:focus,
+    .open > .btn-gray.dropdown-toggle.focus {
+      color: #444;
+      background-color: #c9c9c9;
+      border-color: #c9c9c9; }
+  .btn-gray:active, .btn-gray.active,
+  .open > .btn-gray.dropdown-toggle {
+    background-image: none; }
+  .btn-gray.disabled:hover, .btn-gray.disabled:focus, .btn-gray.disabled.focus, .btn-gray[disabled]:hover, .btn-gray[disabled]:focus, .btn-gray[disabled].focus,
+  fieldset[disabled] .btn-gray:hover,
+  fieldset[disabled] .btn-gray:focus,
+  fieldset[disabled] .btn-gray.focus {
+    background-color: #ddd;
+    border-color: #ddd; }
+  .btn-gray .badge {
+    color: #ddd;
+    background-color: #444; }
+
 .segment {
   margin-right: -15px;
   margin-left: -15px;
@@ -102,7 +139,6 @@
     .nav-bar .item + .item {
       margin-right: 0; }
 
-.reset-password,
 .login {
   padding: 60px 30px;
   background-color: #fff;
@@ -113,24 +149,18 @@
   margin-left: -240px;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1), 0 3px 15px 2px rgba(0, 0, 0, 0.05);
   border-radius: 3px; }
-  .reset-password h3,
   .login h3 {
     margin-top: 0; }
-  .reset-password h4,
   .login h4 {
     margin-bottom: 40px;
     color: rgba(0, 0, 0, 0.5); }
-  .reset-password .fields,
   .login .fields {
     margin-bottom: 40px; }
-    .reset-password .fields .input-group,
     .login .fields .input-group {
       margin-bottom: 20px; }
-      .reset-password .fields .input-group .input-group-addon i,
       .login .fields .input-group .input-group-addon i {
         width: 25px;
         text-align: center; }
-  .reset-password:after,
   .login:after {
     content: ' ';
     display: table;
@@ -180,40 +210,228 @@
     visibility: visible;
     opacity: 1; }
 
-.management {
-  background-color: #f3f3f3; }
-  .management h2 {
-    margin: 0; }
-  .management .segment.light-bg {
-    margin-bottom: 40px; }
-  .management .tab-pane .heading:after {
+.schedule-container {
+  margin: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  border-bottom: 1px solid #ddd; }
+
+.schedule .heading {
+  height: 58px;
+  width: 100%;
+  background-color: #eff0f1;
+  border: 1px solid #ddd;
+  border-right: 0; }
+  .schedule .heading .item {
+    height: 58px;
+    border-right: 1px solid #ddd;
+    float: left;
+    text-align: center;
+    padding: 8px 0;
+    color: #999; }
+    .schedule .heading .item:first-child {
+      line-height: 58px;
+      padding: 0; }
+  .schedule .heading:after {
     content: ' ';
     display: table;
     clear: both; }
-  .management .tab-pane .heading h4 + button {
-    margin-left: 10px;
-    position: relative;
-    top: 4px; }
-  .management .tab-pane table tbody td {
-    vertical-align: middle; }
-    .management .tab-pane table tbody td.plan-users-option {
-      width: 57px; }
-    .management .tab-pane table tbody td.options {
-      width: 100px; }
-      .management .tab-pane table tbody td.options button + button {
+
+.schedule .body {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-right: 0;
+  border-bottom: 0; }
+  .schedule .body .body-row {
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap; }
+    .schedule .body .body-row .item {
+      min-height: 52px;
+      border-right: 1px solid #ddd;
+      float: left;
+      display: flex;
+      flex-wrap: inherit;
+      align-items: flex-start;
+      align-content: flex-start; }
+      .schedule .body .body-row .item:hover .shift .actions {
+        visibility: visible;
+        opacity: 1; }
+      .schedule .body .body-row .item:first-child {
+        padding: 4px 8px; }
+    .schedule .body .body-row:after {
+      content: ' ';
+      display: table;
+      clear: both; }
+
+.schedule.active .heading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100; }
+
+.schedule.active .body {
+  margin-top: 58px; }
+
+shift-container .shift {
+  margin-bottom: 20px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0; }
+
+.shift {
+  width: 100%;
+  padding: 0 8px;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+  height: 28px;
+  line-height: 28px;
+  position: relative; }
+  .shift .actions {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .15s ease-in-out; }
+    .shift .actions i {
+      border: 1px solid #ddd;
+      background-color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      text-align: center;
+      line-height: 18px;
+      float: left;
+      margin: 0;
+      color: #aaa;
+      cursor: pointer;
+      transition: all .15s ease-in-out; }
+      .shift .actions i + i {
         margin-left: 5px; }
-  .management .input-group {
-    margin-bottom: 10px; }
-    .management .input-group .input-group-addon.mid {
-      border-left: 0;
-      border-right: 0; }
-  .management .progress {
-    height: 6px;
-    margin-bottom: 5px; }
-  .management .progress-text {
-    color: #888;
-    margin-bottom: 20px;
-    display: block; }
+      .shift .actions i:hover {
+        background-color: #e8e8e8;
+        color: #969696; }
+  .shift i {
+    margin-right: 5px;
+    font-size: 12px;
+    position: relative;
+    top: -1px; }
+    .shift i.state-1 {
+      color: #FDB720; }
+    .shift i.state-2 {
+      color: #00b050; }
+    .shift i.state-3 {
+      color: #999; }
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
+  background-color: #06AECE; }
+
+.dropdown-menu li a {
+  color: #999;
+  transition: all .15s ease-in-out; }
+  .dropdown-menu li a i {
+    margin-right: 10px; }
+
+/*
+.management {
+    background-color: #f3f3f3;
+
+    h2 {
+        margin: 0;
+    }
+
+    .segment.light-bg {
+        margin-bottom: 40px;
+    }
+
+    .tab-pane {
+        .heading {
+            &:after {
+                content: ' ';
+                display: table;
+                clear: both;
+            }
+
+            h4 {
+                + button {
+                    margin-left: 10px;
+                    position: relative;
+                    top: 4px;
+                }
+            }
+        }
+
+        table {
+            tbody {
+                td {
+                    vertical-align: middle;
+
+                    &.plan-users-option {
+                        width: 57px;
+                    }
+
+                    &.options {
+                        width: 100px;
+
+                        button {
+                            + button {
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    .input-group {
+        margin-bottom: 10px;
+
+        .input-group-addon {
+            &.mid {
+                border-left: 0;
+                border-right: 0;
+            }
+        }
+    }
+
+    .progress {
+        height: 6px;
+        margin-bottom: 5px;
+    }
+
+    .progress-text {
+        color: #888;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+}*/
+.management .management-menu {
+  width: 155px;
+  height: 100%;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  background-color: #F9F9F9; }
+  .management .management-menu .list-header {
+    font-size: 16px;
+    padding-left: 10px; }
+  .management .management-menu li {
+    padding-left: 25px;
+    padding-top: 8px; }
+  .management .management-menu i {
+    padding-right: 10px; }
+
+.management .container {
+  margin-left: 175px;
+  margin-top: 20px;
+  width: 90%;
+  height: 1000px; }
 
 .table-no-style {
   width: inherit;
@@ -244,5 +462,6 @@
   padding: 20px 15px; }
 
 body {
+  padding-top: 70px;
   background-color: #f3f3f3;
   font-family: 'Lato', sans-serif; }
