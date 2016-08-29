@@ -37,26 +37,24 @@ function ProfileController($rootScope) {
     }
 
     function save() {
-        // Error if not entered the password.
-        if(vm.password == '' && vm.confirmationPassword == '' ) {
-            var errorRePassword = "You haven't enter the password and retype password";
-            console.log(errorRePassword);
-        }
+        if (vm.password.trim() != '' && vm.confirmationPassword.trim() != '') {
 
+            if (vm.password.trim() == vm.confirmationPassword.trim()) {
 
-        if(vm.password.trim() != vm.confirmationPassword.trim()) {
-        //    error
-            return;
-        }
+                var result = zxcvbn(vm.password);
 
-        if(vm.password.trim() != '') {
-            var result = zxcvbn(vm.password);
+                if (result.score == 0 || result.score == 1) {
+                    var message = "are you sure? your password is " + strengths[result.score].toLowerCase() + ", \nyou might want to change your password. \nThe given password can be guessed within " + Math.ceil(result.crack_times_seconds.online_throttling_100_per_hour / 86400) + " day(s).";
+                    console.log(message);
+                }
 
-            if(result.score == 0 || result.score == 1) {
-            //    Do something
-                var message = "are you sure? your password is " + strengths[result.score].toLowerCase() + ", \nyou might want to change your password. \nThe given password can be guessed within " + Math.ceil(result.crack_times_seconds.online_throttling_100_per_hour / 86400) + " day(s).";
-                console.log(message);
+            //    maybe api call?
+
+            } else {
+                console.log('an another error yay!')
             }
+        } else {
+            console.log("error");
         }
     }
 }
