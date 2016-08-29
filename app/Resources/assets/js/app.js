@@ -57,6 +57,18 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "ManagementController",
             controllerAs: "vm"
         })
+        .state('manage-teams',{
+            url: "/manage-teams",
+            templateUrl: "partials/management/manage-teams.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('manage-users',{
+            url: "/manage-users",
+            templateUrl: "partials/management/manage-users.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
     ;
 }
 
