@@ -18,3 +18,7 @@
 .btn-gray {
     @include button-variant(#444, $gray-color, $gray-color);
 }
+
+.btn-red {
+    @include button-variant(#fff, $red-color, $red-color);
+}
