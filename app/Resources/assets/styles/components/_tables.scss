@@ -1,0 +1,12 @@
+.table-no-style {
+    width:inherit;
+    max-width:inherit;
+
+    tbody {
+        tr {
+            th, td {
+                border: none;
+            }
+        }
+    }
+}
