@@ -1,0 +1,85 @@
+<div class="container-fluid management">
+    <div class="row segment light-bg">
+        <div class="col-md-12">
+            <h2>Profile</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <!-- Nav tabs -->
+            <!--@formatter:off-->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab"><i class="fa fa-info"></i>Information</a></li>
+                <li role="presentation" class="active"><a href="#changePassword" aria-controls="changePassword" role="tab" data-toggle="tab"><i class="fa fa-unlock-alt"></i>Change Password</a></li>
+
+            </ul>
+            <!--@formatter:on-->
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div tole="tabpanel" class="tab-pane fade" id="information">
+                    <div class="heading">
+                        <h4>User Information</h4>
+                        <hr>
+                    </div>
+                    <table class="table table-no-style">
+                        <tbody>
+                        <tr>
+                            <th>Username:</th>
+                            <td>Danny Nieuwmans</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>danny.nieuwmans@agfa.com</td>
+                        </tr>
+                        <tr>
+                            <th>Region:</th>
+                            <td>Region</td>
+                        </tr>
+                        <tr>
+                            <th>Last Login:</th>
+                            <td>28-07-2016, 13:47</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div tole="tabpanel" class="tab-pane fade in active" id="changePassword">
+                    <div class="heading">
+                        <h4>Change Password</h4>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="fields">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="addon1"><i class="fa fa-lock"></i></span>
+                                    <input type="password" class="form-control password" placeholder="Password"
+                                           aria-describedby="addon1" name="password-1" ng-model="vm.password" ng-change="vm.measurePassword()">
+                                </div>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="addon2"><i class="fa fa-lock"></i></span>
+                                    <input type="password" class="form-control" placeholder="Retype Password"
+                                           aria-describedby="addon2" name="password-2" ng-model="vm.confirmationPassword">
+                                </div>
+                                <hr>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                </div>
+                                <span class="progress-text">{{ vm.strengthText }}</span>
+
+                                <button class="btn btn-primary pull-right" id="save" ng-click="vm.save()"><span>Save</span> <i class="fa fa-save"></i></button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="libs/zxcvbn.min.js"></script>

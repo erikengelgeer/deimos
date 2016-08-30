@@ -2,6 +2,7 @@
 @import "mixins/buttons";
 
 @import "components/buttons";
+@import "components/segments";
 @import "components/nav";
 @import "components/login";
 @import "components/modal";
@@ -9,6 +10,9 @@
 @import "components/schedule";
 @import "components/shifts";
 @import "components/dropdown";
+@import "components/management";
+@import "components/tables";
+@import "components/tabs";
 
 body {
     background-color: $body-color;
