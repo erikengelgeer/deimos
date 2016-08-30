@@ -27,6 +27,35 @@
         margin-left: 175px;
         margin-top: 20px;
         width: 90%;
-        height: 1000px;
+        //height: 1000px;
     }
+}
+
+.manage{
+    background-color: inherit;
+    margin-left: 155px;
+
+    .tab-header{
+        margin-top: 10px;
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+
+    table{
+        background-color: ghostwhite;
+        width: 90%;
+        margin: auto;
+
+        .options{
+            width: 100px;
+
+        }
+
+        .country{
+            width: 150px;
+        }
+
+
+    }
+
 }
