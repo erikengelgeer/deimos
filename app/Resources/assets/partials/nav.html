@@ -30,18 +30,19 @@
     </div>
 </div>
 
-<div class="management" ng-if="$root.$state.is('manage-shifts') || $root.$state.is('manage-tasks') || $root.$state.is('manage-teams') ||$root.$state.is('manage-users')">
+<div class="management"
+     ng-if="$root.$state.is('manage-shifts') || $root.$state.is('manage-tasks') || $root.$state.is('manage-teams') ||$root.$state.is('manage-users')">
     <div class="container">
         <div class="management-menu">
             <ul class="list-unstyled">
                 <li class="list-header">Plan</li>
-                <li><i class="fa fa-calendar"></i>Shifts</li>
-                <li><i class="fa fa-tasks"></i>Tasks</li>
+                <a ui-sref=""><li><i class="fa fa-calendar"></i>Shifts</li></a>
+                <a ui-sref=""><li><i class="fa fa-tasks"></i>Tasks</li></a>
                 <li class="list-header">Manage</li>
-                <li><a ui-sref="manage-teams"><i class="fa fa-globe"></i>Team</a></li>
-                <li><a ui-sref="manage-users"><i class="fa fa-users"></i>Users</a></li>
-                <li><a ui-sref="manage-shifts"><i class="fa fa-calendar-o"></i>Shifts</a></li>
-                <li><a ui-sref="manage-tasks"><i class="fa fa-tasks"></i>Tasks</a></li>
+                <a ui-sref="manage-teams"><li><i class="fa fa-globe"></i>Team</li></a>
+                <a ui-sref="manage-users"><li><i class="fa fa-users"></i>Users</li></a>
+                <a ui-sref="manage-shifts"><li><i class="fa fa-calendar-o"></i>Shifts</li></a>
+                <a ui-sref="manage-tasks"><li><i class="fa fa-tasks"></i>Tasks</li></a>
             </ul>
         </div>
     </div>
