@@ -40,39 +40,38 @@
         }
     }
 
-    .container {
-        margin-left: 175px;
-        margin-top: 20px;
-        width: 90%;
-        //height: 1000px;
-    }
 }
 
 .manage{
     background-color: inherit;
     margin-left: 155px;
+    margin-top: 40px;
 
-    .tab-header{
-        margin-top: 10px;
-        margin-right: 5%;
-        margin-left: 5%;
-    }
-
-    table{
-        background-color: ghostwhite;
-        width: 90%;
+    .manage-body{
         margin: auto;
+        background-color: #F9F9F9;
+        height: 750px;
+        width: 1200px;
+        border: 1px solid $gray-color;
 
-        .options{
-            width: 100px;
-
+        .heading{
+            border-bottom: 1px solid $gray-color;
+            margin: 15px 30px 30px 30px;
         }
 
-        .country{
-            width: 150px;
+        table{
+            background-color: #F9F9F9;
+            width: 90%;
+            margin: auto;
+
+            .options{
+                width: 100px;
+
+            }
+
+            .country{
+                width: 150px;
+            }
         }
-
-
     }
-
 }
