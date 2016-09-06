@@ -87,6 +87,24 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "ManagementController",
             controllerAs: "vm"
         })
+        .state('create-shift',{
+            url: "/create-shift",
+            templateUrl: "partials/management/create/shift.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-task',{
+            url: "/create-task",
+            templateUrl: "partials/management/create/task.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-user',{
+            url: "/create-user",
+            templateUrl: "partials/management/create/user.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
     ;
 }
 
