@@ -105,6 +105,30 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "ManagementController",
             controllerAs: "vm"
         })
+        .state('edit-team',{
+            url: "/edit-team",
+            templateUrl: "partials/management/edit/team.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-shift',{
+            url: "/edit-shift",
+            templateUrl: "partials/management/edit/shift.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-task',{
+            url: "/edit-task",
+            templateUrl: "partials/management/edit/task.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-user',{
+            url: "/edit-user",
+            templateUrl: "partials/management/edit/user.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
     ;
 }
 
