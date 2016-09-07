@@ -87,6 +87,12 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "PlanningController",
             controllerAs: "vm"
         })
+        .state('plan-tasks',{
+            url: "/plan-tasks",
+            templateUrl: "partials/planning/tasks.html",
+            controller: "PlanningController",
+            controllerAs: "vm"
+        })
     ;
 }
 

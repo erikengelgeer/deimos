@@ -1,0 +1,11 @@
+.plan-users {
+  margin-top: 40px;
+
+  table {
+    th {
+      &:last-child {
+        width:57px;
+      }
+    }
+  }
+}

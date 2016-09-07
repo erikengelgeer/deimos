@@ -1,0 +1,11 @@
+.manage-tasks {
+  margin-top: 40px;
+
+  table {
+    th {
+      &:last-child {
+        width:95px;
+      }
+    }
+  }
+}
