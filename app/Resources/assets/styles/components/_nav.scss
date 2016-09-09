@@ -63,12 +63,53 @@
 
     &:hover {
       background: rgba(255, 255, 255, .125);
-      color:#fff;
+      color: #fff;
     }
 
-    + .item {
+     .item {
       margin-right: 0;
     }
   }
 
+}
+
+//navbar management
+
+.menu {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 55px;
+  height: 100%;
+  background-color: $secondary-color;
+  overflow: hidden;
+  transition: all .25s ease-in-out;
+
+  &:hover{
+  width:155px;
+}
+
+  .list-header{
+    width: 155px;
+    margin-top: 10px;
+    margin-left: 55px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  ul li a{
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    width: 155px;
+
+    &:hover{
+      background-color: $primary-color;
+      text-decoration: none;
+    }
+
+    i{
+      width: 50px;
+      text-align: left;
+    }
+  }
 }

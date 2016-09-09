@@ -1,8 +1,12 @@
 .plan-tasks {
   margin-top: 40px;
 
-  select{
-    width: 400px;
-    float: left;
+  h4{
+    margin-right: 15px;
+  }
+
+  .form-control.select{
+      width: 300px !important;
+
   }
 }
