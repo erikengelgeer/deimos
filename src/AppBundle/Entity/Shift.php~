@@ -1,0 +1,62 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Shift
+ *
+ * @ORM\Table(name="shift")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftRepository")
+ */
+class Shift
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string")
+     */
+    private $description;
+
+    /**
+     * @var \datetime
+     *
+     * @ORM\Column(name="start_time", type="time")
+     */
+    private $startTime;
+
+    /**
+     * @var \datetime
+     *
+     * @ORM\Column(name="end_time", type="time")
+     */
+    private $endTime;
+
+    /**
+     * @var \datetime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
