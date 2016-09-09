@@ -93,6 +93,54 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "PlanningController",
             controllerAs: "vm"
         })
+        .state('create-team',{
+            url: "/create-team",
+            templateUrl: "partials/management/create/team.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-shift',{
+            url: "/create-shift",
+            templateUrl: "partials/management/create/shift.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-task',{
+            url: "/create-task",
+            templateUrl: "partials/management/create/task.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-user',{
+            url: "/create-user",
+            templateUrl: "partials/management/create/user.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-team',{
+            url: "/edit-team",
+            templateUrl: "partials/management/edit/team.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-shift',{
+            url: "/edit-shift",
+            templateUrl: "partials/management/edit/shift.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-task',{
+            url: "/edit-task",
+            templateUrl: "partials/management/edit/task.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-user',{
+            url: "/edit-user",
+            templateUrl: "partials/management/edit/user.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
     ;
 }
 
