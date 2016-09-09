@@ -34,6 +34,18 @@ class User
     private $realName;
 
     /**
+     * @ORM\OneToOne(targetEntity="Team")
+     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     */
+    private $teamFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     */
+    private $roleFk;
+
+    /**
      * Get id
      *
      * @return integer

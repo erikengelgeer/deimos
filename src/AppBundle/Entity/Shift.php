@@ -50,6 +50,18 @@ class Shift
     private $date;
 
     /**
+     * @ORM\OneToOne(targetEntity="ShiftType")
+     * @ORM\JoinColumn(name="shift_type_pk", referencedColumnName="pk")
+     */
+    private $shiftTypeFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     */
+    private $userFk;
+
+    /**
      * Get id
      *
      * @return int

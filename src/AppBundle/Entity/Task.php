@@ -50,6 +50,18 @@ class Task
     private $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     */
+    private $userFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TaskType")
+     * @ORM\JoinColumn(name="task_type_pk", referencedColumnName="pk")
+     */
+    private $taskTypeFk;
+
+    /**
      * Get id
      *
      * @return int
