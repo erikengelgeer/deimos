@@ -1,0 +1,96 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ShiftType
+ *
+ * @ORM\Table(name="shift_type")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftTypeRepository")
+ */
+class ShiftType
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(name="short", type="string")
+     */
+    private $short;
+
+    /**
+     * @ORM\Column(name="description", type="string")
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="default_start_time", type="time")
+     */
+    private $defaultStartTime;
+
+    /**
+     * @ORM\Column(name="default_end_time", type="time")
+     */
+    private $defaultEndTime;
+
+    /**
+     * @ORM\Column(name="wholeday", type="boolean")
+     */
+    private $wholeday;
+
+    /**
+     * @ORM\Column(name="shift_duration", type="float")
+     */
+    private $shiftDuration;
+
+    /**
+     * @ORM\Column(name="bread_duration", type="float")
+     */
+    private $breadDuration;
+
+    /**
+     * @ORM\Column(name="workhours_duration_h", type="float")
+     */
+    private $workhoursDurationH;
+
+    /**
+     * @ORM\Column(name="record_created_at", type="datetime")
+     */
+    private $recordCreatedAt;
+
+    //TODO $record_created_by not a FK?
+
+    /**
+     * @ORM\Column(name="record_created_by", type="integer")
+     */
+    private $recordCreatedBy;
+
+    /**
+     * @ORM\Column(name="status", type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(name="team", type="integer")
+     */
+    private $team;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
