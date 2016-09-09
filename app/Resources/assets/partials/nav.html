@@ -30,7 +30,11 @@
     </div>
 </div>
 
-<div class="menu">
+<div class="menu"
+     ng-if="$root.$state.is('manage-shifts') || $root.$state.is('manage-tasks') || $root.$state.is('manage-teams') || $root.$state.is('manage-users')
+     || $root.$state.is('create-user') || $root.$state.is('create-task') || $root.$state.is('create-team') ||$root.$state.is('create-shift')
+     || $root.$state.is('edit-user') ||$root.$state.is('edit-shift') ||$root.$state.is('edit-task') ||$root.$state.is('edit-team')
+     || $root.$state.is('plan-shifts') || $root.$state.is('plan-tasks')">
         <ul class="list-unstyled">
             <li class="list-header">Plan</li>
             <li><a ui-sref="plan-shifts"><i class="fa fa-calendar"></i>Shifts</a></li>
