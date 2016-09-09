@@ -47,8 +47,6 @@ class TaskType
     private $status;
 
 
-//        get and set functions
-
     /**
      * Get id
      *
