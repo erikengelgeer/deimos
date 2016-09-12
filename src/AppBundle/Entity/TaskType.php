@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TaskType
  *
- * @ORM\Table(name="task_type")
+ * @ORM\Table(name="task_types")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskTypeRepository")
  */
 class TaskType
@@ -133,11 +133,11 @@ class TaskType
     /**
      * Set recordCreatedBy
      *
-     * @param \int $recordCreatedBy
+     * @param $recordCreatedBy
      *
      * @return TaskType
      */
-    public function setRecordCreatedBy(\int $recordCreatedBy)
+    public function setRecordCreatedBy($recordCreatedBy)
     {
         $this->recordCreatedBy = $recordCreatedBy;
 
