@@ -8,13 +8,15 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\ShiftType;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 
-class LoadShiftTypeData implements FixtureInterface
+class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -35,5 +37,10 @@ class LoadShiftTypeData implements FixtureInterface
 
         $manager->persist($shiftType1);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 4;
     }
 }

@@ -2,11 +2,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Task;
 
-class LoadTaskData implements FixtureInterface
+class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface
 {
 
     /**
@@ -24,5 +25,10 @@ class LoadTaskData implements FixtureInterface
 
         $manager->persist($task);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 6;
     }
 }

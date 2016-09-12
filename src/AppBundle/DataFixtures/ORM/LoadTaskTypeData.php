@@ -3,10 +3,11 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\TaskType;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTaskTypeData implements FixtureInterface
+class LoadTaskTypeData extends AbstractFixture implements OrderedFixtureInterface
 {
 
     /**
@@ -26,5 +27,10 @@ class LoadTaskTypeData implements FixtureInterface
 
         $manager->persist($taskType);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 3;
     }
 }

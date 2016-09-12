@@ -2,11 +2,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Team;
 
-class LoadTeamData implements FixtureInterface {
+class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface{
 
     public function load(ObjectManager $manager) {
 
@@ -33,5 +34,10 @@ class LoadTeamData implements FixtureInterface {
         $manager->persist($team2);
         $manager->persist($team3);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }

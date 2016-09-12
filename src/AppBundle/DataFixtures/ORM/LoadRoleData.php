@@ -2,11 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Role;
 
-class LoadRoleData implements FixtureInterface {
+class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface{
 
     public function load(ObjectManager $manager) {
         $role1 = new Role();
@@ -31,5 +33,10 @@ class LoadRoleData implements FixtureInterface {
         $manager->persist($role3);
         $manager->persist($role4);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 2;
     }
 }
