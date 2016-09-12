@@ -13,6 +13,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
 
         $team = $manager->getRepository('AppBundle:Team')->findOneBy(array('name' => 'GRIP RIJSWIJK'));
+        $role = $manager->getRepository('AppBundle:Role')->findOneBy(array('role' => 'Agent'));
 
         $user = new User();
         $user->setUsername('admin');
@@ -23,6 +24,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user->setLocked(false);
         $user->setExpired(false);
         $user->setTeamFk($team);
+        $user->setRoleFk($role);
 
         $manager->persist($user);
         $manager->flush();
