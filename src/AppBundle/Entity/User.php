@@ -34,14 +34,14 @@ class User
     private $realName;
 
     /**
-     * @ORM\OneToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\JoinColumn(name="team_fk", referencedColumnName="pk")
      */
     private $teamFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="Role")
-     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     * @ORM\JoinColumn(name="role_fk", referencedColumnName="pk")
      */
     private $roleFk;
 

@@ -37,7 +37,7 @@ class TaskType
     private $recordCreatedAt;
 
     /**
-     * @ORM\Column(name="record_created_by", type="int")
+     * @ORM\Column(name="record_created_by", type="integer")
      */
     private $recordCreatedBy;
 

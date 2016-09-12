@@ -50,14 +50,14 @@ class Shift
     private $date;
 
     /**
-     * @ORM\OneToOne(targetEntity="ShiftType")
-     * @ORM\JoinColumn(name="shift_type_pk", referencedColumnName="pk")
+     * @ORM\ManyToOne(targetEntity="ShiftType")
+     * @ORM\JoinColumn(name="shift_type_fk", referencedColumnName="pk")
      */
     private $shiftTypeFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
      */
     private $userFk;
 

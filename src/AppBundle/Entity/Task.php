@@ -51,13 +51,13 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_pk", referencedColumnName="pk")
+     * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
      */
     private $userFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="TaskType")
-     * @ORM\JoinColumn(name="task_type_pk", referencedColumnName="pk")
+     * @ORM\JoinColumn(name="task_type_fk", referencedColumnName="pk")
      */
     private $taskTypeFk;
 

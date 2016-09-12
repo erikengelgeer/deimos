@@ -2,6 +2,12 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Repository\shiftRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * UserRepository
  *
@@ -10,4 +16,5 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }
