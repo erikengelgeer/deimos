@@ -166,4 +166,52 @@ class Shift
     {
         return $this->date;
     }
+
+    /**
+     * Set shiftTypeFk
+     *
+     * @param \AppBundle\Entity\ShiftType $shiftTypeFk
+     *
+     * @return Shift
+     */
+    public function setShiftTypeFk(\AppBundle\Entity\ShiftType $shiftTypeFk = null)
+    {
+        $this->shiftTypeFk = $shiftTypeFk;
+
+        return $this;
+    }
+
+    /**
+     * Get shiftTypeFk
+     *
+     * @return \AppBundle\Entity\ShiftType
+     */
+    public function getShiftTypeFk()
+    {
+        return $this->shiftTypeFk;
+    }
+
+    /**
+     * Set userFk
+     *
+     * @param \AppBundle\Entity\User $userFk
+     *
+     * @return Shift
+     */
+    public function setUserFk(\AppBundle\Entity\User $userFk = null)
+    {
+        $this->userFk = $userFk;
+
+        return $this;
+    }
+
+    /**
+     * Get userFk
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUserFk()
+    {
+        return $this->userFk;
+    }
 }

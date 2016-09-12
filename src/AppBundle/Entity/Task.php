@@ -166,4 +166,52 @@ class Task
     {
         return $this->description;
     }
+
+    /**
+     * Set userFk
+     *
+     * @param \AppBundle\Entity\User $userFk
+     *
+     * @return Task
+     */
+    public function setUserFk(\AppBundle\Entity\User $userFk = null)
+    {
+        $this->userFk = $userFk;
+
+        return $this;
+    }
+
+    /**
+     * Get userFk
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUserFk()
+    {
+        return $this->userFk;
+    }
+
+    /**
+     * Set taskTypeFk
+     *
+     * @param \AppBundle\Entity\TaskType $taskTypeFk
+     *
+     * @return Task
+     */
+    public function setTaskTypeFk(\AppBundle\Entity\TaskType $taskTypeFk = null)
+    {
+        $this->taskTypeFk = $taskTypeFk;
+
+        return $this;
+    }
+
+    /**
+     * Get taskTypeFk
+     *
+     * @return \AppBundle\Entity\TaskType
+     */
+    public function getTaskTypeFk()
+    {
+        return $this->taskTypeFk;
+    }
 }

@@ -46,17 +46,15 @@ class TaskType
      */
     private $status;
 
-
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-
 
     /**
      * Set short
@@ -147,7 +145,7 @@ class TaskType
     /**
      * Get recordCreatedBy
      *
-     * @return \int
+     * @return integer
      */
     public function getRecordCreatedBy()
     {

@@ -15,7 +15,11 @@ class TaskType
     /**
      * @var int
      *
+<<<<<<< HEAD
      * @ORM\Column(name="id", type="integer")
+=======
+     * @ORM\Column(name="pk", type="integer")
+>>>>>>> origin/nena-fixtures
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -37,7 +41,11 @@ class TaskType
     private $recordCreatedAt;
 
     /**
+<<<<<<< HEAD
      * @ORM\Column(name="record_created_by", type="int")
+=======
+     * @ORM\Column(name="record_created_by", type="integer")
+>>>>>>> origin/nena-fixtures
      */
     private $recordCreatedBy;
 
@@ -45,6 +53,7 @@ class TaskType
      * @ORM\Column(name="status", type="string")
      */
     private $status;
+<<<<<<< HEAD
 
 
 //        get and set functions
@@ -59,4 +68,6 @@ class TaskType
         return $this->id;
     }
 
+=======
+>>>>>>> origin/nena-fixtures
 }
