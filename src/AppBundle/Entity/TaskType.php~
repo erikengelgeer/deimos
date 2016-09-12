@@ -1,0 +1,62 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TaskType
+ *
+ * @ORM\Table(name="task_type")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskTypeRepository")
+ */
+class TaskType
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(name="short", type="string")
+     */
+    private $short;
+
+    /**
+     * @ORM\Column(name="description", type="string")
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="record_created_at", type="datetime")
+     */
+    private $recordCreatedAt;
+
+    /**
+     * @ORM\Column(name="record_created_by", type="int")
+     */
+    private $recordCreatedBy;
+
+    /**
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
+
+
+//        get and set functions
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+}
