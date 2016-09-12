@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ShiftType
  *
- * @ORM\Table(name="shift_type")
+ * @ORM\Table(name="shift_types")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftTypeRepository")
  */
 class ShiftType

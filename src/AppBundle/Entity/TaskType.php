@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TaskType
  *
- * @ORM\Table(name="task_type")
+ * @ORM\Table(name="task_types")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskTypeRepository")
  */
 class TaskType
@@ -46,6 +46,7 @@ class TaskType
      */
     private $status;
 
+
     /**
      * Get id
      *
@@ -55,6 +56,7 @@ class TaskType
     {
         return $this->id;
     }
+
 
     /**
      * Set short
@@ -131,7 +133,7 @@ class TaskType
     /**
      * Set recordCreatedBy
      *
-     * @param integer $recordCreatedBy
+     * @param $recordCreatedBy
      *
      * @return TaskType
      */
