@@ -133,11 +133,11 @@ class TaskType
     /**
      * Set recordCreatedBy
      *
-     * @param \int $recordCreatedBy
+     * @param integer $recordCreatedBy
      *
      * @return TaskType
      */
-    public function setRecordCreatedBy(\int $recordCreatedBy)
+    public function setRecordCreatedBy($recordCreatedBy)
     {
         $this->recordCreatedBy = $recordCreatedBy;
 
