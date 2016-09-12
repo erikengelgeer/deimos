@@ -50,6 +50,18 @@ class Shift
     private $date;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ShiftType")
+     * @ORM\JoinColumn(name="shift_type_fk", referencedColumnName="pk")
+     */
+    private $shiftTypeFk;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
+     */
+    private $userFk;
+
+    /**
      * Get id
      *
      * @return int
@@ -58,5 +70,100 @@ class Shift
     {
         return $this->id;
     }
-}
 
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Shift
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set startTime
+     *
+     * @param \DateTime $startTime
+     *
+     * @return Shift
+     */
+    public function setStartTime($startTime)
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    /**
+     * Get startTime
+     *
+     * @return \DateTime
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * Set endTime
+     *
+     * @param \DateTime $endTime
+     *
+     * @return Shift
+     */
+    public function setEndTime($endTime)
+    {
+        $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    /**
+     * Get endTime
+     *
+     * @return \DateTime
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Shift
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+}

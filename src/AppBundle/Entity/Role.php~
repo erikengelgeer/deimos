@@ -32,4 +32,62 @@ class Role
     private $roleDescription;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return Role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set roleDescription
+     *
+     * @param string $roleDescription
+     *
+     * @return Role
+     */
+    public function setRoleDescription($roleDescription)
+    {
+        $this->roleDescription = $roleDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get roleDescription
+     *
+     * @return string
+     */
+    public function getRoleDescription()
+    {
+        return $this->roleDescription;
+    }
 }

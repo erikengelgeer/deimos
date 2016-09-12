@@ -78,4 +78,52 @@ class User
     {
         return $this->realName;
     }
+
+    /**
+     * Set teamFk
+     *
+     * @param \AppBundle\Entity\Team $teamFk
+     *
+     * @return User
+     */
+    public function setTeamFk(\AppBundle\Entity\Team $teamFk = null)
+    {
+        $this->teamFk = $teamFk;
+
+        return $this;
+    }
+
+    /**
+     * Get teamFk
+     *
+     * @return \AppBundle\Entity\Team
+     */
+    public function getTeamFk()
+    {
+        return $this->teamFk;
+    }
+
+    /**
+     * Set roleFk
+     *
+     * @param \AppBundle\Entity\Role $roleFk
+     *
+     * @return User
+     */
+    public function setRoleFk(\AppBundle\Entity\Role $roleFk = null)
+    {
+        $this->roleFk = $roleFk;
+
+        return $this;
+    }
+
+    /**
+     * Get roleFk
+     *
+     * @return \AppBundle\Entity\Role
+     */
+    public function getRoleFk()
+    {
+        return $this->roleFk;
+    }
 }
