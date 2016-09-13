@@ -84,6 +84,7 @@
     background-color: $secondary-color;
     overflow: hidden;
     transition: all .25s ease-in-out;
+    z-index: 1010;
 
     ul {
         li {
