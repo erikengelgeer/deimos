@@ -25,12 +25,17 @@ class UsersController extends Controller
      */
     public function findAction()
     {
-        $data= $this->get('serializer')->serialize([], 'json');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:User");
+
+        $users = $repository->findAll();
+
+        $data= $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
-     * @Route("/{id}")
+     * @Route("/")
      * @Method("GET")
      *
      * Get a specific user
