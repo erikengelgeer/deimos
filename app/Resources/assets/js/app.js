@@ -51,96 +51,96 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "ProfileController",
             controllerAs: "vm"
         })
-        .state('management',{
-            url: "/management",
-            templateUrl: "partials/management/management.html",
+        .state('manage-teams',{
+            url: "/manage/teams",
+            templateUrl: "partials/management/team/index.html",
             controller: "ManagementController",
             controllerAs: "vm"
         })
-        .state('manage-teams',{
-            url: "/manage-teams",
-            templateUrl: "partials/management/manage-teams.html",
+        .state('edit-team',{
+            url: "/manage/teams/edit",
+            templateUrl: "partials/management/team/edit.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-team',{
+            url: "/manage/teams/new",
+            templateUrl: "partials/management/team/new.html",
             controller: "ManagementController",
             controllerAs: "vm"
         })
         .state('manage-users',{
-            url: "/manage-users",
-            templateUrl: "partials/management/manage-users.html",
+            url: "/manage/users",
+            templateUrl: "partials/management/user/index.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-user',{
+            url: "/manage/users/new",
+            templateUrl: "partials/management/user/new.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-user',{
+            url: "/manage/users/edit",
+            templateUrl: "partials/management/user/edit.html",
             controller: "ManagementController",
             controllerAs: "vm"
         })
         .state('manage-shifts',{
-            url: "/manage-shifts",
-            templateUrl: "partials/management/manage-shifts.html",
+            url: "/manage/shifts",
+            templateUrl: "partials/management/shift/index.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-shift',{
+            url: "/manage/shifts/new",
+            templateUrl: "partials/management/shift/new.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-shift',{
+            url: "/manage/shifts/edit",
+            templateUrl: "partials/management/shift/edit.html",
             controller: "ManagementController",
             controllerAs: "vm"
         })
         .state('manage-tasks',{
-            url: "/manage-tasks",
-            templateUrl: "partials/management/manage-tasks.html",
+            url: "/manage/tasks",
+            templateUrl: "partials/management/task/index.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('create-task',{
+            url: "/manage/tasks/new",
+            templateUrl: "partials/management/task/new.html",
+            controller: "ManagementController",
+            controllerAs: "vm"
+        })
+        .state('edit-task',{
+            url: "/manage/tasks/edit",
+            templateUrl: "partials/management/task/edit.html",
             controller: "ManagementController",
             controllerAs: "vm"
         })
         .state('plan-shifts',{
-            url: "/plan-shifts",
+            url: "/plan/shifts",
             templateUrl: "partials/planning/shifts.html",
             controller: "PlanningController",
             controllerAs: "vm"
         })
         .state('plan-tasks',{
-            url: "/plan-tasks",
+            url: "/plan/tasks",
             templateUrl: "partials/planning/tasks.html",
             controller: "PlanningController",
             controllerAs: "vm"
         })
-        .state('create-team',{
-            url: "/create-team",
-            templateUrl: "partials/management/create/team.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('create-shift',{
-            url: "/create-shift",
-            templateUrl: "partials/management/create/shift.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('create-task',{
-            url: "/create-task",
-            templateUrl: "partials/management/create/task.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('create-user',{
-            url: "/create-user",
-            templateUrl: "partials/management/create/user.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('edit-team',{
-            url: "/edit-team",
-            templateUrl: "partials/management/edit/team.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('edit-shift',{
-            url: "/edit-shift",
-            templateUrl: "partials/management/edit/shift.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('edit-task',{
-            url: "/edit-task",
-            templateUrl: "partials/management/edit/task.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
-        .state('edit-user',{
-            url: "/edit-user",
-            templateUrl: "partials/management/edit/user.html",
-            controller: "ManagementController",
-            controllerAs: "vm"
-        })
+
+
+
+
+
+
     ;
 }
 
