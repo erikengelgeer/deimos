@@ -31,10 +31,7 @@
 </div>
 
 <div class="menu"
-     ng-if="$root.$state.is('manage-shifts') || $root.$state.is('manage-tasks') || $root.$state.is('manage-teams') || $root.$state.is('manage-users')
-     || $root.$state.is('manage-users-new') || $root.$state.is('manage-tasks-new') || $root.$state.is('manage-teams-new') ||$root.$state.is('manage-shifts-new')
-     || $root.$state.is('manage-users-edit') ||$root.$state.is('manage-shifts-edit') ||$root.$state.is('manage-tasks-edit') ||$root.$state.is('manage-teams-edit')
-     || $root.$state.is('plan-users') || $root.$state.is('plan-tasks')">
+     ng-if="vm.checkStates()">
         <ul class="list-unstyled">
             <li class="list-header">Plan</li>
             <li><a ui-sref="plan-users"><i class="fa fa-calendar"></i>Users</a></li>
