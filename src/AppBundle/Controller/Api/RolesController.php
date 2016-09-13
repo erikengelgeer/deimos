@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,9 @@ class RoleController extends Controller
 
     /**
      * @Route("/")
+     * @Method("GET")
+     *
+     * Get all the roles
      */
     public function findAllAction() {
         $em = $this->getDoctrine()->getManager();
