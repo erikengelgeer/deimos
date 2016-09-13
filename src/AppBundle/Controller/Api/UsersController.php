@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,19 +31,31 @@ class UsersController extends Controller
 
         $users = $repository->findAll();
 
-        $data= $this->get('serializer')->serialize($users, 'json');
+        $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
-     * @Route("/")
+     * @Route("/user")
+     * @Method("GET")
+     *
+     * Gets the logged in user.
+     */
+    public function findLoggedInUser()
+    {
+        $data = $this->get('serializer')->serialize($this->getUser(), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/{id}")
      * @Method("GET")
      *
      * Get a specific user
      */
-    public function findUserAction()
+    public function findUserAction(User $user)
     {
-        $data= $this->get('serializer')->serialize([], 'json');
+        $data = $this->get('serializer')->serialize($user, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
@@ -54,7 +67,7 @@ class UsersController extends Controller
      */
     public function addUserAction()
     {
-        $data= $this->get('serializer')->serialize([], 'json');
+        $data = $this->get('serializer')->serialize([], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 

@@ -13,20 +13,34 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
 
         $team = $manager->getRepository('AppBundle:Team')->findOneBy(array('name' => 'GRIP RIJSWIJK'));
-        $role = $manager->getRepository('AppBundle:Role')->findOneBy(array('role' => 'Agent'));
+        $roleAgent = $manager->getRepository('AppBundle:Role')->findOneBy(array('role' => 'Agent'));
+        $roleAdmin = $manager->getRepository('AppBundle:Role')->findOneBy(array('role' => 'Administrator'));
 
-        $user = new User();
-        $user->setUsername('admin');
-        $user->setPlainPassword('test');
-        $user->setRealName('Erik');
-        $user->setEmail('admin@local.host');
-        $user->setEnabled(true);
-        $user->setLocked(false);
-        $user->setExpired(false);
-        $user->setTeamFk($team);
-        $user->setRoleFk($role);
+        $user1 = new User();
+        $user2 = new User();
 
-        $manager->persist($user);
+        $user1->setUsername('admin');
+        $user1->setPlainPassword('test');
+        $user1->setRealName('Erik');
+        $user1->setEmail('admin@local.host');
+        $user1->setEnabled(true);
+        $user1->setLocked(false);
+        $user1->setExpired(false);
+        $user1->setTeamFk($team);
+        $user1->setRoleFk($roleAdmin);
+
+        $user2->setUsername('user');
+        $user2->setPlainPassword('null');
+        $user2->setRealName('Nick');
+        $user2->setEmail('user@local.host');
+        $user2->setEnabled(true);
+        $user2->setLocked(false);
+        $user2->setExpired(false);
+        $user2->setTeamFk($team);
+        $user2->setRoleFk($roleAgent);
+
+        $manager->persist($user1);
+        $manager->persist($user2);
         $manager->flush();
     }
 
