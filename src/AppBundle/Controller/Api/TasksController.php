@@ -37,6 +37,8 @@ class TasksController extends Controller
     /**
      * @Route("/{id}")
      * @Method("GET")
+     *
+     * Get a single task
      */
     public function findOneAction(Task $tasks){
         $data= $this->get('serializer')->serialize($tasks, 'json');

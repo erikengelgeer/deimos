@@ -19,7 +19,9 @@ class ShiftsController extends Controller
 {
     /**
      * @Route("/")
+     * @Method("GET")
      *
+     * Get all the shifts
      */
     public function findAllAction()
     {
@@ -44,6 +46,7 @@ class ShiftsController extends Controller
      * @Route("/{id}")
      * @Method("GET")
      *
+     * Get a single shift
      */
     public function findOneByAction(Shift $shift)
     {

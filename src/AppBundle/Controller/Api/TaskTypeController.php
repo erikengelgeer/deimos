@@ -20,7 +20,7 @@ class TaskTypeController extends Controller
      * @Route("/")
      * @Method("GET")
      *
-     * Get all the taskType
+     * Get all the taskTypes
      */
     public function findAction()
     {
@@ -36,6 +36,8 @@ class TaskTypeController extends Controller
     /**
      * @Route("/{id}")
      * @Method("GET")
+     *
+     * Get a single taskType
      */
     public function findOneAction(TaskType $taskType){
         $data= $this->get('serializer')->serialize($taskType, 'json');

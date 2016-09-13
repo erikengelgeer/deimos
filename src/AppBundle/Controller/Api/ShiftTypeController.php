@@ -25,7 +25,9 @@ class ShiftTypesController extends Controller
 {
     /**
      * @Route("/")
+     * @Method("GET")
      *
+     * Get all the shiftTypes
      */
     public function findAllAction()
     {
@@ -41,6 +43,8 @@ class ShiftTypesController extends Controller
     /**
      * @Route("/{id}")
      * @Method("GET")
+     *
+     * Get a single shiftType
      *
      */
     public function findOneByAction(ShiftType $shiftType)
