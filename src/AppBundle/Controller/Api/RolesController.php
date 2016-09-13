@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,12 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class RoleController
+ * Class RolesController
  * @package AppBundle\Repository
  *
  * @Route("api/roles")
  */
-class RoleController extends Controller
+class RolesController extends Controller
 {
 
     /**
@@ -31,5 +32,16 @@ class RoleController extends Controller
 
         $data = $this->get('serializer')->serialize($roles, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/{id}")
+     * @Method("GET")
+     *
+     * Get a single role
+     */
+    public function findOneById(Role $role) {
+        $data = $this->get('serializer')->serialize($role, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 }
