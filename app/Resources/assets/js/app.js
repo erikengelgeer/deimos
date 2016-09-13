@@ -123,9 +123,9 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "EditTaskController",
             controllerAs: "vm"
         })
-        .state('plan-shifts',{
-            url: "/plan/shifts",
-            templateUrl: "partials/planning/shifts.html",
+        .state('plan-users',{
+            url: "/plan/users",
+            templateUrl: "partials/planning/users.html",
             controller: "PlanningController",
             controllerAs: "vm"
         })
