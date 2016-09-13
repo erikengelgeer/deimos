@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
- * Class ShiftRepository
- * @package AppBundle\Repository
- *
  * @Route("api/shifts")
  */
 class ShiftsController extends Controller

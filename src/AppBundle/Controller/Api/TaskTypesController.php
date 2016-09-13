@@ -9,12 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class TaskTypeController
- * @package AppBundle\Controller\Api
- *
  * @Route("/api/task-type")
  */
-class TaskTypeController extends Controller
+class TaskTypesController extends Controller
 {
     /**
      * @Route("/")

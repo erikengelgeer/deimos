@@ -16,9 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
- * Class ShiftTypeRepository
- * @package AppBundle\Repository
- *
  * @Route("api/shift-types")
  */
 class ShiftTypesController extends Controller

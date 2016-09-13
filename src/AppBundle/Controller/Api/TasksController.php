@@ -9,9 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class TasksController
- * @package AppBundle\Controller\Api
- *
  * @Route("/api/tasks")
  */
 
