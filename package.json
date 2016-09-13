@@ -5,10 +5,10 @@
     "angular": "^1.5.8",
     "angular-ui-router": "^0.2.18",
     "bootstrap": "^3.3.7",
+    "bootstrap-datepicker": "^1.6.4",
     "jquery": "^3.1.0",
     "lodash": "^4.15.0",
-    "zxcvbn": "^4.3.0",
-    "eonasdan-bootstrap-datetimepicker": "^4.15.35"
+    "zxcvbn": "^4.3.0"
   },
   "devDependencies": {
     "argv": "0.0.2",
