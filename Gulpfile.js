@@ -22,6 +22,8 @@ paths.libs = [
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
     "node_modules/bootstrap/dist/js/bootstrap.min.js",
     "node_modules/lodash/lodash.min.js",
+    "node_modules/moment/min/moment.min.js",
+    "node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js",
 ];
 
 paths.zxcvbn = [

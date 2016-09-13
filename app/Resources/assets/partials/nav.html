@@ -1,4 +1,4 @@
-<div class="nav-bar">
+<div class="nav-bar navbar-fixed-top">
     <div class="logo">
         <img src="images/logo.png" alt="">
         <span>Deimos</span>
@@ -12,11 +12,11 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                <li class="active"><a ui-sref="index"><i class="fa fa-home"></i> Home</a></li>
-                <li><a ui-sref="profile"><i class="fa fa-user"></i> My Profile</a></li>
-                <li><a ui-sref=""><i class="fa fa-cogs"></i> Management</a></li>
+                <li ui-sref-active="active"><a ui-sref="index"><i class="fa fa-home"></i> Home</a></li>
+                <li ui-sref-active="active" ><a ui-sref="profile"><i class="fa fa-user"></i> My Profile</a></li>
+                <li ui-sref-active="active"><a ui-sref="plan-users"><i class="fa fa-cogs"></i> Management</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a ui-sref="login"><i class="fa fa-lock"></i> Logout</a></li>
+                <li ui-sref-active="active"><a ui-sref="login"><i class="fa fa-lock"></i> Logout</a></li>
             </ul>
         </div>
 
@@ -28,6 +28,20 @@
             <i class="fa fa-calendar-minus-o"></i>
         </div>
     </div>
+</div>
+
+<div class="menu"
+     ng-if="vm.checkStates()">
+        <ul class="list-unstyled">
+            <li class="list-header">Plan</li>
+            <li><a ui-sref="plan-users"><i class="fa fa-calendar"></i>Users</a></li>
+            <li><a ui-sref="plan-tasks"><i class="fa fa-tasks"></i>Tasks</a></li>
+            <li class="list-header">Manage</li>
+            <li><a ui-sref="manage-teams"><i class="fa fa-globe"></i>Teams</a></li>
+            <li><a ui-sref="manage-users"><i class="fa fa-users"></i>Users</a></li>
+            <li><a ui-sref="manage-shifts"><i class="fa fa-calendar-o"></i>Shifts</a></li>
+            <li><a ui-sref="manage-tasks"><i class="fa fa-tasks"></i>Tasks</a></li>
+        </ul>
 </div>
 
 <!--Modal-->

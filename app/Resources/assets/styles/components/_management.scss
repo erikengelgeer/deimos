@@ -1,75 +1,43 @@
-.management {
-    background-color: #f3f3f3;
-
-    h2 {
-        margin: 0;
-    }
-
-    .segment.light-bg {
-        margin-bottom: 40px;
-    }
-
-    .tab-pane {
-        .heading {
-            &:after {
-                content: ' ';
-                display: table;
-                clear: both;
-            }
-
-            h4 {
-                + button {
-                    margin-left: 10px;
-                    position: relative;
-                    top: 4px;
-                }
-            }
-        }
-
-        table {
-            tbody {
-                td {
-                    vertical-align: middle;
-
-                    &.plan-users-option {
-                        width: 57px;
-                    }
-
-                    &.options {
-                        width: 100px;
-
-                        button {
-                            + button {
-                                margin-left: 5px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    .input-group {
-        margin-bottom: 10px;
-
-        .input-group-addon {
-            &.mid {
-                border-left: 0;
-                border-right: 0;
-            }
-        }
-    }
-
-    .progress {
-        height: 6px;
-        margin-bottom: 5px;
-    }
-
-    .progress-text {
-        color: #888;
-        margin-bottom: 20px;
-        display: block;
-    }
-
-}
+//.management {
+//
+//    .management-menu {
+//        width: 155px;
+//        height: 100%;
+//        position: fixed;
+//        top: 64px;
+//        left: 0;
+//        background-color: #F9F9F9;
+//
+//
+//        .list-header {
+//            font-size: 16px;
+//            padding-left: 10px;
+//        }
+//        a {
+//            color: #999;
+//            text-decoration: none;
+//            transition: all .15s ease-in-out;
+//
+//            li {
+//                padding-left: 25px;
+//                padding-top: 8px;
+//                padding-bottom: 8px;
+//
+//                &:hover {
+//                    background-color: $body-color;
+//                    color: black;
+//
+//                    a {
+//                        color: #000;
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        i {
+//            padding-right: 10px;
+//        }
+//    }
+//
+//}
