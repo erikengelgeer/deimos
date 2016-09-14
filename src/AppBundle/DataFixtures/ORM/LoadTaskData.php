@@ -17,7 +17,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $user = $manager->getRepository('AppBundle:User')->findOneBy(array('username' => 'admin'));
+        $shift = $manager->getRepository('AppBundle:Shift')->findOneBy(array('description' => 'QueueManager'));
         $taskType = $manager->getRepository('AppBundle:TaskType')->findOneBy(array('short' => 'create'));
 
         $task = new Task();
@@ -25,7 +25,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface
         $task->setDate(new \DateTime());
         $task->setStartTime(new \DateTime());
         $task->setEndTime(new \DateTime());
-        $task->setUserFk($user);
+        $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
         $manager->persist($task);
@@ -34,6 +34,6 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 6;
+        return 7;
     }
 }

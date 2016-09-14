@@ -48,6 +48,10 @@ function Api($http) {
         //Shifts
         getShift: function (id) {
             return $http.get('api/shift.' + id);
-        }
+        },
+
+
+        //Weekly overview
+        
     }
 }

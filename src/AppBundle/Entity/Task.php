@@ -50,10 +50,10 @@ class Task
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
+     * @ORM\ManyToOne(targetEntity="Shift")
+     * @ORM\JoinColumn(name="shift_fk", referencedColumnName="pk")
      */
-    private $userFk;
+    private $shiftFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="TaskType")
@@ -70,6 +70,8 @@ class Task
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set date
@@ -168,27 +170,27 @@ class Task
     }
 
     /**
-     * Set userFk
+     * Set shiftFk
      *
-     * @param \AppBundle\Entity\User $userFk
+     * @param \AppBundle\Entity\Shift $shiftFk
      *
      * @return Task
      */
-    public function setUserFk(\AppBundle\Entity\User $userFk = null)
+    public function setShiftFk(\AppBundle\Entity\Shift $shiftFk = null)
     {
-        $this->userFk = $userFk;
+        $this->shiftFk = $shiftFk;
 
         return $this;
     }
 
     /**
-     * Get userFk
+     * Get shiftFk
      *
-     * @return \AppBundle\Entity\User
+     * @return \AppBundle\Entity\Shift
      */
-    public function getUserFk()
+    public function getShiftFk()
     {
-        return $this->userFk;
+        return $this->shiftFk;
     }
 
     /**
