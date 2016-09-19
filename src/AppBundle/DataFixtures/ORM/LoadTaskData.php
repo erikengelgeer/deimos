@@ -28,7 +28,19 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
+        $shift2 = $manager->getRepository('AppBundle:Shift')->findOneBy(array('description' => 'Agent'));
+        $taskType2 = $manager->getRepository('AppBundle:TaskType')->findOneBy(array('short' => 'Meeting'));
+
+        $task2 = new Task();
+        $task2->setDescription('Agent Task');
+        $task2->setDate(new \DateTime());
+        $task2->setStartTime(new \DateTime());
+        $task2->setEndTime(new \DateTime());
+        $task2->setShiftFk($shift2);
+        $task2->setTaskTypeFk($taskType2);
+
         $manager->persist($task);
+        $manager->persist($task2);
         $manager->flush();
     }
 

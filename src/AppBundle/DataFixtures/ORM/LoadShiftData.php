@@ -27,9 +27,21 @@ class LoadShiftData extends AbstractFixture implements OrderedFixtureInterface
         $shift1->setEndTime(new \DateTime());
         $shift1->setShiftTypeFk($shiftType);
         $shift1->setUserFk($user);
+
+        $user2 = $manager->getRepository('AppBundle:User')->findOneBy(array('username' => 'user'));
+        $shiftType2 = $manager->getRepository('AppBundle:ShiftType')->findOneBy(array('short' => 'B'));
+
+        $shift2 = new Shift();
+        $shift2->setDescription('Agent');
+        $shift2->setDate(new \DateTime());
+        $shift2->setStartTime(new \DateTime());
+        $shift2->setEndTime(new \DateTime());
+        $shift2->setShiftTypeFk($shiftType2);
+        $shift2->setUserFk($user2);
         
         
         $manager->persist($shift1);
+        $manager->persist($shift2);
         $manager->flush();
     }
 
