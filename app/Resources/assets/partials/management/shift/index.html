@@ -18,13 +18,13 @@
                     <th>Team</th>
                     <th>Options</th>
                     </thead>
-                    <tbody>
+                    <tbody ng-repeat="shift in vm.shifts">
                     <tr>
-                        <td>Shift 1</td>
-                        <td>08:15-16:45</td>
-                        <td>GRIP RIJSWIJK</td>
+                        <td>{{ shift.description }}</td>
+                        <td>{{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</td>
+                        <td>{{ shift.team }}</td>
                         <td>
-                            <button class="btn btn-gray" ui-sref="manage-shifts-edit"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-gray" ui-sref="manage-shifts-edit({shiftTypeId: shift.id})"><i class="fa fa-pencil"></i></button>
                             <button class="btn btn-red"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>

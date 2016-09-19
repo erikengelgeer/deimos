@@ -3,8 +3,16 @@
  */
 angular.module('app').controller('EditTeamController', EditTeamController);
 
-function EditTeamController($rootScope) {
+function EditTeamController($rootScope, Api, $stateParams) {
     var vm = this;
-    $rootScope.loading = false;
+    var teamId = $stateParams.teamId;
 
+    Api.teams.findOne(teamId).then(function (response) {
+        vm.editTeam = response.data;
+        console.log(response);
+    }, function errorCallback(response) {
+        console.log(response);
+    }).finally(function () {
+        $rootScope.loading = false;
+    });
 }

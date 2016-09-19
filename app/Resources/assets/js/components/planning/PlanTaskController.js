@@ -1,14 +1,29 @@
-/**
- * Created by EAETV on 5/09/2016.
- */
-angular.module('app').controller('PlanningController', PlanningController);
+angular.module('app').controller('PlanTaskController', PlanTaskController);
 
-function PlanningController($rootScope) {
+function PlanTaskController($rootScope, Api, $q) {
     var vm = this;
-    $rootScope.loading = false;
+    var promises = [];
+
+    vm.tasks = [];
+    vm.users = [];
+
+    promises.push(Api.tasks.find().then(function (response) {
+        vm.planTasks = response.data;
+        console.log(response.data)
+    }));
+
+    promises.push(Api.users.find().then(function (response) {
+        vm.users = response.data;
+        console.log(response.data);
+    }));
+
+    $q.all(promises).then(function () {
+        console.log("done", vm.planTasks, vm.users)
+    }).finally(function () {
+        $rootScope.loading = false;
+    });
 
     $(function () {
-        var selectedDates = [];
         var active_dates = [];
 
         $('.nav-tabs a').click(function (e) {
@@ -20,24 +35,6 @@ function PlanningController($rootScope) {
 
         var startDate = new Date();
 
-        var datepicker = $('#datetimepicker-1');
-        datepicker.datepicker({
-            multidate: true,
-            todayHighlight: true,
-            startDate: startDate
-        });
-
-        datepicker.on("changeDate", function (e) {
-            var dates = datepicker.datepicker('getFormattedDate');
-
-            if (dates != "") {
-                selectedDates = dates.split(",");
-            } else {
-                selectedDates = [];
-            }
-
-            console.log(selectedDates);
-        });
 
         // Plan Tasks
         var datepicker2 = $('#datetimepicker-2');

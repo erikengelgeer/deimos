@@ -3,8 +3,30 @@
  */
 angular.module('app').controller('EditUserController', EditUserController);
 
-function EditUserController($rootScope) {
+function EditUserController($rootScope, Api, $stateParams, $q) {
     var vm = this;
-    $rootScope.loading = false;
+    var userId = $stateParams.userId;
+    var promises = [];
 
+    vm.users = [];
+    vm.roles = [];
+    vm.teams = [];
+
+    promises.push(Api.users.findOne(userId).then(function (response) {
+        vm.editUser = response.data;
+    }));
+
+    promises.push(Api.roles.find().then(function (response) {
+        vm.roles = response.data;
+    }));
+
+    promises.push(Api.teams.find().then(function (response) {
+        vm.teams = response.data;
+    }));
+
+    $q.all(promises).then(function () {
+        console.log("done", vm.users, vm.roles, vm.teams);
+    }).finally(function () {
+        $rootScope.loading = false;
+    });
 }
