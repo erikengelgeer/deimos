@@ -64,7 +64,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controllerAs: "vm"
         })
         .state('manage-teams-edit',{
-            url: "/manage/teams/edit",
+            url: "/manage/teams/edit/{teamId}",
             templateUrl: "partials/management/team/edit.html",
             controller: "EditTeamController",
             controllerAs: "vm"
@@ -82,7 +82,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controllerAs: "vm"
         })
         .state('manage-users-edit',{
-            url: "/manage/users/edit",
+            url: "/manage/users/edit/{userId}",
             templateUrl: "partials/management/user/edit.html",
             controller: "EditUserController",
             controllerAs: "vm"
@@ -100,7 +100,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controllerAs: "vm"
         })
         .state('manage-shifts-edit',{
-            url: "/manage/shifts/edit",
+            url: "/manage/shifts/edit/{shiftTypeId}",
             templateUrl: "partials/management/shift/edit.html",
             controller: "EditShiftController",
             controllerAs: "vm"
@@ -118,7 +118,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controllerAs: "vm"
         })
         .state('manage-tasks-edit',{
-            url: "/manage/tasks/edit",
+            url: "/manage/tasks/edit/{taskTypeId}",
             templateUrl: "partials/management/task/edit.html",
             controller: "EditTaskController",
             controllerAs: "vm"
@@ -126,13 +126,13 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
         .state('plan-users',{
             url: "/plan/users",
             templateUrl: "partials/planning/users.html",
-            controller: "PlanningController",
+            controller: "PlanUserController",
             controllerAs: "vm"
         })
         .state('plan-tasks',{
             url: "/plan/tasks",
             templateUrl: "partials/planning/tasks.html",
-            controller: "PlanningController",
+            controller: "PlanTaskController",
             controllerAs: "vm"
         })
     ;

@@ -3,8 +3,18 @@
  */
 angular.module('app').controller('EditTaskController', EditTaskController);
 
-function EditTaskController($rootScope) {
+function EditTaskController($rootScope, Api, $stateParams, $q) {
     var vm = this;
-    $rootScope.loading = false;
+    var taskTypeId = $stateParams.taskTypeId;
 
+    vm.taskTypes = [];
+
+    Api.taskTypes.findOne(taskTypeId).then(function (response) {
+        vm.editTaskTypes = response.data;
+        console.log(response.data);
+    }, function errorCallback(response) {
+        console.log(response);
+    }).finally(function () {
+        $rootScope.loading = false;
+    });
 }

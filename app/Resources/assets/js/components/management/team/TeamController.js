@@ -3,8 +3,17 @@
  */
 angular.module('app').controller('TeamController', TeamController);
 
-function TeamController($rootScope) {
+function TeamController($rootScope, Api) {
     var vm = this;
-    $rootScope.loading = false;
+
+    Api.teams.find().then(function (response) {
+        vm.teams = response.data;
+        console.log(response);
+    }, function errorCallback(response) {
+        console.log(response);
+    }).finally(function () {
+        $rootScope.loading = false;
+
+    });
 
 }

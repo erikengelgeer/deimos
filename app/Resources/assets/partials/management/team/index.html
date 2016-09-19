@@ -14,17 +14,17 @@
                 <table class="table table-bordered">
                     <thead>
                     <th>Country</th>
-                    <th>Location</th>
+                    <th>Name</th>
                     <th>Timezone</th>
                     <th>Options</th>
                     </thead>
-                    <tbody>
+                    <tbody ng-repeat="team in vm.teams">
                     <tr>
-                        <td>CAN</td>
-                        <td>GRIP WATERLOO</td>
-                        <td>America/Toronto</td>
+                        <td>{{ team.location }}</td>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.timezone}}</td>
                         <td>
-                            <button class="btn btn-gray" ui-sref="manage-teams-edit"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-gray" ui-sref="manage-teams-edit({teamId: team.id})"><i class="fa fa-pencil"></i></button>
                             <button class="btn btn-red"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>

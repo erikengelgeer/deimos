@@ -11,35 +11,35 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputUserName">User Name:</label>
-                    <input type="text" placeholder="ERETV" class="form-control" id="inputUserName">
+                    <input type="text" ng-model="vm.editUser.username" class="form-control" id="inputUserName">
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputName">Name:</label>
-                    <input type="text" placeholder="Jhon" class="form-control" id="inputName">
+                    <input type="text" ng-model="vm.editUser.real_name" class="form-control" id="inputName">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputEmail">Email:</label>
-                    <input type="email" placeholder="email@example.com" class="form-control" id="inputEmail" >
+                    <input type="email" ng-model="vm.editUser.email" class="form-control" id="inputEmail" >
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputRole">Role:</label>
-                    <select name="Role" class="form-control" id="inputRole">
-                        <option value="" >Role</option>
+                    <select class="form-control" name="role" id="inputRole">
+                        <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.role}}</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputTeam">Team:</label>
-                    <select name="Role" class="form-control" id="inputTeam">
-                        <option value="" >Team</option>
+                    <select name="Team" class="form-control" id="inputTeam">
+                        <option ng-repeat="team in vm.teams" value="{{team.id}}">{{team.location}}</option>
                     </select>
                 </div>
             </div>

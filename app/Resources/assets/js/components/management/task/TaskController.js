@@ -3,8 +3,15 @@
  */
 angular.module('app').controller('TaskController', TaskController);
 
-function TaskController($rootScope) {
+function TaskController($rootScope, Api) {
     var vm = this;
-    $rootScope.loading = false;
 
+    Api.taskTypes.find().then(function (response) {
+        vm.tasksTypes = response.data;
+        console.log(response.data);
+    },function errorCallBack(response) {
+        console.log(response);
+    }).finally(function () {
+        $rootScope.loading = false;
+    });
 }

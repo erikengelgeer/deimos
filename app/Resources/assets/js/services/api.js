@@ -37,13 +37,53 @@ angular.module('app').factory('Api', Api);
 
 function Api($http) {
     return {
-        //Users
-        getUser: function (id) {
-            return $http.get('api/user/' + id);
+        users: {
+            find: function() {
+                return $http.get('api/users');
+            },
+            findOne: function (id) {
+                return $http.get('api/users/' + id);
+            }
         },
-        getUsers: function() {
-            return $http.get('api/users');
+        shiftType: {
+            find: function() {
+                return $http.get('api/shift-types');
+            },
+            findOne: function (id) {
+                return $http.get('api/shift-types/' + id);
+            }
         },
+        teams: {
+            find: function () {
+                return $http.get('api/teams/');
+            },
+            findOne: function (id) {
+                return $http.get('api/teams/' + id);
+            }
+        },
+        roles: {
+            find: function () {
+                return $http.get('api/roles/');
+            }
+        },
+        taskTypes: {
+            find: function () {
+                return $http.get('api/task-type');
+            },
+            findOne: function (id) {
+                return $http.get('api/task-type/' + id)
+            }
+        },
+        shifts: {
+            find: function () {
+                return $http.get('api/shifts/');
+            }
+        },
+        tasks: {
+            find: function () {
+                return $http.get('api/tasks/');
+            }
+        }
 
         //Shifts
         getShift: function (id) {
@@ -52,6 +92,6 @@ function Api($http) {
 
 
         //Weekly overview
-        
+
     }
 }

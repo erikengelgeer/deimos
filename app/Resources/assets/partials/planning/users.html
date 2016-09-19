@@ -21,12 +21,12 @@
                         <th class="check">Check</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody ng-repeat="planUser in vm.planUsers">
                     <tr>
-                        <td>John Doe</td>
+                        <td>{{ planUser.username }}</td>
                         <td>
                             <select class="form-control">
-                                <option value="#">Shift 1</option>
+                                <option ng-repeat="shift in vm.shifts" value="{{ shift.id }}">{{ shift.description }}</option>
                             </select>
                         </td>
                         <td><div class="form-control"></div></td>
