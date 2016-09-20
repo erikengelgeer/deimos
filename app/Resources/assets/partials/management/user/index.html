@@ -28,7 +28,7 @@
                         <td>{{ user.email}}</td>
                         <td>
                             <select class="form-control" name="role" id="">
-                                <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.role}}</option>
+                                <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.selectedRole(user.role_fk.id, role.id)">{{role.role}}</option>
                             </select>
                         </td>
                         <td>

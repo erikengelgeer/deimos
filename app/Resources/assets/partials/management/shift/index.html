@@ -22,7 +22,7 @@
                     <tr>
                         <td>{{ shift.description }}</td>
                         <td>{{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</td>
-                        <td>{{ shift.team }}</td>
+                        <td>{{ shift.team_fk.location }}</td>
                         <td>
                             <button class="btn btn-gray" ui-sref="manage-shifts-edit({shiftTypeId: shift.id})"><i class="fa fa-pencil"></i></button>
                             <button class="btn btn-red"><i class="fa fa-trash"></i></button>

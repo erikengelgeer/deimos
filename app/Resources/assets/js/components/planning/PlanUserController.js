@@ -7,6 +7,8 @@ function PlanUserController($rootScope, Api, $q) {
     vm.users = [];
     vm.shifts = [];
 
+    vm.selectedShift = selectedShift;
+
     promises.push(Api.users.find().then(function (response) {
         vm.planUsers = response.data;
         console.log(response);
@@ -53,5 +55,9 @@ function PlanUserController($rootScope, Api, $q) {
 
             console.log(selectedDates);
         });
-    })
+    });
+
+    function selectedShift(shiftUserId, userId) {
+        return shiftUserId == userId;
+    }
 }

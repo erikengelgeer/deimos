@@ -7,6 +7,8 @@ function UserController($rootScope, Api, $q) {
     var vm = this;
     var promises = [];
 
+    vm.selectedRole = selectedRole;
+
     vm.users = [];
     vm.roles = [];
 
@@ -25,4 +27,7 @@ function UserController($rootScope, Api, $q) {
         $rootScope.loading = false;
     });
 
+    function selectedRole(userRoleId, roleId) {
+        return userRoleId == roleId;
+    }
 }

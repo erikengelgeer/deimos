@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="inputTeam">Team:</label>
                     <select name="Role" class="form-control" id="inputTeam">
-                        <option ng-repeat="team in vm.teams" value="{{team.id}}" >{{team.location}}</option>
+                        <option ng-repeat="team in vm.teams" value="{{team.id}}" ng-selected="vm.selectedTeam(vm.editShiftTypes.team_fk.id, team.id)">{{team.location}}</option>
                     </select>
                 </div>
             </div>

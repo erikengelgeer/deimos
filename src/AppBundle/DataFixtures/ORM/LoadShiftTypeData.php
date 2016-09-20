@@ -20,6 +20,8 @@ class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterfa
 {
     public function load(ObjectManager $manager)
     {
+        $team = $manager->getRepository('AppBundle:Team')->findOneBy(array('name' => 'GRIP RIJSWIJK'));
+
         $shiftType1 = new ShiftType();
         $shiftType1->setShort('N');
         $shiftType1->setDescription('N');
@@ -31,7 +33,7 @@ class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterfa
         $shiftType1->setShiftDuration(8.5);
         $shiftType1->setRecordCreatedBy(1);
         $shiftType1->setRecordCreatedAt(new \datetime());
-        $shiftType1->setTeam(1);
+        $shiftType1->setTeamFk($team);
         $shiftType1->setStatus('ACTIVE');
 
         $shiftType2 = new ShiftType();
@@ -45,7 +47,7 @@ class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterfa
         $shiftType2->setShiftDuration(8.5);
         $shiftType2->setRecordCreatedBy(1);
         $shiftType2->setRecordCreatedAt(new \datetime());
-        $shiftType2->setTeam(1);
+        $shiftType2->setTeamFk($team);
         $shiftType2->setStatus('ACTIVE');
         
 

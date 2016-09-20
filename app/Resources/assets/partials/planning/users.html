@@ -26,7 +26,7 @@
                         <td>{{ planUser.username }}</td>
                         <td>
                             <select class="form-control">
-                                <option ng-repeat="shift in vm.shifts" value="{{ shift.id }}">{{ shift.description }}</option>
+                                <option ng-repeat="shift in vm.shifts" value="{{ shift.id }}" ng-selected="vm.selectedShift(shift.user_fk.id, planUser.id)">{{ shift.description }}</option>
                             </select>
                         </td>
                         <td><div class="form-control"></div></td>

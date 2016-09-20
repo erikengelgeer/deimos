@@ -8,6 +8,9 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
     var userId = $stateParams.userId;
     var promises = [];
 
+    vm.selectedRole = selectedRole;
+    vm.selectedTeam = selectedTeam;
+
     vm.users = [];
     vm.roles = [];
     vm.teams = [];
@@ -29,4 +32,12 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
     }).finally(function () {
         $rootScope.loading = false;
     });
+
+    function selectedTeam(userTeamId, teamId) {
+        return userTeamId == teamId;
+    }
+
+    function selectedRole(userRoleId, roleId) {
+        return userRoleId == roleId;
+    }
 }

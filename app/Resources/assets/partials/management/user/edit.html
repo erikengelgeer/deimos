@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="inputRole">Role:</label>
                     <select class="form-control" name="role" id="inputRole">
-                        <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.role}}</option>
+                        <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.selectedRole(vm.editUser.role_fk.id, role.id)">{{role.role}}</option>
                     </select>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label for="inputTeam">Team:</label>
                     <select name="Team" class="form-control" id="inputTeam">
-                        <option ng-repeat="team in vm.teams" value="{{team.id}}">{{team.location}}</option>
+                        <option ng-repeat="team in vm.teams" value="{{team.id}}" ng-selected="vm.selectedTeam(vm.editUser.team_fk.id, team.id)">{{team.location}}</option>
                     </select>
                 </div>
             </div>

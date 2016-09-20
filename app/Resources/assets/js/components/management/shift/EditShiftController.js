@@ -10,6 +10,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
 
     vm.teams = [];
 
+    vm.selectedTeam = selectedTeam;
 
     promises.push(Api.shiftType.findOne(shiftTypeId).then(function (response) {
         vm.editShiftTypes = response.data;
@@ -29,4 +30,8 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
     }).finally(function () {
         $rootScope.loading = false;
     });
+
+    function selectedTeam(shiftTeamId, teamId) {
+        return shiftTeamId == teamId;
+    }
 }
