@@ -84,14 +84,5 @@ function Api($http) {
                 return $http.get('api/tasks/');
             }
         }
-
-        //Shifts
-        getShift: function (id) {
-            return $http.get('api/shift.' + id);
-        },
-
-
-        //Weekly overview
-
     }
 }
