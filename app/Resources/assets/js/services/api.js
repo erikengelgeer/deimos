@@ -49,6 +49,9 @@ function Api($http) {
         getShift: function (id) {
             return $http.get('api/shift.' + id);
         },
+        getAllShifts: function () {
+          return $http.get('api/shifts');
+        },
 
 
         //Weekly overview
