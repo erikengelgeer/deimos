@@ -1,17 +1,21 @@
 var dependencies = [
     "ui.router",
+    "ngStorage"
 ];
 
-function AppRun($rootScope, $state) {
+function AppRun($rootScope, $state, $localStorage) {
     $rootScope.loading = true;
     $rootScope.$state = $state;
-    // $rootScope.tasks = [
-    //     {
-    //         startTime:"12:00",
-    //         endTime:"13:00",
-    //         taskName:"Deimos design"
-    //     }
-    // ];
+    $localStorage.token = "kaas";
+
+    console.log($localStorage.token);
+
+    $rootScope.$on('$stateChangeStart', function (e, toState) {
+        if(toState.name != 'login' && $localStorage.loggedInUser == null) {
+            e.preventDefault();
+            $state.go('login');
+        }
+    });
 }
 
 function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {

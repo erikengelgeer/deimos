@@ -12,20 +12,60 @@ security:
         fos_userbundle:
             id: fos_user.user_provider.username
 
-    firewalls:
-        main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-                # if you are using Symfony < 2.8, use the following config instead:
-                # csrf_provider: form.csrf_provider
+#    firewalls:
+#        main:
+#            pattern: ^/
+#            form_login:
+#                provider: fos_userbundle
+#                csrf_token_generator: security.csrf.token_manager
+#                # if you are using Symfony < 2.8, use the following config instead:
+#                # csrf_provider: form.csrf_provider
+#
+#            logout:       true
+#            anonymous:    true
+#
+#    access_control:
+#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/admin/, role: ROLE_ADMIN }
 
-            logout:       true
-            anonymous:    true
+    firewalls:
+
+        login:
+            pattern: ^/api/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /api/login_check
+                success_handler:           lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+
+        reset-password:
+            pattern: ^/api/user/token
+            stateless: true
+            anonymous: true
+
+        change-password:
+            pattern: ^/api/user/change-password
+            stateless: true
+            anonymous: true
+
+        api:
+#            pattern: ^/api
+#            stateless: true
+#            lexik_jwt: ~
+
+            pattern: ^/api
+            stateless: true
+            anonymous: true
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+#        - {path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - {path: ^/api/user/token, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - {path: ^/api/user/change-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - {path: ^/api/users/user/check_role, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - {path: ^/api, roles: IS_AUTHENTICATED_FULLY}
+
+        - {path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY}

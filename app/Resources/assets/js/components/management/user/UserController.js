@@ -6,5 +6,4 @@ angular.module('app').controller('UserController', UserController);
 function UserController($rootScope) {
     var vm = this;
     $rootScope.loading = false;
-
 }

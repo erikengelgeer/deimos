@@ -15,6 +15,6 @@
     </div>
 
     <button class="btn btn-gray pull-left" ng-if="vm.hasPassword">Forgot password?</button>
-    <button class="btn btn-primary pull-right" ng-click="vm.login()" ng-if="vm.hasPassword" ><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
-    <button class="btn btn-primary pull-right" ng-click="vm.login()" ng-if="!vm.hasPassword" ><span>Continue</span> <i class="fa fa-caret-right"></i></button>
+    <button class="btn btn-primary pull-right" ng-click="vm.loginWithPassword()" ng-if="vm.hasPassword" ><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
+    <button class="btn btn-primary pull-right" ng-click="vm.loginWithoutPassword()" ng-if="!vm.hasPassword" ><span>Continue</span> <i class="fa fa-caret-right"></i></button>
 </div>

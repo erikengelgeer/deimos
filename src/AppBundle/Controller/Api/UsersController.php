@@ -115,4 +115,39 @@ class UsersController extends Controller
         $data = $this->get('serializer')->serialize([], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
+
+    /**
+     * @Route("/user/check_role")
+     * @Method("POST")
+     *
+     * Checks if a user has a role.
+     */
+    public function checkRoleAction(Request $request)
+    {
+        $username = $request->getContent();
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:User");
+
+        $user = $repository->findOneBy(array("username" => $username));
+
+        if ($user != null) {
+
+
+            $role = $user->getRoleFk()->getRole();
+
+            if (strtolower($role) == 'agent') {
+                $data = $this->get('serializer')->serialize(['result' => false, 'info' => "no password needed."], 'json');
+                return new Response($data, 200, ['Content-type' => 'application/json']);
+            }
+
+            $data = $this->get('serializer')->serialize(['result' => true, 'info' => "password is needed."], 'json');
+            return new Response($data, 200, ['Content-type' => 'application/json']);
+
+        }
+
+        $data = $this->get('serializer')->serialize(['result' => null, 'info' => "User does not exist."], 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+
+    }
 }
