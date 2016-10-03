@@ -176,9 +176,40 @@ class ShiftsController extends Controller
 
         $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater);
 
-//        dump($shifts);
+        $processedData = [];
+        $tasks = [];
+        $previousId = 0;
 
-        $data = $this->get('serializer')->serialize($shifts, 'json');
+        foreach ($shifts as $shift) {
+            if ($previousId == $shift['id']) continue;
+
+            $previousId = $shift['id'];
+
+            foreach ($shifts as $otherShift) {
+                if ($shift['id'] == $otherShift['id']) {
+
+                    $newShift = [];
+
+                    $newShift['taskId'] = $otherShift['taskId'];
+                    $newShift['taskDescription'] = $otherShift['taskDescription'];
+                    $newShift['taskStartTime'] = $otherShift['taskStartTime'];
+                    $newShift['taskEndTime'] = $otherShift['taskEndTime'];
+
+                    array_push($tasks, $newShift);
+                }
+            }
+
+            unset($shift['taskId']);
+            unset($shift['taskDescription']);
+            unset($shift['taskStartTime']);
+            unset($shift['taskEndTime']);
+
+            array_push($processedData, [$shift, $tasks]);
+            $tasks = [];
+
+        }
+
+        $data = $this->get('serializer')->serialize($processedData, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 

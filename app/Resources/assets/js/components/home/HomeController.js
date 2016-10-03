@@ -86,17 +86,35 @@ function HomeController($rootScope, Api) {
         return new Date(d.setDate(diff));
     }
 
+
     function getPlanningContent(day, key, planningKey) {
-        // console.log(day.user.id, vm.planning[planningKey][key]);
-        var data = {
-            shift: 'kaas',
-            tasks: [0, 1]
-        };
+
+        // get current date of a planning column
+        var date = new Date(vm.planning[planningKey][key]);
+        var formattedDate =  date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        var data = [];
+
+        // Iterate trough shifts to find the right shift per column and user
+        for(var i = 0; i < vm.shifts.length; i++) {
+            var shiftDate = new Date(vm.shifts[i][0]['date']);
+            var formattedShiftDate = shiftDate.getDate() + "-" + (shiftDate.getMonth() + 1) + "-" + shiftDate.getFullYear();
+
+
+            // checks if column user is equal to shift user
+            if(vm.shifts[i][0]['userId'] == day.user.id && formattedDate == formattedShiftDate) {
+                data = {
+                    shift: vm.shifts[i][0],
+                    tasks: vm.shifts[i][1]
+                };
+
+                // breaks to for to reduce load time
+                break;
+            }
+        }
+        
 
         return data;
-
     }
-
 
 
 }

@@ -1721,7 +1721,7 @@
                     </span>
 
                     <div class="shift" ng-if="key > 0">
-                        <i class="fa fa-circle state-3"></i> {{ today.shift }}
+                        <i class="fa fa-circle {{ today.shift.shiftTypeShort }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
 
                         <div class="actions">
                             <i class="fa fa-pencil"></i>
@@ -1729,7 +1729,7 @@
                         </div>
                     </div>
 
-                    <div class="task" ng-if="key > 0" ng-repeat="task in today.tasks"><span>12:00 - 13:00</span> Meeting</div>
+                    <div class="task" ng-if="key > 0 && today.tasks[0].length != 0" ng-repeat="task in today.tasks"><span>{{ task.taskStartTime | date: 'H:mm' }} - {{ task.taskEndTime | date: 'H:mm' }}</span> {{ task.taskDescription }}</div>
                 </div>
             </div>
 
@@ -2166,6 +2166,6 @@
             item.find('.heading').css('top', ($(this).scrollTop()));
             lastScrollTop = currentScrollTop;
         });
-        },2000);
+        },4000);
     })
 </script>
