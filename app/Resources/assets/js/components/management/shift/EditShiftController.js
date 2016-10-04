@@ -10,15 +10,12 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
 
     vm.teams = [];
 
-    vm.selectedTeam = selectedTeam;
+    vm.updateShift = updateShift;
 
     promises.push(Api.shiftType.findOne(shiftTypeId).then(function (response) {
         vm.editShiftTypes = response.data;
-        console.log(response.data);
-
         vm.editShiftTypes.default_end_time = new Date(vm.editShiftTypes.default_end_time);
-        vm.editShiftTypes.default_start_time = new Date(vm.editShiftTypes.default_start_time)
-
+        vm.editShiftTypes.default_start_time = new Date(vm.editShiftTypes.default_start_time);
     }));
 
     promises.push(Api.teams.find().then(function (response) {
@@ -31,7 +28,10 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
         $rootScope.loading = false;
     });
 
-    function selectedTeam(shiftTeamId, teamId) {
-        return shiftTeamId == teamId;
+    function updateShift() {
+        console.log(vm.editShiftTypes);
+        Api.shiftType.update(vm.editShiftTypes).then(function (response) {
+            console.log(response.data);
+        })
     }
 }

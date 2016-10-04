@@ -43,6 +43,12 @@ function Api($http) {
             },
             findOne: function (id) {
                 return $http.get('api/users/' + id);
+            },
+            update: function (data) {
+                return $http.put('api/users/update/', data);
+            },
+            updateRole: function (data) {
+                return $http.put('api/users/updateRole/', data);
             }
         },
         shiftType: {
@@ -51,7 +57,11 @@ function Api($http) {
             },
             findOne: function (id) {
                 return $http.get('api/shift-types/' + id);
+            },
+            update: function (data) {
+                return $http.put('api/shift-types/update', data)
             }
+
         },
         teams: {
             find: function () {
@@ -59,6 +69,9 @@ function Api($http) {
             },
             findOne: function (id) {
                 return $http.get('api/teams/' + id);
+            },
+            update: function (data) {
+                return $http.put('api/teams/', data);
             }
         },
         roles: {
@@ -68,15 +81,21 @@ function Api($http) {
         },
         taskTypes: {
             find: function () {
-                return $http.get('api/task-type');
+                return $http.get('api/task-types');
             },
             findOne: function (id) {
-                return $http.get('api/task-type/' + id)
+                return $http.get('api/task-types/' + id)
+            },
+            update: function (data) {
+                return $http.put('api/shift-types/update', data)
             }
         },
         shifts: {
             find: function () {
                 return $http.get('api/shifts/');
+            },
+            findByUser: function (userId) {
+                return $http.get('api/shifts/user/' + userId)
             }
         },
         tasks: {
@@ -84,5 +103,5 @@ function Api($http) {
                 return $http.get('api/tasks/');
             }
         }
-    }
+    };
 }

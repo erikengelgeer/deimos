@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Shift;
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +50,21 @@ class ShiftsController extends Controller
     {
         $data= $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/user/{id}")
+     * @Method("GET")
+     */
+    function findAllByUser(User $user) {
+        dump($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Shift');
+
+        $shifts = $repository->findBy(array("userFk" => $user));
+
+        dump($shifts[0]->getTasks()[0]->getDescription());
     }
 
 }

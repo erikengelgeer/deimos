@@ -3,11 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Entity\Task;
 /**
  * Shift
  *
- * @ORM\Table(name="shift")
+ * @ORM\Table(name="shifts")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftRepository")
  */
 class Shift
@@ -60,6 +60,11 @@ class Shift
      * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
      */
     private $userFk;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="shiftFk")
+     */
+    private $tasks;
 
     /**
      * Get id
@@ -165,5 +170,53 @@ class Shift
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set shiftTypeFk
+     *
+     * @param \AppBundle\Entity\ShiftType $shiftTypeFk
+     *
+     * @return Shift
+     */
+    public function setShiftTypeFk(\AppBundle\Entity\ShiftType $shiftTypeFk = null)
+    {
+        $this->shiftTypeFk = $shiftTypeFk;
+
+        return $this;
+    }
+
+    /**
+     * Get shiftTypeFk
+     *
+     * @return \AppBundle\Entity\ShiftType
+     */
+    public function getShiftTypeFk()
+    {
+        return $this->shiftTypeFk;
+    }
+
+    /**
+     * Set userFk
+     *
+     * @param \AppBundle\Entity\User $userFk
+     *
+     * @return Shift
+     */
+    public function setUserFk(\AppBundle\Entity\User $userFk = null)
+    {
+        $this->userFk = $userFk;
+
+        return $this;
+    }
+
+    /**
+     * Get userFk
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUserFk()
+    {
+        return $this->userFk;
     }
 }

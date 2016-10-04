@@ -8,6 +8,7 @@ function UserController($rootScope, Api, $q) {
     var promises = [];
 
     vm.selectedRole = selectedRole;
+    vm.updateRole = updateRole;
 
     vm.users = [];
     vm.roles = [];
@@ -29,5 +30,13 @@ function UserController($rootScope, Api, $q) {
 
     function selectedRole(userRoleId, roleId) {
         return userRoleId == roleId;
+    }
+
+    function updateRole(userRoleId, userId) {
+        console.log("role"+userRoleId, "id"+userId);
+        a = [userId, userRoleId];
+        Api.users.updateRole(a).then(function (response) {
+            console.log(response.data);
+        })
     }
 }

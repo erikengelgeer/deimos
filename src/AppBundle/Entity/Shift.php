@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Entity\Task;
 /**
  * Shift
  *
@@ -60,6 +60,11 @@ class Shift
      * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
      */
     private $userFk;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="shiftFk")
+     */
+    private $tasks;
 
     /**
      * Get id
@@ -213,5 +218,46 @@ class Shift
     public function getUserFk()
     {
         return $this->userFk;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add task
+     *
+     * @param \AppBundle\Entity\Task $task
+     *
+     * @return Shift
+     */
+    public function addTask(\AppBundle\Entity\Task $task)
+    {
+        $this->tasks[] = $task;
+
+        return $this;
+    }
+
+    /**
+     * Remove task
+     *
+     * @param \AppBundle\Entity\Task $task
+     */
+    public function removeTask(\AppBundle\Entity\Task $task)
+    {
+        $this->tasks->removeElement($task);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }

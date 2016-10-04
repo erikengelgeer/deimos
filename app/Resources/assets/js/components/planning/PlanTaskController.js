@@ -4,21 +4,20 @@ function PlanTaskController($rootScope, Api, $q) {
     var vm = this;
     var promises = [];
 
-    vm.tasks = [];
     vm.users = [];
+    vm.shift = {};
+    vm.tasks = [];
 
-    promises.push(Api.tasks.find().then(function (response) {
-        vm.planTasks = response.data;
-        console.log(response.data)
-    }));
+    vm.selectedUserId = 0;
+    vm.selectedDay = '';
+
 
     promises.push(Api.users.find().then(function (response) {
         vm.users = response.data;
-        console.log(response.data);
     }));
 
     $q.all(promises).then(function () {
-        console.log("done", vm.planTasks, vm.users)
+        console.log("tasks", vm.tasks, vm.users)
     }).finally(function () {
         $rootScope.loading = false;
     });
@@ -42,7 +41,7 @@ function PlanTaskController($rootScope, Api, $q) {
             multidate: false,
             todayHighlight: true,
             startDate: startDate,
-            beforeShowDay: function(date){
+            beforeShowDay: function (date) {
                 var d = date;
 
                 var day = d.getDate();
@@ -51,15 +50,29 @@ function PlanTaskController($rootScope, Api, $q) {
 
                 var formattedDate = day + "/" + month + "/" + year;
 
-                console.log("days");
-
-                if ($.inArray(formattedDate, active_dates) != -1){
+                if ($.inArray(formattedDate, active_dates) != -1) {
                     return {
                         classes: 'shift'
                     };
                 }
-                return;
             }
         });
-    })
+
+        datepicker2.datepicker().on('changeDate', function (e) {
+            vm.selectedDay = e.date;
+
+            console.log(vm.selectedDay);
+            loadData();
+        });
+
+        function loadData() {
+            console.log(vm.selectedDay, vm.selectedUserId);
+
+        //     TODO: validate user and selected date
+            Api.shifts.findByUser(vm.selectedUserId).then(function (response) {
+                console.log(response);
+            })
+        }
+    });
+
 }

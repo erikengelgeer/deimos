@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ShiftType
  *
- * @ORM\Table(name="shift_type")
+ * @ORM\Table(name="shift_types")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftTypeRepository")
  */
 class ShiftType
@@ -79,9 +79,10 @@ class ShiftType
     private $status;
 
     /**
-     * @ORM\Column(name="team", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team_fk", referencedColumnName="pk")
      */
-    private $team;
+    private $teamFk;
 
     /**
      * Get id
@@ -358,26 +359,26 @@ class ShiftType
     }
 
     /**
-     * Set team
+     * Set teamFk
      *
-     * @param integer $team
+     * @param \AppBundle\Entity\Team $teamFk
      *
      * @return ShiftType
      */
-    public function setTeam($team)
+    public function setTeamFk(Team $teamFk = null)
     {
-        $this->team = $team;
+        $this->teamFk = $teamFk;
 
         return $this;
     }
 
     /**
-     * Get team
+     * Get teamFk
      *
-     * @return integer
+     * @return \AppBundle\Entity\Team
      */
-    public function getTeam()
+    public function getTeamFk()
     {
-        return $this->team;
+        return $this->teamFk;
     }
 }

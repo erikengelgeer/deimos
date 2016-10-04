@@ -50,5 +50,33 @@ class ShiftTypesController extends Controller
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
+    /**
+     * @Route("/update")
+     * @Method("PUT")
+     */
+    public function updateAction(Request $request) {
+        $content = json_decode($request->getContent());
+        dump($content);
+        $em = $this->getDoctrine()->getManager();
+        $shift = $em->getRepository("AppBundle:ShiftType")->find($content->id);
+        $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team_fk->id));
+
+        dump($team);
+
+        $shift->setDescription($content->description);
+        $shift->setShort($content->short);
+        $shift->setDefaultStartTime(new \DateTime($content->default_start_time));
+        $shift->setDefaultEndTime(new \DateTime($content->default_end_time));
+        $shift->setBreadDuration($content->bread_duration);
+        $shift->setTeamFk($team);
+        $shift->setWholeday($content->wholeday);
+
+        dump($shift);
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize(["result" => "success"], 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
 }
 

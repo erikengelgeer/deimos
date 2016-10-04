@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Task
  *
- * @ORM\Table(name="task")
+ * @ORM\Table(name="tasks")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskRepository")
  */
 class Task
@@ -50,10 +50,10 @@ class Task
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_fk", referencedColumnName="pk")
+     * @ORM\ManyToOne(targetEntity="Shift")
+     * @ORM\JoinColumn(name="shift_fk", referencedColumnName="pk")
      */
-    private $userFk;
+    private $shiftFk;
 
     /**
      * @ORM\ManyToOne(targetEntity="TaskType")
@@ -70,6 +70,8 @@ class Task
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set date
@@ -165,5 +167,53 @@ class Task
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set shiftFk
+     *
+     * @param \AppBundle\Entity\Shift $shiftFk
+     *
+     * @return Task
+     */
+    public function setShiftFk(\AppBundle\Entity\Shift $shiftFk = null)
+    {
+        $this->shiftFk = $shiftFk;
+
+        return $this;
+    }
+
+    /**
+     * Get shiftFk
+     *
+     * @return \AppBundle\Entity\Shift
+     */
+    public function getShiftFk()
+    {
+        return $this->shiftFk;
+    }
+
+    /**
+     * Set taskTypeFk
+     *
+     * @param \AppBundle\Entity\TaskType $taskTypeFk
+     *
+     * @return Task
+     */
+    public function setTaskTypeFk(\AppBundle\Entity\TaskType $taskTypeFk = null)
+    {
+        $this->taskTypeFk = $taskTypeFk;
+
+        return $this;
+    }
+
+    /**
+     * Get taskTypeFk
+     *
+     * @return \AppBundle\Entity\TaskType
+     */
+    public function getTaskTypeFk()
+    {
+        return $this->taskTypeFk;
     }
 }

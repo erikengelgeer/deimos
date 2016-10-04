@@ -30,16 +30,16 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputRole">Role:</label>
-                    <select class="form-control" name="role" id="inputRole">
-                        <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.selectedRole(vm.editUser.role_fk.id, role.id)">{{role.role}}</option>
+                    <select class="form-control" name="role" id="inputRole" ng-model="vm.editUser.role_fk.id">
+                        <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.editUser.role_fk.id">{{role.role}}</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputTeam">Team:</label>
-                    <select name="Team" class="form-control" id="inputTeam">
-                        <option ng-repeat="team in vm.teams" value="{{team.id}}" ng-selected="vm.selectedTeam(vm.editUser.team_fk.id, team.id)">{{team.location}}</option>
+                    <select name="Team" class="form-control" id="inputTeam" ng-model="vm.editUser.team_fk.id">
+                        <option ng-repeat="team in vm.teams" ng-selected="vm.editUser.team_fk.id" value="{{team.id}}">{{team.location}}</option>
                     </select>
                 </div>
             </div>
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col-md-12">
                 <button ui-sref="manage-users" class="btn btn-danger pull-left">Cancel</button>
-                <button class="btn btn-primary pull-right">Create</button>
+                <button class="btn btn-primary pull-right" ng-click="vm.updateUser(vm.editUser.id)">Edit</button>
             </div>
         </div>
     </div>

@@ -8,8 +8,7 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
     var userId = $stateParams.userId;
     var promises = [];
 
-    vm.selectedRole = selectedRole;
-    vm.selectedTeam = selectedTeam;
+    vm.updateUser = updateUser;
 
     vm.users = [];
     vm.roles = [];
@@ -33,11 +32,9 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
         $rootScope.loading = false;
     });
 
-    function selectedTeam(userTeamId, teamId) {
-        return userTeamId == teamId;
-    }
-
-    function selectedRole(userRoleId, roleId) {
-        return userRoleId == roleId;
+    function updateUser() {
+        Api.users.update(vm.editUser).then(function (response) {
+            console.log(response.data);
+        })
     }
 }
