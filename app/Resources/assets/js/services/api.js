@@ -37,8 +37,13 @@ angular.module('app').factory('Api', Api);
 
 function Api($http) {
     return {
+        timezones: {
+            find: function () {
+                return $http.get('api/timezones');
+            }
+        },
         users: {
-            find: function() {
+            find: function () {
                 return $http.get('api/users');
             },
             findOne: function (id) {
@@ -52,7 +57,7 @@ function Api($http) {
             }
         },
         shiftType: {
-            find: function() {
+            find: function () {
                 return $http.get('api/shift-types');
             },
             findOne: function (id) {
@@ -71,7 +76,13 @@ function Api($http) {
                 return $http.get('api/teams/' + id);
             },
             update: function (data) {
-                return $http.put('api/teams/', data);
+                return $http.put('api/teams/' + data.id, data);
+            },
+            add: function (data) {
+                return $http.post('api/teams/', data);
+            },
+            disable: function (id) {
+                return $http.post('api/teams/' + id);
             }
         },
         roles: {

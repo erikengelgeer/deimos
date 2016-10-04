@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
     "angular-ui-router": "^0.2.18",
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",

@@ -1,5 +1,6 @@
 var dependencies = [
     "ui.router",
+    "ngSanitize"
 ];
 
 function AppRun($rootScope, $state) {

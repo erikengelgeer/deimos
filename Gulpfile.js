@@ -20,6 +20,7 @@ paths.libs = [
     "node_modules/jquery/dist/jquery.min.js",
     "node_modules/angular/angular.min.js",
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
+    "node_modules/angular-sanitize/angular-sanitize.min.js",
     "node_modules/bootstrap/dist/js/bootstrap.min.js",
     "node_modules/lodash/lodash.min.js",
     "node_modules/moment/min/moment.min.js",

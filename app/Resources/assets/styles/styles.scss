@@ -1,6 +1,5 @@
 @import "variables/colors";
 @import "mixins/buttons";
-
 @import "components/buttons";
 @import "components/segments";
 @import "components/nav";
@@ -15,7 +14,6 @@
 @import "components/tabs";
 @import "components/profile";
 @import "components/datetimepicker";
-
 @import "pages/plan-users";
 @import "pages/plan-tasks";
 @import "pages/manage-shifts";
@@ -23,12 +21,21 @@
 @import "pages/manage-teams";
 @import "pages/manage-users";
 
-
-
-
 body {
     padding-top: 64px;
     background-color: $body-color;
     font-family: 'Lato', sans-serif;
+}
+
+.form-requirement {
+    display: inline-block;
+    margin: 10px 0;
+    color: rgba(0, 0, 0, .7);
+    font-size: 80%;
+    font-style: italic;
+    
+    i {
+        margin-right: 5px;
+    }
 }
 

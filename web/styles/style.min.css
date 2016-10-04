@@ -929,7 +929,7 @@
 .manage-teams {
   margin-top: 40px; }
   .manage-teams table th:last-child {
-    width: 95px; }
+    width: 100px; }
 
 .manage-users {
   margin-top: 40px; }
@@ -940,3 +940,12 @@ body {
   padding-top: 64px;
   background-color: #f3f3f3;
   font-family: 'Lato', sans-serif; }
+
+.form-requirement {
+  display: inline-block;
+  margin: 10px 0;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 80%;
+  font-style: italic; }
+  .form-requirement i {
+    margin-right: 5px; }
