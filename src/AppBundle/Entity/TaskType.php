@@ -32,19 +32,9 @@ class TaskType
     private $description;
 
     /**
-     * @ORM\Column(name="record_created_at", type="datetime")
+     * @ORM\Column(name="enabled", type="boolean")
      */
-    private $recordCreatedAt;
-
-    /**
-     * @ORM\Column(name="record_created_by", type="integer")
-     */
-    private $recordCreatedBy;
-
-    /**
-     * @ORM\Column(name="status", type="string")
-     */
-    private $status;
+    private $enabled = true;
 
 
     /**
@@ -105,76 +95,29 @@ class TaskType
     {
         return $this->description;
     }
+    
 
     /**
-     * Set recordCreatedAt
+     * Set enabled
      *
-     * @param \DateTime $recordCreatedAt
+     * @param boolean $enabled
      *
      * @return TaskType
      */
-    public function setRecordCreatedAt($recordCreatedAt)
+    public function setEnabled($enabled)
     {
-        $this->recordCreatedAt = $recordCreatedAt;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get recordCreatedAt
+     * Get enabled
      *
-     * @return \DateTime
+     * @return boolean
      */
-    public function getRecordCreatedAt()
+    public function getEnabled()
     {
-        return $this->recordCreatedAt;
-    }
-
-    /**
-     * Set recordCreatedBy
-     *
-     * @param $recordCreatedBy
-     *
-     * @return TaskType
-     */
-    public function setRecordCreatedBy($recordCreatedBy)
-    {
-        $this->recordCreatedBy = $recordCreatedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get recordCreatedBy
-     *
-     * @return integer
-     */
-    public function getRecordCreatedBy()
-    {
-        return $this->recordCreatedBy;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return TaskType
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
+        return $this->enabled;
     }
 }

@@ -20,16 +20,10 @@ class LoadTaskTypeData extends AbstractFixture implements OrderedFixtureInterfac
         $taskType = new TaskType();
         $taskType->setShort('create');
         $taskType->setDescription('create');
-        $taskType->setRecordCreatedAt(new \DateTime());
-        $taskType->setRecordCreatedBy(1);
-        $taskType->setStatus('active');
 
         $taskType1 = new TaskType();
         $taskType1->setShort('Meeting');
         $taskType1->setDescription('Meeting Deimos');
-        $taskType1->setRecordCreatedAt(new \DateTime());
-        $taskType1->setRecordCreatedBy(1);
-        $taskType1->setStatus('active');
 
         $manager->persist($taskType);
         $manager->persist($taskType1);

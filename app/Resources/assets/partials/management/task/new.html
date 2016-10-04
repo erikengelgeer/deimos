@@ -4,27 +4,34 @@
             <div class="col-md-12">
                 <h4>Add Task</h4>
                 <hr>
+
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
             </div>
 
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group ">
-                    <label for="inputDescription">Description:</label>
-                    <input type="text" placeholder="Queue Manager" class="form-control" id="inputDescription" >
+                <div class="form-group">
+                    <label for="short">Short:</label>
+                    <input type="text" placeholder="QM" class="form-control" id="short" ng-model="vm.taskType.short">
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputShort">Short:</label>
-                    <input type="text" placeholder="QM" class="form-control" id="inputShort" >
+                <div class="form-group ">
+                    <label for="description">Description:</label>
+                    <input type="text" placeholder="Queue Manager" class="form-control" id="description"
+                           ng-model="vm.taskType.description">
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
+                <hr>
                 <button ui-sref="manage-tasks" class="btn btn-danger pull-left">Cancel</button>
-                <button class="btn btn-primary pull-right">Create</button>
+                <button class="btn btn-primary pull-right" ng-click="vm.add()">Create</button>
             </div>
         </div>
     </div>

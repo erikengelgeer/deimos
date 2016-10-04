@@ -98,7 +98,13 @@ function Api($http) {
                 return $http.get('api/task-types/' + id)
             },
             update: function (data) {
-                return $http.put('api/shift-types/update', data)
+                return $http.put('api/task-types/update', data)
+            },
+            add: function (data) {
+                return $http.post('api/task-types/', data);
+            },
+            disable: function (id) {
+                return $http.post('api/task-types/' + id);
             }
         },
         shifts: {
