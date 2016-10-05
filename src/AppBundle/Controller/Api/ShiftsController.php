@@ -158,12 +158,12 @@ class ShiftsController extends Controller
 //    }
 
     /**
-     * @Route("/")
+     * @Route("/{team}")
      * @Method("GET")
      *
      * Get all the shifts
      */
-    public function findAllAction()
+    public function findAllAction($team)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:Shift");
@@ -174,7 +174,7 @@ class ShiftsController extends Controller
         $timestamp2 = strtotime('sunday this week +3 weeks');
         $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
-        $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, 44);
+        $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, $team);
 
         $processedData = [];
         $tasks = [];

@@ -52,13 +52,13 @@ function Api($http) {
         getShift: function (id) {
             return $http.get('api/shift.' + id);
         },
-        getAllShifts: function () {
-          return $http.get('api/shifts');
+        getAllShifts: function (team) {
+          return $http.get('api/shifts/' + team);
         },
         
         //Teams
         getTeams: function () {
-          return $http.get('api/teams');  
+          return $http.get('api/teams/');
         },
 
 

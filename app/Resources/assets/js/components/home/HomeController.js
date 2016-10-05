@@ -8,8 +8,10 @@ function HomeController($rootScope, Api, $q) {
     vm.planningUsers = [];
     vm.shifts = [];
     vm.selectedTeam = null;
-
     vm.getPlanningContent = getPlanningContent;
+
+    vm.selectTeam = selectTeam;
+
 
     console.log($rootScope.loading);
     $rootScope.loading = false;
@@ -18,25 +20,29 @@ function HomeController($rootScope, Api, $q) {
 
     Api.getTeams().then(function (response){
         vm.teams = response.data;
+        console.log(vm.teams);
 
         vm.selectedTeam = vm.teams[0];
         loadShiftsByTeam(vm.selectedTeam.id);
     });
 
 
-
-    function loadShiftsByTeam($teamId) {
-        console.log($teamId);
-        Api.getAllShifts().then(function (response) {
+    function selectTeam() {
+        console.log(vm.selectedTeam.id)
+    }
+    function loadShiftsByTeam(teamId) {
+        // console.log(teamId);
+        Api.getAllShifts(teamId).then(function (response) {
             vm.shifts = response.data;
 
-            buildSchedule();
+            buildSchedule(teamId);
+
         });
     }
 
-    function buildSchedule() {
+    function buildSchedule(teamId) {
         buildScheduleStructure();
-        buildScheduleContent();
+        buildScheduleContent(teamId);
 
         //    load javascript
     }
@@ -61,8 +67,8 @@ function HomeController($rootScope, Api, $q) {
 
     }
 
-    function buildScheduleContent() {
-        Api.getUsersByTeam(44).then(function (response) {
+    function buildScheduleContent(teamId) {
+        Api.getUsersByTeam(teamId).then(function (response) {
             vm.users = response.data;
 
             var user = [];
@@ -127,4 +133,5 @@ function HomeController($rootScope, Api, $q) {
         return data;
     }
 
+    
 }

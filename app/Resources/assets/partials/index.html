@@ -1,8 +1,5 @@
-<!--<form action="">-->
-    <!--<label ng-repeat="team in vm.teams">-->
-        <!--<input type="radio" ng-value="{{ team.id }}" >{{ team.location }}-->
-    <!--</label>-->
-<!--</form>-->
+<select class="form-control" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.selectTeam()">
+</select>
 
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
@@ -29,10 +26,10 @@
                     <div class="shift" ng-if="key > 0">
                         <i class="fa fa-circle {{ today.shift.shiftTypeShort }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
 
-                        <div class="actions">
-                            <i class="fa fa-pencil"></i>
-                            <i class="fa fa-question"></i>
-                        </div>
+                        <!--<div class="actions">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<i class="fa fa-question"></i>-->
+                        <!--</div>-->
                     </div>
 
                     <div class="task" ng-if="key > 0 && today.tasks[0].length != 0" ng-repeat="task in today.tasks"><span>{{ task.taskStartTime | date: 'H:mm' }} - {{ task.taskEndTime | date: 'H:mm' }}</span> {{ task.taskDescription }}</div>
