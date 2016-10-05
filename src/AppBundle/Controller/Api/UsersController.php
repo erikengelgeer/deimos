@@ -147,18 +147,19 @@ class UsersController extends Controller
      */
     public function resetPasswordAction(Request $request)
     {
-        $data = $request->getContent();
-        $user = $this->getUser();
+        $data = json_decode($request->getContent());
 
-        dump($user);
+        $manager = $this->get('fos_user.user_manager');
+        $user = $manager->findUserByConfirmationToken($data->confirmation_token);
 
-//        $user->setConfirmationToken(null);
-//        $user->setCredentialsExpired(false);
+        $user->setConfirmationToken(null);
+        $user->setCredentialsExpired(false);
+        $user->setPlainPassword($data->newPassword);
 
-//        $user->setPlainPassword($data->password);
-//        $this->get('fos_user.user_manager')->updateUser($user);
+        $manager->updateUser($user);
 
-        return $data;
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
@@ -226,9 +227,9 @@ class UsersController extends Controller
         $user = $manager->findUserByConfirmationToken($token);
 
         if ($user == null) {
-            $data = $this->get('serializer')->serialize(array("success" => false), 'json');
+            $data = $this->get('serializer')->serialize(null, 'json');
         } else {
-            $data = $this->get('serializer')->serialize(array("success" => true), 'json');
+            $data = $this->get('serializer')->serialize($user, 'json');
         }
 
         return new Response($data, 200, ['Content-Type' => 'application/json']);

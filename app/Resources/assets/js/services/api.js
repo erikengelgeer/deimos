@@ -88,8 +88,8 @@ function Api($http) {
             findByToken: function (token) {
                 return $http.post('api/users/token', token)
             },
-            passwordReset: function (password) {
-                return $http.post('api/users/reset-password', password);
+            passwordReset: function (data) {
+                return $http.post('api/users/reset-password', data);
             }
         }
     }

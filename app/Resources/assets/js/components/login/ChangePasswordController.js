@@ -1,48 +1,27 @@
 angular.module('app').controller('ChangePasswordController', ChangePasswordController);
 
-function ChangePasswordController($rootScope, $stateParams, Api) {
+function ChangePasswordController($rootScope, $stateParams, Api, $state, $localStorage) {
     var vm = this;
 
     vm.password = '';
     vm.confirmationPassword = '';
-    vm.validChangeRequest = true;
     vm.message = {};
+    vm.user = null;
 
     vm.changePassword = changePassword;
 
     Api.users.findByToken($stateParams.token).then(function (response) {
-        console.log(response.data.success);
-
-        if(!response.data.success) {
-            vm.validChangeRequest = false;
-            console.log('No valid token, contact the administrator.');
-            vm.message = {
-                title: "Unvalid reset token",
-                content: "No valid token found, request a valid password request.",
-                type: "alert-danger"
-            };
+        if (response.data == null) {
+            $state.go('login');
+        } else {
+            vm.user = response.data;
         }
+    }).finally(function () {
+        $rootScope.loading = false;
     });
-
-    $rootScope.loading = false;
-
 
 
     function changePassword() {
-        // //TODO: check if not empty
-        // if (vm.password.trim() != '' && vm.passwordConfirmation.trim() != '') {
-        //     if (vm.password.trim() != vm.passwordConfirmation.trim()) {
-        //         console.log("Passwords do not match, try again.");
-        //         return;
-        //     }
-        //
-        //     console.log("Success, password has been changed.");
-        //     // TODO: api call to change person's password.
-        //
-        // } else {
-        //     console.log('empty');
-        // }
-
         if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
 
             // error if empty
@@ -53,22 +32,32 @@ function ChangePasswordController($rootScope, $stateParams, Api) {
 
                 vm.dataLoading = true;
 
+                vm.user.newPassword = vm.password;
 
-                Api.users.passwordReset(vm.password).then(function (response) {
-                    // $rootScope.user = response.data;
+                console.log(vm.user);
+                Api.users.passwordReset(vm.user).then(function (response) {
 
-                    vm.message = {
-                        title: 'Successfully reset password',
-                        content: 'Your password has been reset.',
-                        type: 'alert-success'
-                    };
+                    Api.login.check(vm.user.username, vm.user.newPassword).then(function (response) {
+                        var token = response.data.token;
 
-                    vm.password = '';
-                    vm.confirmationPassword = '';
-                    vm.dataLoading = false;
+                        return Api.users.findLoggedIn().then(function (response) {
+                            if (response.data.locked) {
+                                vm.dataLoading = false;
+                                vm.message = {
+                                    title: "Locked",
+                                    content: "Your account is locked. Please contact the admin.",
+                                    type: "alert-danger"
+                                };
 
-                    measurePassword();
-
+                                $http.defaults.headers.common['Authorization'] = null;
+                            }
+                            else {
+                                $localStorage.token = token;
+                                $rootScope.user = response.data;
+                                $state.go('index');
+                            }
+                        });
+                    })
                 });
 
             } else {

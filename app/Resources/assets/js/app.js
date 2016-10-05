@@ -27,10 +27,11 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
     }
 
     $rootScope.$on('$stateChangeStart', function (e, toState) {
-        if (!$localStorage.token && !$localStorage.loggedInUser && toState.name != 'login' && toState.name != 'reset-password' && toState.name != 'change-password') {
+        console.log('state changed');
+        if (!$localStorage.token && toState.name != 'login' && toState.name != 'reset-password' && toState.name != 'change-password') {
             e.preventDefault();
             $state.go('login');
-        } else if ($localStorage.token && $localStorage.loggedInUser && toState.name == 'login' && toState.name == 'reset-password' && toState.name == 'change-password') {
+        } else if ($localStorage.token && toState.name == 'login' && toState.name == 'reset-password' && toState.name == 'change-password') {
             e.preventDefault();
             $state.go('index');
         }
