@@ -57,6 +57,9 @@ function Api($http) {
             },
             add: function (data) {
                 return $http.post('api/users/', data);
+            },
+            disable: function (id) {
+                return $http.post('api/users/' + id);
             }
         },
         shiftType: {
@@ -73,7 +76,7 @@ function Api($http) {
                 return $http.post('api/shift-types/', data);
             },
             disable: function (id) {
-                return $http.post('api/shift-types/' +id);
+                return $http.post('api/shift-types/' + id);
             }
         },
         teams: {

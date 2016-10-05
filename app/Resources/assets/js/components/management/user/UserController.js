@@ -7,10 +7,14 @@ function UserController($rootScope, Api, $q) {
     var vm = this;
     var promises = [];
 
-    vm.updateRole = updateRole;
-
     vm.users = [];
     vm.roles = [];
+    vm.selectedUser = null;
+
+    vm.updateRole = updateRole;
+    vm.showDisableModal = showDisableModal;
+    vm.disable = disable;
+
 
     promises.push(Api.users.find().then(function (response) {
         vm.users = response.data;
@@ -44,6 +48,40 @@ function UserController($rootScope, Api, $q) {
         }).finally(function () {
             user.dataLoading = false;
         })
+    }
 
+    function showDisableModal(user) {
+        console.log(user);
+        vm.selectedUser = user;
+        $('#disable-user-modal').modal('show');
+    }
+
+    function disable(user) {
+        $('#disable-user-modal').modal('hide');
+        user.disableLoading = true;
+
+        Api.users.disable(user.id).then(function () {
+            vm.message = {
+                'title': 'Successful disabled',
+                'content': '<em>' + user.username + '</em> is successful disabled.',
+                'icon': 'fa-check',
+                'type': 'alert-success'
+            }
+
+            _.remove(vm.users, function (item) {
+                return item.id == user.id;
+            })
+
+        }, function errorCallback(response) {
+            vm.message = {
+                'title': response.status + ', ' + response.statusText + '.',
+                'content': 'Please notify the admin regarding this error.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        }).finally(function () {
+            user.disableLoading = false;
+            vm.selectedUser = null;
+        });
     }
 }

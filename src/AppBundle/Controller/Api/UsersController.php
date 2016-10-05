@@ -30,7 +30,7 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findAll();
+        $users = $repository->findBy(array("enabled" => true));
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
@@ -212,6 +212,22 @@ class UsersController extends Controller
     public function requestPasswordAction()
     {
         $data = $this->get('serializer')->serialize([], 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/{id}")
+     * @Method("POST")
+     */
+    public function disableAction(User $user) {
+        $em = $this->getDoctrine()->getManager();
+
+        $user->setEnabled(false);
+        dump($user);
+
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize(["result" => true], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 }
