@@ -29,7 +29,7 @@ function NewShiftController($rootScope, Api) {
     function add() {
         vm.message = null;
         console.log(vm.shift);
-        if(vm.shift.team == null || vm.shift.description == null || vm.shift.short == null || vm.shift.wholeday == null || vm.shift.default_start_time == null || vm.shift.default_start_time == null) {
+        if(vm.shift.team == null || vm.shift.description == null || vm.shift.short == null) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',

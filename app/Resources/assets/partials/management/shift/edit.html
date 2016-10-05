@@ -14,42 +14,40 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                    <label for="inputTeam">Team:</label>
-                    <select name="inputTeam" class="form-control" id="inputTeam" ng-model="vm.shift.team_fk" ng-options="team.location for team in vm.team">
-                        <option value="" disabled>Select a team</option>
-                    </select>
-                </div>
-            <div class="col-md-4">
-                <label for="inputShort">Short:</label>
-                <input type="text" ng-model="vm.shift.short" class="form-control" id="inputShort" >
-            </div>
-            <div class="col-md-4">
                 <div class="form-group ">
-                    <label for="inputDescription">Description:</label>
-                    <input type="text" ng-model="vm.shift.description" class="form-control" id="inputDescription" >
+                    <label for="inputShort">Short:</label>
+                    <input type="text" placeholder="QM" class="form-control" id="inputShort" ng-model="vm.shift.short">
                 </div>
             </div>
-            <div class="col-md-2 col-md-offset-2">
+
+            <div class="col-md-8">
+                <label for="inputDescription">Description:</label>
+                <input type="text" placeholder="Queue Manager" class="form-control" id="inputDescription"
+                       ng-model="vm.shift.description">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 <label for="inputStartTime">Start Time:</label>
-                <input type="time" ng-model="vm.shift.default_start_time " class="form-control" id="inputStartTime" step="900">
+                <input type="time" class="form-control" id="inputStartTime" ng-model="vm.shift.default_start_time" step="900">
             </div>
-            <div class="col-md-2 col-md-offset-1">
+            <div class="col-md-4">
                 <label for="inputEndTime">End Time:</label>
-                <input type="time" ng-model="vm.shift.default_end_time  " class="form-control" id="inputEndTime" step="900">
+                <input type="time" class="form-control" id="inputEndTime" ng-model="vm.shift.default_end_time" step="900">
             </div>
-            <div class="col-md-2 col-md-offset-1">
-                <label>
-                    Whole day:<br>
-                    <input type="radio" name="radio" ng-value="true" ng-model="vm.shift.wholeday">Yes
-                    <input type="radio" name="radio" ng-value="false" ng-model="vm.shift.wholeday">No
-                </label>
+            <div class="col-md-4">
+                <label for="inputTeam">Team:</label>
+                <select name="team" class="form-control" id="inputTeam" ng-model="vm.shift.team_fk.id" ng-options="team.id as team.location for team in vm.teams">
+                    <option value="" ng-disabled="!!vm.shift.team_fk">Select a team</option>
+                </select>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <hr>
-                <button ui-sref="manage-shifts" class="btn btn-danger pull-left">Cancel</button>
-                <button class="btn btn-primary pull-right" ng-click="vm.update()">Save</button>
+                <a ui-sref="manage-shifts" class="btn btn-danger pull-left">Cancel</a>
+                <a class="btn btn-primary pull-right" ng-click="vm.update()">Save</a>
             </div>
         </div>
     </div>

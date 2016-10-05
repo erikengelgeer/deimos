@@ -46,7 +46,7 @@ class ShiftTypesController extends Controller
      */
     public function findOneByAction(ShiftType $shiftType)
     {
-        $data= $this->get('serializer')->serialize($shiftType, 'json');
+        $data = $this->get('serializer')->serialize($shiftType, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
@@ -58,32 +58,32 @@ class ShiftTypesController extends Controller
      *
      * Adds a new shiftType
      */
-    public function addAction(Request $request) {
-        $data = json_decode($request->getContent());
+    public function addAction(Request $request)
+    {
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
         $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $data->team->id));
         dump($team);
-        $shift = new ShiftType();
-        $shift->setDescription($data->description);
-        $shift->setShort($data->short);
-        $shift->setDefaultStartTime(new \DateTime($data->default_start_time));
-        $shift->setDefaultEndTime(new \DateTime($data->default_end_time));
-        $shift->setWholeday($data->wholeday);
-        $shift->setShiftDuration('');
-        $shift->setWorkhoursDurationH('');
-        $shift->setBreadDuration('');
-        $shift->setRecordCreatedAt(new \DateTime());
-        $shift->setRecordCreatedBy('');
-        $shift->setStatus('');
-        $shift->setTeamFk($team);
+        $shiftType = new ShiftType();
+        $shiftType->setDescription($data->description);
+        $shiftType->setShort($data->short);
+        $shiftType->setShiftDuration('');
+        $shiftType->setWorkhoursDurationH('');
+        $shiftType->setBreadDuration('');
+        $shiftType->setTeamFk($team);
 
-        if(count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shift->getShort(), "teamFk" => $team->getId()))) > 0) {
+        if (isset($content->default_start_time) && isset($content->default_end_time)) {
+            $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
+            $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
+        }
+
+        if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');
             return new Response($response, 200, ['Content-type' => 'application/json']);
         }
 
-        $em->persist($shift);
+        $em->persist($shiftType);
         $em->flush();
 
         $response = $this->get('serializer')->serialize(array("result" => true), 'json');
@@ -94,7 +94,8 @@ class ShiftTypesController extends Controller
      * @Route("/{id}")
      * @Method("PUT")
      */
-    public function updateAction(ShiftType $shiftType, Request $request) {
+    public function updateAction(ShiftType $shiftType, Request $request)
+    {
         $content = json_decode($request->getContent());
 
         $em = $this->getDoctrine()->getManager();
@@ -104,13 +105,15 @@ class ShiftTypesController extends Controller
 
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
-        $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
-        $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
         $shiftType->setBreadDuration($content->bread_duration);
         $shiftType->setTeamFk($team);
-        $shiftType->setWholeday($content->wholeday);
-dump($shiftType->getShort());
-        if(count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
+
+        if(isset($content->default_start_time) && isset($content->default_end_time)) {
+            $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
+            $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
+        }
+
+        if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');
             return new Response($response, 200, ['Content-type' => 'application/json']);
         }

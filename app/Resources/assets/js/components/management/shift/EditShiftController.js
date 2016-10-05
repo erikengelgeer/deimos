@@ -25,7 +25,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
 
     // Fetch the team with the given team id.
     promises.push(Api.teams.find().then(function (response) {
-        vm.team = response.data;
+        vm.teams = response.data;
     }));
 
     $q.all(promises).catch(function (response) {
@@ -41,7 +41,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
 
     function update() {
         console.log(vm.shift);
-        if(vm.shift.team_fk == null || vm.shift.description == null || vm.shift.short == null || vm.shift.wholeday == null || vm.shift.default_start_time == null || vm.shift.default_start_time == null) {
+        if(vm.shift.team_fk == null || vm.shift.description == null || vm.shift.short == null) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
