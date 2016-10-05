@@ -64,9 +64,14 @@ function Api($http) {
                 return $http.get('api/shift-types/' + id);
             },
             update: function (data) {
-                return $http.put('api/shift-types/update', data)
+                return $http.put('api/shift-types/' + data.id, data)
+            },
+            add: function (data) {
+                return $http.post('api/shift-types/', data);
+            },
+            disable: function (id) {
+                return $http.post('api/shift-types/' +id);
             }
-
         },
         teams: {
             find: function () {

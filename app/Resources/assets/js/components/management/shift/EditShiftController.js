@@ -5,33 +5,93 @@ angular.module('app').controller('EditShiftController', EditShiftController);
 
 function EditShiftController($rootScope, Api, $stateParams, $q) {
     var vm = this;
-    var shiftTypeId = $stateParams.shiftTypeId;
+    var shiftId = $stateParams.shiftTypeId;
+
+    vm.teams = null;
+    vm.shift = null;
+
+    vm.update = update;
+
+    // Make a promise
     var promises = [];
 
-    vm.teams = [];
-
-    vm.updateShift = updateShift;
-
-    promises.push(Api.shiftType.findOne(shiftTypeId).then(function (response) {
-        vm.editShiftTypes = response.data;
-        vm.editShiftTypes.default_end_time = new Date(vm.editShiftTypes.default_end_time);
-        vm.editShiftTypes.default_start_time = new Date(vm.editShiftTypes.default_start_time);
+    // Fetch the team with the given team id.
+    promises.push(Api.shiftType.findOne(shiftId).then(function (response) {
+        vm.shift = response.data;
+        vm.shift.default_end_time = new Date(vm.shift.default_end_time);
+        vm.shift.default_start_time = new Date(vm.shift.default_start_time);
+        console.log(vm.shift.team_fk)
     }));
 
+    // Fetch the team with the given team id.
     promises.push(Api.teams.find().then(function (response) {
-        vm.teams = response.data;
+        vm.team = response.data;
     }));
 
-    $q.all(promises).then(function () {
-        console.log("done", vm.teams, vm.editShiftTypes);
+    $q.all(promises).catch(function (response) {
+        vm.message = {
+            'title': response.status + ', ' + response.statusText + '.',
+            'content': 'Please notify the admin regarding this error.',
+            'icon': 'fa-exclamation',
+            'type': 'alert-danger'
+        }
     }).finally(function () {
         $rootScope.loading = false;
     });
 
-    function updateShift() {
-        console.log(vm.editShiftTypes);
-        Api.shiftType.update(vm.editShiftTypes).then(function (response) {
-            console.log(response.data);
-        })
+    function update() {
+        console.log(vm.shift);
+        if(vm.shift.team_fk == null || vm.shift.description == null || vm.shift.short == null || vm.shift.wholeday == null || vm.shift.default_start_time == null || vm.shift.default_start_time == null) {
+            // if fields is empty, show error message.
+            vm.message = {
+                'title': 'Fields may not be blank',
+                'content': 'Please fill in all the required fields.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        } else if (vm.shift.short.length > 3) {
+            // if short is larger than 3, show error message.
+            vm.message = {
+                'title': 'Short is to long',
+                'content': 'Short may not be longer than 3 characters.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        } else {
+            // Enables showing a loading indicator.
+            vm.dataLoading = true;
+            // Send a request to the insert API to add a shiftType.
+            Api.shiftType.update(vm.shift).then(function (response) {
+                console.log(response.data);
+                var result = response.data.result;
+
+                if (!result) {
+                    // If name is not unique, show error message
+                    vm.message = {
+                        'title': 'Name already taken',
+                        'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                } else {
+                    // If successful, show success message.
+                    vm.message = {
+                        'title': 'Successful updated',
+                        'content': '<em>' + vm.shift.short + '</em> is successful updated. return to the <a href="#/manage/shifts">overview</a>.',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    }
+                }
+            }, function errorCallback(response) {
+                vm.message = {
+                    'title': response.status + ', ' + response.statusText + '.',
+                    'content': 'Please notify the admin regarding this error.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+            }).finally(function () {
+                vm.dataLoading = false;
+            });
+        }
     }
 }

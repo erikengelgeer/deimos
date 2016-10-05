@@ -85,6 +85,11 @@ class ShiftType
     private $teamFk;
 
     /**
+     * @ORM\Column(name="enabled", type="boolean")
+     */
+    private $enabled = true;
+
+    /**
      * Get id
      *
      * @return int
@@ -380,5 +385,29 @@ class ShiftType
     public function getTeamFk()
     {
         return $this->teamFk;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return ShiftType
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
     }
 }
