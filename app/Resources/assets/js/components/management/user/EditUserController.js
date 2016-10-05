@@ -1,6 +1,3 @@
-/**
- * Created by EAETV on 13/09/2016.
- */
 angular.module('app').controller('EditUserController', EditUserController);
 
 function EditUserController($rootScope, Api, $stateParams, $q) {
@@ -8,14 +5,15 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
     var userId = $stateParams.userId;
     var promises = [];
 
-    vm.updateUser = updateUser;
+    vm.update = update;
 
-    vm.users = [];
-    vm.roles = [];
-    vm.teams = [];
+    vm.user = null;
+    vm.roles = null;
+    vm.teams = null;
+    vm.dataLoading = false;
 
     promises.push(Api.users.findOne(userId).then(function (response) {
-        vm.editUser = response.data;
+        vm.user = response.data;
     }));
 
     promises.push(Api.roles.find().then(function (response) {
@@ -26,15 +24,69 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
         vm.teams = response.data;
     }));
 
-    $q.all(promises).then(function () {
-        console.log("done", vm.users, vm.roles, vm.teams);
+    $q.all(promises).catch(function (response) {
+        vm.message = {
+            'title': response.status + ', ' + response.statusText + '.',
+            'content': 'Please notify the admin regarding this error.',
+            'icon': 'fa-exclamation',
+            'type': 'alert-danger'
+        }
     }).finally(function () {
         $rootScope.loading = false;
     });
 
-    function updateUser() {
-        Api.users.update(vm.editUser).then(function (response) {
-            console.log(response.data);
-        })
+    function update() {
+        console.log('triggered');
+        vm.message = null;
+
+        if (vm.user.username == null || vm.user.real_name == null || vm.user.email == null || vm.user.role_fk == null || vm.user.team_fk == null) {
+            // if fields is empty, show error message.
+            vm.message = {
+                'title': 'Fields may not be blank',
+                'content': 'Please fill in all the required fields.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        } else {
+            // Enables showing a loading indicator.
+            vm.dataLoading = true;
+
+            var newRoleId = vm.user.role_fk.id;
+            var newTeamId = vm.user.team_fk.id;
+
+            vm.user.newRole = newRoleId;
+            vm.user.newTeam = newTeamId;
+
+            Api.users.update(vm.user).then(function (response) {
+                var result = response.data.result;
+
+                if (!result) {
+                    // If username is not unique, show error message
+                    vm.message = {
+                        'title': 'username or email is already taken',
+                        'content': '<em>' + vm.user.username + '</em> and/or ' + vm.user.email + ' is already present in our system, please choose an another username and/or email.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                } else {
+                    // If successful, show success message.
+                    vm.message = {
+                        'title': 'Successful updated',
+                        'content': '<em>' + vm.user.username + '</em> is successful updated. return to the <a href="#/manage/users">overview</a>.',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    }
+                }
+            }, function errorCallback(response) {
+                vm.message = {
+                    'title': response.status + ', ' + response.statusText + '.',
+                    'content': 'Please notify the admin regarding this error.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+            }).finally(function () {
+                vm.dataLoading = false;
+            });
+        }
     }
 }

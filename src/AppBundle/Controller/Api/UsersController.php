@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\User;
 //use AppBundle\Entity\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -65,9 +66,40 @@ class UsersController extends Controller
      *
      * Adds a new user
      */
-    public function addUserAction()
+    public function addUserAction(Request $request)
     {
-        $data = $this->get('serializer')->serialize([], 'json');
+        $data = json_decode($request->getContent());
+        $em = $this->getDoctrine()->getManager();
+        dump($data);
+
+        $user = new User();
+        $user->setUsername($data->username);
+        $user->setRealName($data->real_name);
+        $user->setEmail($data->email);
+        $user->setEnabled(true);
+
+//        Logic for password? maybe use token?
+        $user->setPlainPassword('test');
+
+        $countByUsername = count($em->getRepository('AppBundle:User')->findBy(array("username" => $user->getUsername())));
+        $countByEmail = count($em->getRepository('AppBundle:User')->findBy(array("email" => $user->getEmail())));
+
+        if ($countByUsername > 0 || $countByEmail > 0) {
+            $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+            return new Response($data, 200, ['Content-type' => 'application/json']);
+        }
+
+        $team = $em->getRepository('AppBundle:Team')->find($data->team->id);
+        $role = $em->getRepository('AppBundle:Role')->find($data->role->id);
+
+        $user->setTeamFk($team);
+        $user->setRoleFk($role);
+
+        $em->persist($user);
+        $em->flush();
+        dump($user);
+
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
@@ -77,44 +109,71 @@ class UsersController extends Controller
      *
      * Updates a users info
      */
-    public function updateAction(Request $request) {
-        $content = json_decode($request->getContent());
+    public function updateAction(Request $request)
+    {
+        $data = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($content->id);
-        $role = $em->getRepository('AppBundle:Role')->findOneBy(array('id' => $content->role_fk->id));
-        $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team_fk->id));
+        $user = $em->getRepository('AppBundle:User')->find($data->id);
 
-        dump($role);
-        $user->setRealName($content->real_name);
-        $user->setUsername($content->username);
-        $user->setEmail($content->email);
-        $user->setRoleFk($role);
-        $user->setTeamFk($team);
+        $user->setUsername($data->username);
+        $user->setRealName($data->real_name);
+        $user->setEmail($data->email);
 
-        $this->get('fos_user.user_manager')->updateUser($user, false);
+        if ($data->username != $user->getUsername()) {
+            $countByUsername = count($em->getRepository('AppBundle:User')->findBy(array("username" => $user->getUsername())));
 
-        $em->flush();
+            if ($countByUsername > 0) {
+                $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+                return new Response($data, 200, ['Content-type' => 'application/json']);
+            }
+        }
 
-        $data = $this->get('serializer')->serialize(["result" => "success"], 'json');
+        if ($data->email != $user->getEmail()) {
+            $countByEmail = count($em->getRepository('AppBundle:User')->findBy(array("email" => $user->getEmail())));
+
+            if ($countByEmail > 0) {
+                $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+                return new Response($data, 200, ['Content-type' => 'application/json']);
+            }
+        }
+
+        // check if role is altered
+        if ($data->newRole != $user->getRoleFk()->getId()) {
+            $role = $em->getRepository('AppBundle:Role')->find($data->newRole);
+
+            $user->setRoleFk($role);
+        }
+
+        // check if team is altered
+        if ($data->newTeam != $user->getTeamFk()->getId()) {
+            $team = $em->getRepository('AppBundle:Team')->find($data->newTeam);
+
+            $user->setTeamFk($team);
+        }
+
+        $manager = $this->get('fos_user.user_manager');
+        $manager->updateUser($user);
+
+        $data = $this->get('serializer')->serialize(["result" => true], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
-     * @Route("/updateRole/")
+     * @Route("/update-role/")
      * @Method("PUT")
      */
-    public function updateRoleAction(Request $request ) {
-        dump($request->getContent());
+    public function updateRoleAction(Request $request)
+    {
         $content = json_decode($request->getContent());
-        $em = $this->getDoctrine()->getManager();
-        dump($content);
-        $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $content->id));
-        $role = $em->getRepository('AppBundle:Role')->findOneBy(array('id' => $content->role_fk->id));
+
+        $manager = $this->get('fos_user.user_manager');
+        /** @var \AppBundle\Entity\User $user */
+        $user = $manager->findUserBy(array("id" => $content->id));
+
+        $role = $this->getDoctrine()->getManager()->getRepository('AppBundle:Role')->find($content->newRole);
 
         $user->setRoleFk($role);
-        $this->get('fos_user.user_manager')->updateUser($user, false);
-
-        $em->flush();
+        $manager->updateUser($user);
 
         $data = $this->get('serializer')->serialize(["result" => "success"], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

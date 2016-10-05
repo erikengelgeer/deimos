@@ -7,7 +7,6 @@ function UserController($rootScope, Api, $q) {
     var vm = this;
     var promises = [];
 
-    vm.selectedRole = selectedRole;
     vm.updateRole = updateRole;
 
     vm.users = [];
@@ -28,15 +27,23 @@ function UserController($rootScope, Api, $q) {
         $rootScope.loading = false;
     });
 
-    function selectedRole(userRoleId, roleId) {
-        return userRoleId == roleId;
-    }
 
-    function updateRole(userRoleId, userId) {
-        console.log("role"+userRoleId, "id"+userId);
-        a = [userId, userRoleId];
-        Api.users.updateRole(a).then(function (response) {
-            console.log(response.data);
+    function updateRole(user) {
+        var newRoleId = user.role_fk.id;
+
+        user.newRole = newRoleId;
+        user.dataLoading = true;
+
+        Api.users.updateRole(user).then(function () {
+            vm.message = {
+                'title': 'Role successful changed',
+                'content': 'The role of user: <em>' + user.username + '</em> is successfuly changed.',
+                'icon': 'fa-check',
+                'type': 'alert-success'
+            }
+        }).finally(function () {
+            user.dataLoading = false;
         })
+
     }
 }

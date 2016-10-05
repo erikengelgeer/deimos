@@ -53,7 +53,10 @@ function Api($http) {
                 return $http.put('api/users/update/', data);
             },
             updateRole: function (data) {
-                return $http.put('api/users/updateRole/', data);
+                return $http.put('api/users/update-role/', data);
+            },
+            add: function (data) {
+                return $http.post('api/users/', data);
             }
         },
         shiftType: {

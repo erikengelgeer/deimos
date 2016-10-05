@@ -4,50 +4,58 @@
             <div class="col-md-12">
                 <h4>Edit User</h4>
                 <hr>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputUserName">User Name:</label>
-                    <input type="text" ng-model="vm.editUser.username" class="form-control" id="inputUserName">
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
                 </div>
             </div>
 
+        </div>
+        <div class="row" ng-if="vm.teams && vm.roles">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="inputName">Name:</label>
-                    <input type="text" ng-model="vm.editUser.real_name" class="form-control" id="inputName">
+                    <label for="inputUserName">Username:</label>
+                    <input type="text" placeholder="AAAAA" class="form-control" id="inputUserName"
+                           ng-model="vm.user.username">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputName">Real Name:</label>
+                    <input type="text" placeholder="John Doe" class="form-control" id="inputName"
+                           ng-model="vm.user.real_name">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="inputEmail">Email:</label>
-                    <input type="email" ng-model="vm.editUser.email" class="form-control" id="inputEmail" >
+                    <input type="email" placeholder="email@example.com" class="form-control" id="inputEmail"
+                           ng-model="vm.user.email">
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputRole">Role:</label>
-                    <select class="form-control" name="role" id="inputRole" ng-model="vm.editUser.role_fk.id">
-                        <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.editUser.role_fk.id">{{role.role}}</option>
+                    <select name="Role" class="form-control" id="inputRole" ng-model="vm.user.role_fk.id"
+                            ng-options="role.id as role.role for role in vm.roles">
+                        <option value="" ng-disabled="!!vm.user.role.id">Select a role</option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputTeam">Team:</label>
-                    <select name="Team" class="form-control" id="inputTeam" ng-model="vm.editUser.team_fk.id">
-                        <option ng-repeat="team in vm.teams" ng-selected="vm.editUser.team_fk.id" value="{{team.id}}">{{team.location}}</option>
+                    <select name="Role" class="form-control" id="inputTeam" ng-model="vm.user.team_fk.id"
+                            ng-options="team.id as team.name for team in vm.teams">
+                        <option value="" ng-disabled="!!vm.user.team.id">Select a team</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="vm.teams && vm.roles">
             <div class="col-md-12">
-                <button ui-sref="manage-users" class="btn btn-danger pull-left">Cancel</button>
-                <button class="btn btn-primary pull-right" ng-click="vm.updateUser(vm.editUser.id)">Edit</button>
+                <a ui-sref="manage-users" class="btn btn-danger pull-left">Cancel</a>
+                <button class="btn btn-primary pull-right" ng-click="vm.update()">Save</button>
             </div>
         </div>
     </div>

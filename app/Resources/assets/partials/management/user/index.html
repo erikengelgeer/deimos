@@ -2,10 +2,15 @@
     <div class="segment light-bg box">
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary pull-right" ui-sref="manage-users-new"><span> New Task</span><i
+                <button class="btn btn-primary pull-right" ui-sref="manage-users-new"><span> New User</span><i
                         class="fa fa-plus"></i></button>
                 <h4>Manage Users</h4>
                 <hr>
+
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
             </div>
         </div>
 
@@ -13,27 +18,29 @@
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
-                    <th>Team</th>
                     <th>Username</th>
                     <th>Real name</th>
                     <th>Email</th>
+                    <th>Team</th>
                     <th>Role</th>
                     <th>Options</th>
                     </thead>
                     <tbody ng-repeat="user in vm.users">
                     <tr>
-                        <td>{{ user.team_fk.location }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.real_name }}</td>
                         <td>{{ user.email}}</td>
+                        <td>{{ user.team_fk.name }}</td>
                         <td>
-                            <select class="form-control" name="role" id="" ng-model="user.role_fk.id" ng-change="vm.updateRole(user.role_fk.id, user.id)">
-                                <option ng-repeat="role in vm.roles" value="{{role.id}}" ng-selected="vm.selectedRole(user.role_fk.id, role.id)">{{role.role}}</option>
+                            <select class="form-control" name="role" id="" ng-model="user.role_fk.id"
+                                    ng-options="role.id as role.role for role in vm.roles"
+                                    ng-change="vm.updateRole(user)"
+                                    ng-disabled="user.dataLoading"
+                            >
                             </select>
                         </td>
                         <td>
-                            <button class="btn btn-gray" ui-sref="manage-users-edit({userId: user.id})"><i class="fa fa-pencil"></i>
-                            </button>
+                            <a class="btn btn-gray" ui-sref="manage-users-edit({userId: user.id})"><i class="fa fa-pencil"></i></a>
                             <button class="btn btn-red"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
