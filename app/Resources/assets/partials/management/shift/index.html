@@ -6,6 +6,11 @@
                         class="fa fa-plus"></i></button>
                 <h4>Manage Shifts</h4>
                 <hr>
+
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
             </div>
         </div>
 
@@ -20,16 +25,35 @@
                     </thead>
                     <tbody ng-repeat="shift in vm.shifts">
                     <tr>
-                        <td>{{ shift.description }}</td>
+                        <td>{{ shift.short }}</td>
                         <td>{{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</td>
                         <td>{{ shift.team_fk.location }}</td>
                         <td>
                             <button class="btn btn-gray" ui-sref="manage-shifts-edit({shiftTypeId: shift.id})"><i class="fa fa-pencil"></i></button>
-                            <button class="btn btn-red"><i class="fa fa-trash"></i></button>
+                            <a class="btn btn-red" ng-if="!shift.disableLoading" ng-click="vm.showDisableModal(shift)"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-red" ng-if="shift.disableLoading"><i class="fa fa-spinner fa-pulse"></i></a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="disable-shift-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                You are about to disable <strong>{{vm.selectedShiftType.short}}</strong>.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.disable(vm.selectedShiftType)">Yes</button>
             </div>
         </div>
     </div>
