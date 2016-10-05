@@ -1,78 +1,60 @@
 angular.module('app').controller('LoginController', LoginController);
 
-function LoginController($rootScope, $state, Api, $scope, $localStorage) {
+function LoginController($rootScope, $state, Api, $localStorage, $http) {
     var vm = this;
 
+    $rootScope.loading = false;
+    vm.dataLoading = false;
     vm.username = '';
     vm.password = '';
-    vm.hasPassword = false;
-    vm.userExists = false;
     vm.message = {};
     vm.roleId = null;
 
-    vm.checkUser = checkUser;
-    vm.loginWithPassword = loginWithPassword;
-    vm.loginWithoutPassword = loginWithoutPassword;
 
-    $rootScope.loading = false;
+    vm.checkLogin = checkLogin;
 
-    function checkUser() {
-        console.log(vm.username);
-        if (vm.username.trim() != '') {
-            // Api.users.find(null, vm.username).then(function (response) {
-            //     console.log(response.data);
-            // });
+    function checkLogin() {
+        if(!vm.username || !vm.password) {
+            vm.message = {
+                title: "Login failed",
+                content: "Both username and password are required to login. Please try again.",
+                type: "alert-danger"
+            };
+        }
+        else {
+            vm.dataLoading = true;
 
-            Api.login.checkRole(vm.username).then(function (response) {
-                vm.hasPassword = false;
-                if (response.data.result == undefined) {
-                    console.log('user does not exist');
-                    // do something
+            Api.login.check(vm.username, vm.password).then(function (response) {
+                var token = response.data.token;
+
+                return Api.users.findLoggedIn().then(function (response) {
+                    if(response.data.locked) {
+                        vm.dataLoading = false;
+                        vm.message = {
+                            title: "Locked",
+                            content: "Your account is locked. Please contact the admin.",
+                            type: "alert-danger"
+                        };
+
+                        $http.defaults.headers.common['Authorization'] = null;
+                    }
+                    else {
+                        $localStorage.token = token;
+                        $rootScope.user = response.data;
+                        $state.go('index');
+                    }
+                });
+
+            }).catch(function (error) {
+                vm.dataLoading = false;
+                if(error.status == 401) {
                     vm.message = {
-                        'icon': 'fa fa-times',
-                        'title': 'User does not exist',
-                        'content': 'The given username could not be found.',
-                        'type': 'alert-danger'
-
-                        // TODO: if the user does not exist, return warning/error?
-                    }
-                } else {
-
-                    console.log(response.data);
-
-                    if(response.data.result) {
-                        vm.hasPassword = true;
-                    } else {
-                    //    do some localstorage shit to know if the user logged in without password
-                        vm.userExists = true;
-                    }
-                    // if (response.data.result != undefined) {
-                    //     vm.hasPassword = true;
-                    //     console.log(response.data);
-                    // }
+                        title: "Login failed",
+                        content: "Either your username or your password is incorrect. Please try again.",
+                        type: "alert-danger"
+                    };
                 }
             });
         }
     }
-
-    function loginWithPassword() {
-        if (vm.username != '' && vm.password != '') {
-            console.log('Logging in with a password as ' + vm.username + '.');
-        }
-    }
-    
-    function loginWithoutPassword() {
-        if(vm.username != '' && vm.userExists) {
-            // localStorage.setItem('loggedInUser', vm.username);
-            $localStorage.loggedInUser = vm.username;
-            console.log('Logged in as: ' + $localStorage.loggedInUser);
-            $state.go('index');
-        }
-    }
-
-    // Api.login.check('admin', 'test').then(function (response) {
-    //     console.log(response);
-    // });
-
-
 }

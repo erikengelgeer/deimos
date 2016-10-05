@@ -86,9 +86,15 @@ class UsersController extends Controller
      *
      * Updates a users password
      */
-    public function updatePasswordAction()
+    public function updatePasswordAction(Request $request)
     {
-        $data = $this->get('serializer')->serialize([], 'json');
+        $data = $request->getContent();
+        $user = $this->getUser();
+
+        $user->setPlainPassword($data);
+        $this->get('fos_user.user_manager')->updateUser($user);
+
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
@@ -105,15 +111,54 @@ class UsersController extends Controller
     }
 
     /**
-     * @Route("/request-password/{email}")
+     * @Route("/request-password")
      * @Method("POST")
      *
      * Request password through email
      */
-    public function requestPasswordAction()
+    public function requestPasswordAction(Request $request)
     {
+        $email = $request->getContent();
+
+        $manager = $this->get('fos_user.user_manager');
+        /** @var \AppBundle\Entity\User $user */
+        $user = $manager->findUserByEmail($email);
+
+        $tokenGenerator = $this->get('fos_user.util.token_generator');
+        $token = $tokenGenerator->generateToken();
+
+        $user->setLastLogin(null);
+        $user->setConfirmationToken($token);
+        $user->setCredentialsExpired(true);
+
+        $manager->updateUser($user);
+
+        dump($user);
+
         $data = $this->get('serializer')->serialize([], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/reset-password")
+     * @Method("POST")
+     *
+     * Resets password
+     */
+    public function resetPasswordAction(Request $request)
+    {
+        $data = $request->getContent();
+        $user = $this->getUser();
+
+        dump($user);
+
+//        $user->setConfirmationToken(null);
+//        $user->setCredentialsExpired(false);
+
+//        $user->setPlainPassword($data->password);
+//        $this->get('fos_user.user_manager')->updateUser($user);
+
+        return $data;
     }
 
     /**
@@ -149,5 +194,43 @@ class UsersController extends Controller
         $data = $this->get('serializer')->serialize(['result' => null, 'info' => "User does not exist."], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
 
+    }
+
+    /**
+     * @Route("/update/password")
+     * @Method("POST")
+     *
+     * Changes the password of the logged in user.
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $data = json_decode($request->getContent());
+        $user = $this->getUser();
+
+        $user->setPlainPassword($data->password);
+        $this->get('fos_user.user_manager')->updateUser($user);
+    }
+
+    /**
+     * @Route("/token")
+     * @Method("POST")
+     * @param Request $request
+     * @return Response
+     */
+    public function getUserByTokenAction(Request $request)
+    {
+        $token = $request->getContent();
+        $manager = $this->get('fos_user.user_manager');
+
+        /** @var \AppBundle\Entity\User $user */
+        $user = $manager->findUserByConfirmationToken($token);
+
+        if ($user == null) {
+            $data = $this->get('serializer')->serialize(array("success" => false), 'json');
+        } else {
+            $data = $this->get('serializer')->serialize(array("success" => true), 'json');
+        }
+
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 }

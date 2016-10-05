@@ -43,7 +43,7 @@ security:
                 require_previous_session: false
 
         reset-password:
-            pattern: ^/api/user/token
+            pattern: ^/api/users/token
             stateless: true
             anonymous: true
 
@@ -52,20 +52,27 @@ security:
             stateless: true
             anonymous: true
 
-        api:
-#            pattern: ^/api
-#            stateless: true
-#            lexik_jwt: ~
-
-            pattern: ^/api
+        request-password:
+            pattern: ^/api/users/request-password
             stateless: true
             anonymous: true
 
-    access_control:
-#        - {path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-#        - {path: ^/api/user/token, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-#        - {path: ^/api/user/change-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-#        - {path: ^/api/users/user/check_role, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-#        - {path: ^/api, roles: IS_AUTHENTICATED_FULLY}
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: true
+            lexik_jwt: ~
 
-        - {path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+
+
+    access_control:
+        - {path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/api/users/token, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/api/user/change-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/api/users/request-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/api/users/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - {path: ^/api/users/user/check_role, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/api, roles: IS_AUTHENTICATED_FULLY}
+#
+#        - {path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+

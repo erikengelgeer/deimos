@@ -1,3 +1,8 @@
+<div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+    <span ng-bind-html="vm.message.content"></span>
+</div>
+
 <div class="login">
     <h3>Welcome to Deimos</h3>
     <h4>Please login</h4>
@@ -5,16 +10,15 @@
     <div class="fields">
         <div class="input-group">
             <span class="input-group-addon" id="addon1"><i class="fa fa-user"></i></span>
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="addon1" ng-change="vm.checkUser()" ng-model="vm.username" ng-model-options="{ debounce: 500 }">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="addon1" ng-model="vm.username" ng-model-options="{ debounce: 500 }">
         </div>
 
-        <div class="input-group" ng-if="vm.hasPassword">
+        <div class="input-group">
             <span class="input-group-addon" id="addon2"><i class="fa fa-lock"></i></span>
             <input type="password" class="form-control" placeholder="Password" aria-describedby="addon2" ng-model="vm.password">
         </div>
     </div>
 
-    <button class="btn btn-gray pull-left" ng-if="vm.hasPassword">Forgot password?</button>
-    <button class="btn btn-primary pull-right" ng-click="vm.loginWithPassword()" ng-if="vm.hasPassword" ><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
-    <button class="btn btn-primary pull-right" ng-click="vm.loginWithoutPassword()" ng-if="!vm.hasPassword" ><span>Continue</span> <i class="fa fa-caret-right"></i></button>
+    <a class="btn btn-gray pull-left" ui-sref="reset-password">Forgot password?</a>
+    <button class="btn btn-primary pull-right" ng-click="vm.checkLogin()"><span>Login</span> <i class="fa fa-unlock-alt"></i></button>
 </div>

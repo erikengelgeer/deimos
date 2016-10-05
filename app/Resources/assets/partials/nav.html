@@ -8,7 +8,7 @@
         <div class="account dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-user"></i> Danny Nieuwmans
+                <i class="fa fa-user"></i> {{$root.user.real_name}}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
@@ -16,7 +16,7 @@
                 <li ui-sref-active="active" ><a ui-sref="profile"><i class="fa fa-user"></i> My Profile</a></li>
                 <li ui-sref-active="active"><a ui-sref="plan-users"><i class="fa fa-cogs"></i> Management</a></li>
                 <li role="separator" class="divider"></li>
-                <li ui-sref-active="active"><a ui-sref="login"><i class="fa fa-lock"></i> Logout</a></li>
+                <li ui-sref-active="active" ng-click="vm.logout()"><a ui-sref="login"><i class="fa fa-lock"></i> Logout</a></li>
             </ul>
         </div>
 

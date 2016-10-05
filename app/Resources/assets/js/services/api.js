@@ -62,6 +62,9 @@ function Api($http) {
             find: function (id) {
                 return $http.get('api/users/', id);
             },
+            findLoggedIn: function() {
+                return $http.get('api/users/user');
+            },
             findAll: function () {
                 return $http.get('api/users/');
             },
@@ -72,8 +75,8 @@ function Api($http) {
                 info: function () {
                     return $http.post('api/users/update/info');
                 },
-                password: function () {
-                    return $http.post('api/users/update/password');
+                password: function (password) {
+                    return $http.post('api/users/update/password', password);
                 }
             },
             delete: function (id) {
@@ -81,6 +84,12 @@ function Api($http) {
             },
             passwordRequest: function (email) {
                 return $http.post('api/users/request-password' , email);
+            },
+            findByToken: function (token) {
+                return $http.post('api/users/token', token)
+            },
+            passwordReset: function (password) {
+                return $http.post('api/users/reset-password', password);
             }
         }
     }
