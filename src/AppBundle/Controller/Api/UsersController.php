@@ -26,7 +26,28 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findAll();
+//        $users = $repository->findAll();
+        $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find(44);
+        $users = $repository->findBy(array('teamFk' => $team));
+
+        $data = $this->get('serializer')->serialize($users, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/team/{teamFk}")
+     * @Method("GET")
+     *
+     * Get users by team
+     */
+    public function findUserByTeamAction($teamFk)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:User");
+
+//        $users = $repository->findAll();
+        $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($teamFk);
+        $users = $repository->findBy(array('teamFk' => $team));
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
@@ -55,6 +76,8 @@ class UsersController extends Controller
         $data = $this->get('serializer')->serialize($user, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
+
+
 
     /**
      * @Route("/")

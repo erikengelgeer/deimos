@@ -1,12 +1,13 @@
 angular.module('app').controller('HomeController', HomeController);
 
-function HomeController($rootScope, Api) {
+function HomeController($rootScope, Api, $q) {
     var vm = this;
 
     vm.users = [];
     vm.planning = [];
     vm.planningUsers = [];
     vm.shifts = [];
+    vm.selectedTeam = null;
 
     vm.getPlanningContent = getPlanningContent;
 
@@ -15,12 +16,23 @@ function HomeController($rootScope, Api) {
     console.log($rootScope.loading);
 
 
-    Api.getAllShifts().then(function (response) {
-        vm.shifts = response.data;
+    Api.getTeams().then(function (response){
+        vm.teams = response.data;
+
+        vm.selectedTeam = vm.teams[0];
+        loadShiftsByTeam(vm.selectedTeam.id);
     });
 
 
-    buildSchedule();
+
+    function loadShiftsByTeam($teamId) {
+        console.log($teamId);
+        Api.getAllShifts().then(function (response) {
+            vm.shifts = response.data;
+
+            buildSchedule();
+        });
+    }
 
     function buildSchedule() {
         buildScheduleStructure();
@@ -50,7 +62,7 @@ function HomeController($rootScope, Api) {
     }
 
     function buildScheduleContent() {
-        Api.getUsers().then(function (response) {
+        Api.getUsersByTeam(44).then(function (response) {
             vm.users = response.data;
 
             var user = [];
@@ -86,7 +98,6 @@ function HomeController($rootScope, Api) {
         return new Date(d.setDate(diff));
     }
 
-
     function getPlanningContent(day, key, planningKey) {
 
         // get current date of a planning column
@@ -111,10 +122,9 @@ function HomeController($rootScope, Api) {
                 break;
             }
         }
-        
+
 
         return data;
     }
-
 
 }

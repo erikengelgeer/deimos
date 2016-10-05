@@ -1,3 +1,9 @@
+<!--<form action="">-->
+    <!--<label ng-repeat="team in vm.teams">-->
+        <!--<input type="radio" ng-value="{{ team.id }}" >{{ team.location }}-->
+    <!--</label>-->
+<!--</form>-->
+
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
         <div class="heading">

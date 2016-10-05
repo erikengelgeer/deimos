@@ -174,7 +174,7 @@ class ShiftsController extends Controller
         $timestamp2 = strtotime('sunday this week +3 weeks');
         $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
-        $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater);
+        $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, 44);
 
         $processedData = [];
         $tasks = [];

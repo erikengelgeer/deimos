@@ -44,6 +44,9 @@ function Api($http) {
         getUsers: function() {
             return $http.get('api/users');
         },
+        getUsersByTeam: function(teamFk) {
+            return $http.get('api/users/team/' + teamFk);  
+        },
 
         //Shifts
         getShift: function (id) {
@@ -51,6 +54,11 @@ function Api($http) {
         },
         getAllShifts: function () {
           return $http.get('api/shifts');
+        },
+        
+        //Teams
+        getTeams: function () {
+          return $http.get('api/teams');  
         },
 
 
