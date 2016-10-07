@@ -7,9 +7,9 @@ function PlanTaskController($rootScope, Api, $q) {
     vm.users = [];
     vm.taskTypes = [];
 
-    vm.selectedUser = 0;
+    vm.selectedUser = null;
     vm.activeDates = [];
-    vm.selectedShift = {};
+    vm.selectedShift = null;
 
     vm.selectUser = selectUser;
     vm.deleteTask = deleteTask;
@@ -89,9 +89,23 @@ function PlanTaskController($rootScope, Api, $q) {
         vm.message = null;
 
         if (task == undefined) {
-            console.log("No task");
+            // console.log("No task");
+
+            vm.message = {
+                'title': 'Error',
+                'content': 'You can not add an empty task to the shift.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+
+
         } else if (task.startTime == null || task.endTime == null || task.taskType == null) {
-            console.log("everything is empty!")
+            vm.message = {
+                'title': 'All fields are required',
+                'content': 'You can not add an empty task to the shift.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
         } else {
             var shiftStartTime = new Date(vm.selectedShift.start_time);
             var shiftEndTime = new Date(vm.selectedShift.end_time);
@@ -100,29 +114,50 @@ function PlanTaskController($rootScope, Api, $q) {
             shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
 
             if (task.startTime < shiftStartTime && task.startTime > shiftEndTime) {
-                console.log('start time error');
+                vm.message = {
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
             } else if (task.endTime <= task.startTime && task.endTime > shiftEndTime) {
-                console.log('end time error');
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen end time is invalid, please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
             } else {
                 var startTime = task.startTime.split(':');
                 var endTime = task.endTime.split(':');
 
                 if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
-                    console.log('startTime format is not right');
+                    vm.message = {
+                        'title': 'Start time is invalid',
+                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
                 } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
-                    console.log('endTime format is not right');
+                    vm.message = {
+                        'title': 'End time is invalid',
+                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
                 } else {
-                    console.log('okay!');
-                    console.log(task);
-
                     task.shift = vm.selectedShift;
 
                     Api.tasks.add(task).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);
                         vm.task = null;
 
-                        // TODO: catch and messages
-                        console.log('success');
+                        vm.message = {
+                            'title': 'Task added',
+                            'content': 'The task is added to the shift',
+                            'icon': 'fa-check',
+                            'type': 'alert-success'
+                        }
                     })
                 }
 
@@ -132,9 +167,14 @@ function PlanTaskController($rootScope, Api, $q) {
 
     function deleteTask(task) {
         Api.tasks.delete(task.id).then(function (response) {
-            console.log('succesful removed');
+            vm.message = {
+                'title': 'Task deleted',
+                'content': 'The task is deleted from the shift',
+                'icon': 'fa-check',
+                'type': 'alert-success'
+            }
 
-            _.remove(vm.selectedShift.tasks, function(t) {
+            _.remove(vm.selectedShift.tasks, function (t) {
                 return t.id == task.id;
             });
         })

@@ -9,22 +9,38 @@
                 </select>
 
                 <div class="clearfix"></div>
+
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
+
                 <hr>
 
-
-                <div class="row">
+                <div class="row" ng-show="vm.activeDates.length > 0">
                     <div class="col-md-4">
                         <div id="datetimepicker-2" class="calendar"></div>
                     </div>
 
-                    <div class="shift-container col-md-8">
+                    <div class="shift-container col-md-8" ng-hide="vm.selectedShift">
+                        <div class="alert alert-info">
+                            <strong><i class="fa fa-info"></i> Please select a date</strong> <br>
+                            <span>Please select a date for adding tasks</span>
+                        </div>
+                    </div>
+
+                    <div class="shift-container col-md-8" ng-show="vm.selectedShift">
                         <div class=" shift">
                             <i class="fa fa-circle state-1"></i>
                             <span>{{ vm.selectedShift.start_time | date: 'H:mm'}}</span> -
                             <span>{{ vm.selectedShift.end_time | date: 'H:mm'}}</span>
                         </div>
                         <div class="tasks-container">
-                            <div ng-if="vm.selectedShift.tasks.length == 0">No Task added yet.</div>
+                            <div class="alert alert-info" ng-if="vm.selectedShift.tasks.length == 0">
+                                <strong><i class="fa fa-info"></i> No Tasks.</strong> <br>
+                                <span>There are no tasks yet on this shift, please add a task.</span>
+                            </div>
+
                             <div class="task" ng-repeat="task in vm.selectedShift.tasks">
                                 <span>{{ task.description }}</span>
                                 <div class="actions">
