@@ -125,6 +125,9 @@ function Api($http) {
             findByUser: function (userId) {
                 return $http.get('api/shifts/user/' + userId)
             },
+            findByUserAndDate: function (userId, date) {
+                return $http.get('api/shifts/user/' + userId + '/' + date);
+            },
             add: function (data) {
                 return $http.post('api/shifts/', data);
             }
@@ -132,6 +135,12 @@ function Api($http) {
         tasks: {
             find: function () {
                 return $http.get('api/tasks/');
+            },
+            add: function (data) {
+                return $http.post('api/tasks/', data);
+            },
+            delete: function (taskId) {
+                return $http.delete('api/tasks/' + taskId);
             }
         }
     };

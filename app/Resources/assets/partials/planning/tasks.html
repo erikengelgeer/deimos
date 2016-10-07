@@ -4,9 +4,8 @@
             <div class="col-md-12">
                 <h4 class="pull-left">Plan tasks for:</h4>
 
-                <select class="form-control pull-left select" ng-model="vm.selectedUserId">
-                    <option disabled>Select a User</option>
-                    <option ng-repeat="user in vm.users" value="{{user.id}}">{{user.real_name}}</option>
+                <select class="form-control pull-left select" ng-model="vm.selectedUser" ng-options="user.id as user.real_name for user in vm.users" ng-change="vm.selectUser()">
+                    <option value="" ng-disabled="!!vm.selectedUser">Select a User</option>
                 </select>
 
                 <div class="clearfix"></div>
@@ -21,23 +20,18 @@
                     <div class="shift-container col-md-8">
                         <div class=" shift">
                             <i class="fa fa-circle state-1"></i>
-
+                            <span>{{ vm.selectedShift.start_time | date: 'H:mm'}}</span> -
+                            <span>{{ vm.selectedShift.end_time | date: 'H:mm'}}</span>
                         </div>
                         <div class="tasks-container">
-                            <div class="task" ng-repeat="task in vm.tasks">
+                            <div ng-if="vm.selectedShift.tasks.length == 0">No Task added yet.</div>
+                            <div class="task" ng-repeat="task in vm.selectedShift.tasks">
                                 <span>{{ task.description }}</span>
                                 <div class="actions">
-                                    <a href="#" class="fa fa-pencil"></a>
-                                    <a href="#" class="fa fa-times"></a>
+                                    <!--<a href="#" class="fa fa-pencil"></a>-->
+                                    <a href="" class="fa fa-times" ng-click="vm.deleteTask(task)"></a>
                                 </div>
                             </div>
-                            <!--<div class="task">-->
-                            <!--<span>13:00 - 15:00</span> Some Task-->
-                            <!--<div class="actions">-->
-                            <!--<a href="#" class="fa fa-pencil"></a>-->
-                            <!--<a href="#" class="fa fa-times"></a>-->
-                            <!--</div>-->
-                            <!--</div>-->
                         </div>
                         <hr>
 
@@ -47,22 +41,21 @@
                                     <span class="input-group-addon" id="sizing-addon1"><i
                                             class="fa fa-clock-o"></i></span>
                                     <input type="text" class="form-control" placeholder="Start"
-                                           aria-describedby="sizing-addon1">
+                                           aria-describedby="sizing-addon1" ng-model="vm.task.startTime">
                                     <span class="input-group-addon mid" id="sizing-addon2">-</span>
                                     <input type="text" class="form-control" placeholder="End"
-                                           aria-describedby="sizing-addon2">
+                                           aria-describedby="sizing-addon2" ng-model="vm.task.endTime">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon3"><i
                                             class="fa fa-tasks"></i></span>
-                                    <select name="" id="" class="form-control">
-                                        <option ng-repeat="task in vm.tasks" value="{{ task.id }}">{{ task.description}}
-                                        </option>
+                                    <select name="" id="" class="form-control" ng-model="vm.task.taskType" ng-options="taskType as taskType.description for taskType in vm.taskTypes">
+                                        <option value="" ng-disabled="!!vm.task.taskType">Select a task</option>
                                     </select>
                                     <div class="input-group-btn">
-                                        <button class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-primary" ng-click="vm.addTask(vm.task)"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
                             </div>

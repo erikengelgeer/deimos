@@ -24,13 +24,6 @@ class Task
     /**
      * @var \datetime
      *
-     * @ORM\Column(name="date", type="datetime")
-     */
-    private $date;
-
-    /**
-     * @var \datetime
-     *
      * @ORM\Column(name="start_time", type="time")
      */
     private $startTime;
@@ -69,32 +62,6 @@ class Task
     public function getId()
     {
         return $this->id;
-    }
-
-    
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return Task
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**

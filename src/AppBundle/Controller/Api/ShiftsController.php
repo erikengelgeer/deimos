@@ -57,7 +57,7 @@ class ShiftsController extends Controller
 
                 $shift = $em->getRepository('AppBundle:Shift')->findOneBy(array('date' => new \DateTime($date), 'userFk' => $user));
 
-                if($shift != null) {
+                if ($shift != null) {
                     $shift->setShiftTypeFk($shiftType);
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
@@ -101,14 +101,28 @@ class ShiftsController extends Controller
      */
     function findAllByUser(User $user)
     {
-        dump($user);
-
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
 
-        $shifts = $repository->findBy(array("userFk" => $user));
+        $shifts = $repository->findShiftsByUser($user->getId(), new \DateTime());
 
-        dump($shifts[0]->getTasks()[0]->getDescription());
+        $data = $this->get('serializer')->serialize($shifts, 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/user/{id}/{date}")
+     * @Method("GET")
+     */
+    function findByUserAndDate(User $user, $date)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Shift');
+
+        $shifts = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
+
+        $data = $this->get('serializer')->serialize($shifts, 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 
 

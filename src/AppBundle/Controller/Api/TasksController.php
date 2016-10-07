@@ -7,11 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/api/tasks")
  */
-
 class TasksController extends Controller
 {
     /**
@@ -32,13 +32,60 @@ class TasksController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @Route("/")
+     * @Method("POST")
+     * @return Response
+     */
+    public function addAction(Request $request)
+    {
+        $data = json_decode($request->getContent());
+
+        $em = $this->getDoctrine()->getManager();
+
+        $taskType = $em->getRepository('AppBundle:TaskType')->find($data->taskType->id);
+        $shift = $em->getRepository('AppBundle:Shift')->find($data->shift->id);
+
+        $task = new Task();
+        $task->setStartTime(new \DateTime($data->startTime));
+        $task->setEndTime(new \DateTime($data->endTime));
+        $task->setDescription($data->taskType->description);
+        $task->setShiftFk($shift);
+        $task->setTaskTypeFk($taskType);
+
+        $em->persist($task);
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize($task, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/{id}")
+     * @Method("DELETE")
+     * @param Task $task
+     * @return Response
+     */
+    public function deleteAction(Task $task)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($task);
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize(array("success" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
      * @Route("/{id}")
      * @Method("GET")
      *
      * Get a single task
      */
-    public function findOneAction(Task $tasks){
-        $data= $this->get('serializer')->serialize($tasks, 'json');
+    public function findOneAction(Task $tasks)
+    {
+        $data = $this->get('serializer')->serialize($tasks, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 }
