@@ -10,9 +10,6 @@ function HomeController($rootScope, Api) {
     vm.selectedTeam = null;
     vm.getPlanningContent = getPlanningContent;
 
-    vm.selectTeam = selectTeam;
-
-
     console.log($rootScope.loading);
     // $rootScope.loading = false;
     // console.log($rootScope.loading);
@@ -23,19 +20,23 @@ function HomeController($rootScope, Api) {
         console.log(vm.teams);
 
         //TODO: Team is hardcoded, needs to be read from logged in user.
-        vm.selectedTeam = vm.teams[0];
-        loadShiftsByTeam(vm.selectedTeam.id);
+        vm.selectedTeam = $rootScope.team;
+        // loadShiftsByTeam(vm.selectedTeam.id);
+        $rootScope.$watch('team.id', function () {
+            console.log('team changed')
+            console.log($rootScope.team);
+            refreshData($rootScope.team.id);
+        })
+
     });
 
-    function selectTeam() {
-        // console.log(vm.selectedTeam.id);
-        refreshData(vm.selectedTeam.id);
-    }
+    // function selectTeam() {
+    //     // console.log(vm.selectedTeam.id);
+    //     refreshData(vm.selectedTeam.id);
+    // }
 
     function refreshData(teamId){
-
         loadShiftsByTeam(teamId);
-
     }
 
     function loadShiftsByTeam(teamId) {
@@ -227,10 +228,7 @@ function HomeController($rootScope, Api) {
                 item.find('.heading').css('top', ($(this).scrollTop()));
                 lastScrollTop = currentScrollTop;
             });
-        },4000);
+        },1000);
     }
 
-    function deleteSchedule() {
-
-    }
 }

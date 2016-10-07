@@ -27,6 +27,10 @@
         <div class="item">
             <i class="fa fa-calendar-minus-o"></i>
         </div>
+        <div >
+            <select class="form-control selectTeam" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.setTeam()">
+            </select>
+        </div>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
-<select class="form-control" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.selectTeam()">
-</select>
+<!--<select class="form-control" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.selectTeam()">-->
+<!--</select>-->
 
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">

@@ -178,6 +178,10 @@
       color: #fff; }
     .nav-bar .item .item {
       margin-right: 0; }
+  .nav-bar .selectTeam {
+    width: 200px;
+    margin: 15px;
+    float: right; }
 
 .menu {
   position: fixed;
