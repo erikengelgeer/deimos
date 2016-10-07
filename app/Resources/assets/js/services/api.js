@@ -124,6 +124,9 @@ function Api($http) {
             },
             findByUser: function (userId) {
                 return $http.get('api/shifts/user/' + userId)
+            },
+            add: function (data) {
+                return $http.post('api/shifts/', data);
             }
         },
         tasks: {

@@ -4,6 +4,10 @@
             <div class="col-md-12">
                 <h4>Plan Users</h4>
                 <hr>
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
             </div>
         </div>
 
@@ -17,23 +21,29 @@
                     <tr>
                         <th>User</th>
                         <th>Shift</th>
-                        <th>Override</th> <!-- !!!! -->
+                        <!--<th>Override</th> -->
                         <th class="check">Check</th>
                     </tr>
                     </thead>
-                    <tbody ng-repeat="planUser in vm.planUsers">
+                    <tbody ng-repeat="user in vm.users">
                     <tr>
-                        <td>{{ planUser.username }}</td>
+                        <td>{{ user.username }}</td>
                         <td>
-                            <select class="form-control">
-                                <option ng-repeat="shift in vm.shifts" value="{{ shift.id }}" ng-selected="vm.selectedShift(shift.user_fk.id, planUser.id)">{{ shift.description }}</option>
+                            <select class="form-control" ng-model="user.newShift" ng-options="shiftType.id as shiftType.description for shiftType in vm.shiftTypes">
+                                <option value="" ng-disabled="!!user.newShift">Select a shift</option>
                             </select>
                         </td>
-                        <td><div class="form-control"></div></td>
-                        <td><button class="btn btn-gray"><i class="fa fa-check"></i> </button></td>
+                        <!--<td><div class="form-control"></div></td>-->
+                        <td>
+                            <button class="btn" ng-class="{'btn-gray': !user.checked, 'btn-success': user.checked }" ng-click="vm.checkUser(user)"><i class="fa fa-check"></i></button>
+
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <button class="btn btn-primary pull-right" ng-click="vm.addShifts()">Save</button>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>

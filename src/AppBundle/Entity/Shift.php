@@ -45,7 +45,7 @@ class Shift
     /**
      * @var \datetime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="date")
      */
     private $date;
 

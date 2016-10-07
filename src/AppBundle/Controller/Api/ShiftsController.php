@@ -41,6 +41,49 @@ class ShiftsController extends Controller
     }
 
     /**
+     * @Route("/")
+     * @Method("POST")
+     */
+    function addAction(Request $request)
+    {
+        $data = json_decode($request->getContent());
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($data->selectedDates as $date) {
+
+            foreach ($data->shifts as $item) {
+                $user = $em->getRepository('AppBundle:User')->find($item->userId);
+                $shiftType = $em->getRepository('AppBundle:ShiftType')->find($item->shiftId);
+
+                $shift = $em->getRepository('AppBundle:Shift')->findOneBy(array('date' => new \DateTime($date), 'userFk' => $user));
+
+                if($shift != null) {
+                    $shift->setShiftTypeFk($shiftType);
+                    $shift->setDescription($shiftType->getDescription());
+                    $shift->setStartTime($shiftType->getDefaultStartTime());
+                    $shift->setEndTime($shiftType->getDefaultEndTime());
+
+                } else {
+                    $shift = new Shift();
+                    $shift->setUserFk($user);
+                    $shift->setShiftTypeFk($shiftType);
+                    $shift->setDescription($shiftType->getDescription());
+                    $shift->setStartTime($shiftType->getDefaultStartTime());
+                    $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setDate(new \DateTime($date));
+
+                    $em->persist($shift);
+                }
+            }
+        }
+
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
      * @Route("/{id}")
      * @Method("GET")
      *
@@ -48,7 +91,7 @@ class ShiftsController extends Controller
      */
     public function findOneByAction(Shift $shift)
     {
-        $data= $this->get('serializer')->serialize($shift, 'json');
+        $data = $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
@@ -56,7 +99,8 @@ class ShiftsController extends Controller
      * @Route("/user/{id}")
      * @Method("GET")
      */
-    function findAllByUser(User $user) {
+    function findAllByUser(User $user)
+    {
         dump($user);
 
         $em = $this->getDoctrine()->getManager();
@@ -66,5 +110,6 @@ class ShiftsController extends Controller
 
         dump($shifts[0]->getTasks()[0]->getDescription());
     }
+
 
 }
