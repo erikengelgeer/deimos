@@ -1,6 +1,7 @@
 var dependencies = [
     "ui.router",
-    "ngStorage"
+    "ngStorage",
+    "ngSanitize"
 ];
 
 function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {

@@ -7,6 +7,7 @@ function ProfileController($rootScope, Api) {
     vm.measurePassword = measurePassword;
     vm.save = save;
 
+    vm.message = {};
     vm.password = "";
     vm.confirmationPassword = "";
 
@@ -39,7 +40,11 @@ function ProfileController($rootScope, Api) {
         if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
 
             // error if empty
-            console.log("Fill in both required fields to change password.");
+            vm.message = {
+                title: "Fields may not be blank",
+                content: "Fill in both required fields to change password.",
+                type: "alert-danger"
+            };
 
         } else {
             if (vm.password.trim() == vm.confirmationPassword.trim()) {
@@ -47,7 +52,7 @@ function ProfileController($rootScope, Api) {
                 vm.dataLoading = true;
 
 
-                Api.users.update.password(vm.password).then(function (response) {
+                Api.users.update.password(vm.password).then(function () {
                     // $rootScope.user = response.data;
 
                     vm.message = {
@@ -65,7 +70,11 @@ function ProfileController($rootScope, Api) {
                 });
 
             } else {
-                console.log('The two required fields do not match, please try again.')
+                vm.message = {
+                    title: "Fields may not be blank",
+                    content: "Fill in both required fields to change password.",
+                    type: "alert-danger"
+                };
             }
         }
     }

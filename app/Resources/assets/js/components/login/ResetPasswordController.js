@@ -4,6 +4,7 @@ function ResetPasswordController($rootScope, Api) {
     var vm = this;
 
     vm.email = "";
+    vm.message = {};
 
     vm.resetPassword = resetPassword;
 
@@ -12,7 +13,11 @@ function ResetPasswordController($rootScope, Api) {
     function resetPassword() {
         console.log(vm.email);
         if (vm.email == undefined) {
-            console.log("the given email is not an email");
+            vm.message = {
+                title: "Fields may not be blank",
+                content: "Please fill in an existing email.",
+                type: "alert-danger"
+            };
         } else if (vm.email.trim() != '') {
             // TODO: api call for existing emails with accounts in database.
 
@@ -20,8 +25,18 @@ function ResetPasswordController($rootScope, Api) {
                 console.log(response);
             });
 
-            console.log("Succes, check your email for a password reset link.");
-
+            vm.message = {
+                title: "Successful send",
+                content: "Success, check your email for a password reset link.",
+                type: "alert-success"
+            };
+        }
+        else {
+            vm.message = {
+                title: "Fields may not be blank",
+                content: "Please fill the field.",
+                type: "alert-danger"
+            };
         }
 
     }
