@@ -9,23 +9,22 @@ function menu() {
         controllerAs: 'vm',
         controller: function ($scope, $rootScope, $state, $timeout, Api) {
             var vm = this;
+
             vm.setTeam = setTeam;
+
             vm.selectedTeam = null;
+
             Api.getTeams().then(function (response) {
                 vm.teams = response.data;
 
                 vm.selectedTeam = vm.teams[0];
-                $rootScope.team = vm.teams[0];
-                // console.log(vm.selectedTeam.id);
+                $rootScope.team = vm.selectedTeam;
             });
             
             vm.checkStates = checkStates;
 
             function setTeam() {
-                // console.log(vm.selectedTeam.id);
                 $rootScope.team = vm.selectedTeam;
-                // console.log($rootScope.team.id);
-                return $rootScope.team;
             }
 
             function checkStates() {
@@ -42,6 +41,7 @@ function menu() {
                         break;
                     }
                 }
+
                 return result;
             }
         }

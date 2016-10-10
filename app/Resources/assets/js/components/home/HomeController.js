@@ -1,6 +1,6 @@
 angular.module('app').controller('HomeController', HomeController);
 
-function HomeController($rootScope, Api) {
+function HomeController($rootScope, Api, $timeout) {
     var vm = this;
 
     vm.users = [];
@@ -8,62 +8,45 @@ function HomeController($rootScope, Api) {
     vm.planningUsers = [];
     vm.shifts = [];
     vm.selectedTeam = null;
+
     vm.getPlanningContent = getPlanningContent;
 
-    console.log($rootScope.loading);
-    // $rootScope.loading = false;
-    // console.log($rootScope.loading);
-
-
-    Api.getTeams().then(function (response){
+    Api.getTeams().then(function (response) {
         vm.teams = response.data;
-        // console.log(vm.teams);
 
         //TODO: Team is hardcoded, needs to be read from logged in user.
         vm.selectedTeam = $rootScope.team;
-        // loadShiftsByTeam(vm.selectedTeam.id);
-        $rootScope.$watch('team.id', function () {
-            // console.log('team changed')
-            // console.log($rootScope.team);
-            refreshData($rootScope.team.id);
-        })
 
+        // Watch for change in rootScope.team, refresh data if it is changed.
+        $rootScope.$watch('team.id', function () {
+            loadShiftsByTeam($rootScope.team.id);
+        })
     });
 
-    // function selectTeam() {
-    //     // console.log(vm.selectedTeam.id);
-    //     refreshData(vm.selectedTeam.id);
-    // }
-
-    function refreshData(teamId){
-        loadShiftsByTeam(teamId);
-    }
-
     function loadShiftsByTeam(teamId) {
+
+        // Makes sure that everything will be cleared
         vm.users = [];
         vm.planning = [];
         vm.planningUsers = [];
         vm.shifts = [];
-        // console.log(teamId);
+
+        $rootScope.loading = true;
+
         Api.getAllShifts(teamId).then(function (response) {
             vm.shifts = response.data;
 
             buildSchedule(teamId);
-            buildScheduleCss();
-            $rootScope.loading = false;
-            console.log($rootScope.loading);
-
         });
     }
 
     function buildSchedule(teamId) {
         buildScheduleStructure();
         buildScheduleContent(teamId);
-
-        //    load javascript
     }
 
     function buildScheduleStructure() {
+        // Builds the schedule in a 7 days per 4 weeks structure.
         var today = getMonday(new Date());
         var date = today.getTime();
         var week = [];
@@ -84,6 +67,7 @@ function HomeController($rootScope, Api) {
     }
 
     function buildScheduleContent(teamId) {
+        // Adds content to the schedule, users but not shifts and tasks yet.
         Api.getUsersByTeam(teamId).then(function (response) {
             vm.users = response.data;
 
@@ -108,6 +92,8 @@ function HomeController($rootScope, Api) {
                 vm.planningUsers.push(week);
                 week = [];
             }
+
+            buildScheduleCss();
         });
     }
 
@@ -124,17 +110,17 @@ function HomeController($rootScope, Api) {
 
         // get current date of a planning column
         var date = new Date(vm.planning[planningKey][key]);
-        var formattedDate =  date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        var formattedDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         var data = [];
 
         // Iterate trough shifts to find the right shift per column and user
-        for(var i = 0; i < vm.shifts.length; i++) {
+        for (var i = 0; i < vm.shifts.length; i++) {
             var shiftDate = new Date(vm.shifts[i][0]['date']);
             var formattedShiftDate = shiftDate.getDate() + "-" + (shiftDate.getMonth() + 1) + "-" + shiftDate.getFullYear();
 
 
             // checks if column user is equal to shift user
-            if(vm.shifts[i][0]['userId'] == day.user.id && formattedDate == formattedShiftDate) {
+            if (vm.shifts[i][0]['userId'] == day.user.id && formattedDate == formattedShiftDate) {
                 data = {
                     shift: vm.shifts[i][0],
                     tasks: vm.shifts[i][1]
@@ -144,19 +130,14 @@ function HomeController($rootScope, Api) {
                 break;
             }
         }
-
-
         return data;
     }
 
     function buildScheduleCss() {
-        setTimeout(function () {
+        // NOTE: Call this code after building the DOM, otherwise it won't work
+        // TODO: disable heading scrolling when working on other browsers than chrome and firefox (for now)
 
-
-
-            // NOTE: Call this code after building the DOM, otherwise it won't work
-            // TODO: disable heading scrolling when working on other browsers than chrome and firefox (for now)
-
+        $timeout(function () {
             //@formatter:off
             // Variables
             // Items
@@ -167,7 +148,6 @@ function HomeController($rootScope, Api) {
             var columns = 8,
                 scheduleContainerWidth = 'inherit',
                 scheduleContainerHeight = $(window).height() - 95;
-//            scheduleContainerHeight = 317;
 
             var current = 1,
                 item = $('#' + current),
@@ -175,6 +155,7 @@ function HomeController($rootScope, Api) {
             //@formatter:on
 
             ScheduleContainer.css({'height': scheduleContainerHeight, 'width': scheduleContainerWidth});
+
             $(window).resize(function () {
                 ScheduleContainer.css({'height': scheduleContainerHeight, 'width': scheduleContainerWidth});
             });
@@ -202,7 +183,7 @@ function HomeController($rootScope, Api) {
 
                 if (currentScrollTop > lastScrollTop) {
                     // DOWN
-                    console.log('scroll', $(this).scrollTop(), 'nextItem', (nextItem.offset().top - ScheduleContainer.offset().top));
+                    // console.log('scroll', $(this).scrollTop(), 'nextItem', (nextItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((nextItem.offset().top - ScheduleContainer.offset().top) <= 0 && current != schedules.length) {
                         current++;
@@ -214,7 +195,7 @@ function HomeController($rootScope, Api) {
 
                 } else {
                     // UP
-                    console.log('scroll', $(this).scrollTop(), 'previousItem', (previousItem.offset().top - ScheduleContainer.offset().top));
+                    // console.log('scroll', $(this).scrollTop(), 'previousItem', (previousItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((previousItem.offset().top - ScheduleContainer.offset().top) >= (0 - (item.height() + item.find('.heading').height())) && current != 1) {
                         current--;
@@ -228,7 +209,10 @@ function HomeController($rootScope, Api) {
                 item.find('.heading').css('top', ($(this).scrollTop()));
                 lastScrollTop = currentScrollTop;
             });
-        },1000);
+
+            // stops loading after everything is built
+            $rootScope.loading = false;
+        });
     }
 
 }
