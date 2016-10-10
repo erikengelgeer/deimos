@@ -17,14 +17,14 @@ function HomeController($rootScope, Api) {
 
     Api.getTeams().then(function (response){
         vm.teams = response.data;
-        console.log(vm.teams);
+        // console.log(vm.teams);
 
         //TODO: Team is hardcoded, needs to be read from logged in user.
         vm.selectedTeam = $rootScope.team;
         // loadShiftsByTeam(vm.selectedTeam.id);
         $rootScope.$watch('team.id', function () {
-            console.log('team changed')
-            console.log($rootScope.team);
+            // console.log('team changed')
+            // console.log($rootScope.team);
             refreshData($rootScope.team.id);
         })
 

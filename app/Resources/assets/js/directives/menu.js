@@ -16,7 +16,7 @@ function menu() {
 
                 vm.selectedTeam = vm.teams[0];
                 $rootScope.team = vm.teams[0];
-                console.log(vm.selectedTeam.id);
+                // console.log(vm.selectedTeam.id);
             });
             
             vm.checkStates = checkStates;
@@ -24,7 +24,7 @@ function menu() {
             function setTeam() {
                 // console.log(vm.selectedTeam.id);
                 $rootScope.team = vm.selectedTeam;
-                console.log($rootScope.team.id);
+                // console.log($rootScope.team.id);
                 return $rootScope.team;
             }
 

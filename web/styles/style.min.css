@@ -181,7 +181,8 @@
   .nav-bar .selectTeam {
     width: 200px;
     margin: 15px;
-    float: right; }
+    float: right;
+    color: #06AECE; }
 
 .menu {
   position: fixed;
