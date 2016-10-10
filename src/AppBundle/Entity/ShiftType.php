@@ -68,6 +68,11 @@ class ShiftType
     private $enabled = true;
 
     /**
+     * @ORM\Column(name="color", type="string")
+     */
+    private $color;
+
+    /**
      * Get id
      *
      * @return int
@@ -291,5 +296,29 @@ class ShiftType
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return ShiftType
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

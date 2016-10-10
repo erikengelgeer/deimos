@@ -31,6 +31,7 @@ class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterfa
         $shiftType1->setBreadDuration(0.5);
         $shiftType1->setShiftDuration(8.5);
         $shiftType1->setTeamFk($team);
+        $shiftType1->setColor('#000');
 
         $shiftType2 = new ShiftType();
         $shiftType2->setShort('B');
@@ -41,6 +42,7 @@ class LoadShiftTypeData extends AbstractFixture implements OrderedFixtureInterfa
         $shiftType2->setBreadDuration(0.5);
         $shiftType2->setShiftDuration(8.5);
         $shiftType2->setTeamFk($team);
+        $shiftType2->setColor('#000');
 
         $manager->persist($shiftType1);
         $manager->persist($shiftType2);

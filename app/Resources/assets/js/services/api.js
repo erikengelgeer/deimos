@@ -40,7 +40,7 @@ function Api($http) {
                 return $http.get('api/users/');
             },
             add: function (user) {
-                return $http.post('api/users/');
+                return $http.post('api/users/', user);
             },
             update: {
                 info: function () {
