@@ -30,8 +30,7 @@ function PlanTaskController($rootScope, Api, $q) {
         vm.taskTypes = response.data;
     }))
 
-    $q.all(promises).then(function () {
-    }).finally(function () {
+    $q.all(promises).finally(function () {
         $rootScope.loading = false;
     });
 
@@ -93,15 +92,6 @@ function PlanTaskController($rootScope, Api, $q) {
 
             Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
                 vm.selectedShift = response.data;
-
-                if (vm.selectedShift == null) {
-                    vm.message = {
-                        'title': 'No shifts',
-                        'content': 'No shifts for this user',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-info'
-                    }
-                }
             })
         });
     }
@@ -133,6 +123,7 @@ function PlanTaskController($rootScope, Api, $q) {
             shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
             shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
 
+            // TODO: validate this if
             if (task.startTime < shiftStartTime && task.startTime > shiftEndTime) {
                 vm.message = {
                     'title': 'Start time is invalid',

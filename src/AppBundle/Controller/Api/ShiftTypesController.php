@@ -113,14 +113,16 @@ class ShiftTypesController extends Controller
             $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
         }
 
-        if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-            $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-            return new Response($response, 200, ['Content-type' => 'application/json']);
+        if($content->short != $shiftType->getShort()) {
+            if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
+                $response = $this->get('serializer')->serialize(array("result" => false), 'json');
+                return new Response($response, 200, ['Content-type' => 'application/json']);
+            }
         }
 
         $em->flush();
 
-        $data = $this->get('serializer')->serialize(["result" => "success"], 'json');
+        $data = $this->get('serializer')->serialize(["result" => true], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
