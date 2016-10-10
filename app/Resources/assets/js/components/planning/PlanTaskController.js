@@ -32,9 +32,22 @@ function PlanTaskController($rootScope, Api, $q) {
     function selectUser() {
         console.log(vm.selectedUser);
 
+        vm.message = null;
+
         Api.shifts.findByUser(vm.selectedUser).then(function (response) {
             vm.activeDates = response.data;
-            buildDatepicker();
+
+            console.log(vm.activeDates);
+            if (vm.activeDates.length > 0) {
+                buildDatepicker();
+            } else {
+                vm.message = {
+                    'title': 'No shifts',
+                    'content': 'The selected user does not have any shifts, please add shifts before assigning tasks.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+            }
         })
     }
 
@@ -166,7 +179,7 @@ function PlanTaskController($rootScope, Api, $q) {
     }
 
     function deleteTask(task) {
-        Api.tasks.delete(task.id).then(function (response) {
+        Api.tasks.delete(task.id).then(function () {
             vm.message = {
                 'title': 'Task deleted',
                 'content': 'The task is deleted from the shift',
