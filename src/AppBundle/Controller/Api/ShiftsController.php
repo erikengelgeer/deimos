@@ -16,27 +16,58 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ShiftsController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/{team}")
      * @Method("GET")
      *
      * Get all the shifts
      */
-    public function findAllAction()
+    public function findAllAction($team)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:Shift");
 
-        $now = new \DateTime();
-        $timestamp = strtotime('+4 weeks');
-        $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp);
+        $timestamp = strtotime('monday this week');
+        $mondayThisWeek = date_timestamp_set(new \DateTime(), $timestamp);
 
-        /**
-         * @var ShiftRepository $repository
-         */
-//        $shifts = $repository->findAllAction($now, $fourWeeksLater);
-        $shifts = $repository->findAll();
+        $timestamp2 = strtotime('sunday this week +3 weeks');
+        $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
-        $data = $this->get('serializer')->serialize($shifts, 'json');
+        $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, $team);
+
+        $processedData = [];
+        $tasks = [];
+        $previousId = 0;
+
+        foreach ($shifts as $shift) {
+            if ($previousId == $shift['id']) continue;
+
+            $previousId = $shift['id'];
+
+            foreach ($shifts as $otherShift) {
+                if ($shift['id'] == $otherShift['id']) {
+
+                    $newShift = [];
+
+                    $newShift['taskId'] = $otherShift['taskId'];
+                    $newShift['taskDescription'] = $otherShift['taskDescription'];
+                    $newShift['taskStartTime'] = $otherShift['taskStartTime'];
+                    $newShift['taskEndTime'] = $otherShift['taskEndTime'];
+
+                    array_push($tasks, $newShift);
+                }
+            }
+
+            unset($shift['taskId']);
+            unset($shift['taskDescription']);
+            unset($shift['taskStartTime']);
+            unset($shift['taskEndTime']);
+
+            array_push($processedData, [$shift, $tasks]);
+            $tasks = [];
+
+        }
+
+        $data = $this->get('serializer')->serialize($processedData, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 

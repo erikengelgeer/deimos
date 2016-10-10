@@ -56,17 +56,22 @@
     font-size: 12px;
     position: relative;
     top: -1px;
+    color: $shift-state-3;
 
-    &.state-1 {
+    &.V, &.N, &.L, &.WN {
       color: $shift-state-1;
     }
 
-    &.state-2 {
+    &.M {
       color: $shift-state-2;
     }
 
-    &.state-3 {
+    &.W, &.A, &.H, &.WAH {
       color: $shift-state-3;
+    }
+
+    &.T {
+      color: $shift-state-4;
     }
   }
 

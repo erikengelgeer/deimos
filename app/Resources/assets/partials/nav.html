@@ -27,6 +27,10 @@
         <div class="item">
             <i class="fa fa-calendar-minus-o"></i>
         </div>
+        <div >
+            <select class="form-control selectTeam" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.setTeam()">
+            </select>
+        </div>
     </div>
 </div>
 
@@ -51,7 +55,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="tasksModalLabel">Assigned Tasks for: {Date}</h4>
+                <h4 class="modal-title" id="tasksModalLabel">Assigned Tasks for: </h4>
             </div>
             <div class="modal-body">
                 <div class="tasks-container">

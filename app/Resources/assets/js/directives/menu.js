@@ -2,16 +2,32 @@ angular.module('app').directive('menu', menu);
 
 function menu() {
 
+
     return {
         restrict: "A",
         templateUrl: "partials/nav.html",
         scope: {},
         controllerAs: 'vm',
-        controller: function ($scope, $rootScope, $state, $timeout, $localStorage) {
+        controller: function ($scope, $rootScope, $state, $timeout, $localStorage, Api) {
             var vm = this;
 
-            vm.checkStates = checkStates;
+            vm.setTeam = setTeam;
             vm.logout = logout;
+            vm.checkStates = checkStates;
+
+            vm.selectedTeam = null;
+
+            Api.teams.find().then(function (response) {
+                vm.teams = response.data;
+
+                vm.selectedTeam = vm.teams[0];
+                $rootScope.team = vm.selectedTeam;
+            });
+
+
+            function setTeam() {
+                $rootScope.team = vm.selectedTeam;
+            }
 
             function checkStates() {
                 var states = [  'manage-shifts', 'manage-shifts-edit', 'manage-shifts-new',

@@ -30,6 +30,9 @@ function Api($http) {
             findOne: function (id) {
                 return $http.get('api/users/' + id);
             },
+            findByTeam: function (teamId) {
+                return $http.get('api/users/team/' + teamId);
+            },
             findLoggedIn: function () {
                 return $http.get('api/users/user');
             },
@@ -138,6 +141,9 @@ function Api($http) {
             findByUserAndDate: function (userId, date) {
                 return $http.get('api/shifts/user/' + userId + '/' + date);
             },
+            findByTeam: function (team) {
+                return $http.get('api/shifts/' + team);
+            },
             add: function (data) {
                 return $http.post('api/shifts/', data);
             }
@@ -155,3 +161,28 @@ function Api($http) {
         }
     }
 }
+
+
+// //Users
+// getUser: function (id) {
+//     return $http.get('api/user/' + id);
+// },
+// getUsers: function() {
+//     return $http.get('api/users');
+// },
+// getUsersByTeam: function(teamFk) {
+//     return $http.get('api/users/team/' + teamFk);
+// },
+//
+// //Shifts
+// getShift: function (id) {
+//     return $http.get('api/shift.' + id);
+// },
+// getAllShifts: function (team) {
+//     return $http.get('api/shifts/' + team);
+// },
+//
+// //Teams
+// getTeams: function () {
+//     return $http.get('api/teams/');
+// },

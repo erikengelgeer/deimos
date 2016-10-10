@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 //use AppBundle\Entity\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -335,6 +336,23 @@ class UsersController extends Controller
         $em->flush();
 
         $data = $this->get('serializer')->serialize(["result" => true], 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/team/{id}")
+     * @Method("GET")
+     *
+     * Get users by team
+     */
+    public function findUserByTeamAction(Team $team)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:User");
+
+        $users = $repository->findBy(array('teamFk' => $team));
+
+        $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 }
