@@ -15,6 +15,13 @@ function PlanTaskController($rootScope, Api, $q) {
     vm.deleteTask = deleteTask;
     vm.addTask = addTask;
 
+    vm.message = {
+        'title': 'Information',
+        'content': 'Select a user to continue.',
+        'icon': 'fa-info',
+        'type': 'alert-info'
+    }
+
     promises.push(Api.users.find().then(function (response) {
         vm.users = response.data;
     }));
@@ -24,20 +31,17 @@ function PlanTaskController($rootScope, Api, $q) {
     }))
 
     $q.all(promises).then(function () {
-        console.log("tasks", vm.tasks, vm.users)
     }).finally(function () {
         $rootScope.loading = false;
     });
 
     function selectUser() {
-        console.log(vm.selectedUser);
 
         vm.message = null;
 
         Api.shifts.findByUser(vm.selectedUser).then(function (response) {
             vm.activeDates = response.data;
 
-            console.log(vm.activeDates);
             if (vm.activeDates.length > 0) {
                 buildDatepicker();
             } else {
@@ -91,9 +95,13 @@ function PlanTaskController($rootScope, Api, $q) {
                 vm.selectedShift = response.data;
 
                 if (vm.selectedShift == null) {
-                    console.log('no shift for user bla at bla');
+                    vm.message = {
+                        'title': 'No shifts',
+                        'content': 'No shifts for this user',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-info'
+                    }
                 }
-                console.log(vm.selectedShift);
             })
         });
     }
@@ -102,7 +110,6 @@ function PlanTaskController($rootScope, Api, $q) {
         vm.message = null;
 
         if (task == undefined) {
-            // console.log("No task");
 
             vm.message = {
                 'title': 'Error',

@@ -12,18 +12,17 @@ function PlanUserController($rootScope, Api, $q) {
     vm.checkUser = checkUser;
     vm.addShifts = addShifts;
 
+    // find all users
     promises.push(Api.users.find().then(function (response) {
         vm.users = response.data;
-        console.log(response);
     }));
 
+    // find all shiftTypes
     promises.push(Api.shiftType.find().then(function (response) {
         vm.shiftTypes = response.data;
-        console.log(response);
     }));
 
     $q.all(promises).then(function () {
-        console.log("done", vm.planUsers, vm.shifts);
     }).finally(function () {
         $rootScope.loading = false;
     });
@@ -61,22 +60,23 @@ function PlanUserController($rootScope, Api, $q) {
     });
     // });
 
+    // checks is the checkbox is checked
     function checkUser(user) {
         user.checked = !user.checked;
     }
 
+    // checks if all fields are filled in correct and adds a shift
     function addShifts() {
         var data = {
             selectedDates: [],
             shifts: []
-        }
+        };
 
         vm.message = null;
 
         data.selectedDates = vm.selectedDates;
 
         if (data.selectedDates.length == 0) {
-            console.log("error");
 
             vm.message = {
                 'title': 'No dates selected',
@@ -86,7 +86,6 @@ function PlanUserController($rootScope, Api, $q) {
             }
         } else {
 
-            // TODO: check if newShift exists of a valid value
             for (var i = 0; i < vm.users.length; i++) {
                 if (vm.users[i].checked) {
                     data.shifts.push({
@@ -106,17 +105,18 @@ function PlanUserController($rootScope, Api, $q) {
             } else {
                 vm.dataLoading = true;
 
-                Api.shifts.add(data).then(function (response) {
+                Api.shifts.add(data).then(function () {
 
                     vm.message = {
                         'title': 'Selected users are planned',
                         'content': 'The selected users are planned for the selected dates.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
-                    }
+                    };
 
                     for (var i = 0; i < vm.users.length; i++) {
                         vm.users[i].checked = false;
+
                     }
 
                     // Dirty hax, destroys datepicker and build it up again instead of clearing.
@@ -126,7 +126,6 @@ function PlanUserController($rootScope, Api, $q) {
                         todayHighlight: true,
                         startDate: startDate
                     });
-
                 }).finally(function () {
                     vm.dataLoading = false;
                 });
