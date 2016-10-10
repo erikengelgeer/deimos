@@ -80,7 +80,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful updated',
+                        'title': 'Successfully updated',
                         'content': '<em>' + vm.team.name + '</em> is successful updated. return to the <a href="#/manage/teams">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'

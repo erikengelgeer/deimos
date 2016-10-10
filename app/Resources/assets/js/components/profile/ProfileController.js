@@ -72,7 +72,7 @@ function ProfileController($rootScope, Api) {
 
             } else {
                 vm.message = {
-                    title: "passwords are not the same",
+                    title: "Passwords are not the same",
                     content: "Please be sure to fill in the same password.",
                     type: "alert-danger"
                 };

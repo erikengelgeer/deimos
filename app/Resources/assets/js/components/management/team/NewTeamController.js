@@ -62,7 +62,7 @@ function NewTeamController($rootScope, Api, $state) {
                 if (!result) {
                     // If name is not unique, show error message
                     vm.message = {
-                        'title': 'Name already taken',
+                        'title': 'Name is already taken',
                         'content': '<em>' + vm.team.name + '</em> is already present in our system, please choose an another name.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
@@ -70,7 +70,7 @@ function NewTeamController($rootScope, Api, $state) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful added',
+                        'title': 'Successfully added',
                         'content': '<em>' + vm.team.name + '</em> is successful added. return to the <a href="#/manage/teams">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'

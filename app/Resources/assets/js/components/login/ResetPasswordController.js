@@ -38,7 +38,7 @@ function ResetPasswordController($rootScope, Api) {
         else {
             vm.message = {
                 title: "Fields may not be blank",
-                content: "Please fill the field.",
+                content: "Please fill in the field.",
                 type: "alert-danger"
             };
         }

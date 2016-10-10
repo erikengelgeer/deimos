@@ -60,7 +60,7 @@ function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful updated',
+                        'title': 'Successfully updated',
                         'content': '<em>' + vm.taskType.short + '</em> is successful updated. return to the <a href="#/manage/tasks">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
