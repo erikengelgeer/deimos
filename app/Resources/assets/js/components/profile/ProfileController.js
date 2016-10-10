@@ -37,6 +37,7 @@ function ProfileController($rootScope, Api) {
     }
 
     function save() {
+        vm.message = null;
         if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
 
             // error if empty
@@ -71,8 +72,8 @@ function ProfileController($rootScope, Api) {
 
             } else {
                 vm.message = {
-                    title: "Fields may not be blank",
-                    content: "Fill in both required fields to change password.",
+                    title: "passwords are not the same",
+                    content: "Please be sure to fill in the same password.",
                     type: "alert-danger"
                 };
             }

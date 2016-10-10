@@ -4,7 +4,7 @@ function ResetPasswordController($rootScope, Api) {
     var vm = this;
 
     vm.email = "";
-    vm.message = {};
+    vm.message = null;
 
     vm.resetPassword = resetPassword;
 
@@ -19,17 +19,21 @@ function ResetPasswordController($rootScope, Api) {
                 type: "alert-danger"
             };
         } else if (vm.email.trim() != '') {
-            // TODO: api call for existing emails with accounts in database.
-
             Api.users.passwordRequest(vm.email).then(function (response) {
-                console.log(response);
+                vm.message = {
+                    title: "Successful send",
+                    content: "Success, check your email for a password reset link.",
+                    type: "alert-success"
+                };
+
+            }).catch(function (error) {
+                vm.message = {
+                    title: "Error",
+                    content: "ERROR",
+                    type: "alert-danger"
+                };
             });
 
-            vm.message = {
-                title: "Successful send",
-                content: "Success, check your email for a password reset link.",
-                type: "alert-success"
-            };
         }
         else {
             vm.message = {

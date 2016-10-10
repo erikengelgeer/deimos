@@ -7,7 +7,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
     vm.dataLoading = false;
     vm.username = '';
     vm.password = '';
-    vm.message = {};
+    vm.message = null;
     vm.roleId = null;
 
 
@@ -24,10 +24,12 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
         else {
             vm.dataLoading = true;
 
+            // checks the credentials
             Api.login.check(vm.username, vm.password).then(function (response) {
                 var token = response.data.token;
 
-                return Api.users.findLoggedIn().then(function (response) {
+                // calls a api call to find the current logged in user.
+                Api.users.findLoggedIn().then(function (response) {
                     if(response.data.locked) {
                         vm.dataLoading = false;
                         vm.message = {
@@ -36,6 +38,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
                             type: "alert-danger"
                         };
 
+                        // removes the default header authorization
                         $http.defaults.headers.common['Authorization'] = null;
                     }
                     else {

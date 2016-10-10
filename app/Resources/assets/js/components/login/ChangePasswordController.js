@@ -5,7 +5,7 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
 
     vm.password = '';
     vm.confirmationPassword = '';
-    vm.message = {};
+    vm.message = null;
     vm.user = null;
 
     vm.changePassword = changePassword;
@@ -19,7 +19,6 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
     }).finally(function () {
         $rootScope.loading = false;
     });
-
 
     function changePassword() {
         if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
@@ -36,12 +35,12 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
 
                 vm.user.newPassword = vm.password;
 
-                console.log(vm.user);
                 Api.users.passwordReset(vm.user).then(function () {
 
                     Api.login.check(vm.user.username, vm.user.newPassword).then(function (response) {
                         var token = response.data.token;
 
+                        // calls a api call to find the current logged in user.
                         return Api.users.findLoggedIn().then(function (response) {
                             if (response.data.locked) {
                                 vm.dataLoading = false;
@@ -51,6 +50,7 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
                                     type: "alert-danger"
                                 };
 
+                                // removes the default header authorization
                                 $http.defaults.headers.common['Authorization'] = null;
                             }
                             else {
