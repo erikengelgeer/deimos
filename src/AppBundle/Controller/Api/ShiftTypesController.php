@@ -63,14 +63,15 @@ class ShiftTypesController extends Controller
         $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-        $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $data->team->id));
+        $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team->id));
         dump($team);
         $shiftType = new ShiftType();
-        $shiftType->setDescription($data->description);
-        $shiftType->setShort($data->short);
+        $shiftType->setDescription($content->description);
+        $shiftType->setShort($content->short);
         $shiftType->setShiftDuration('');
         $shiftType->setWorkhoursDurationH('');
         $shiftType->setBreadDuration('');
+        $shiftType->setColor($content->color);
         $shiftType->setTeamFk($team);
 
         if (isset($content->default_start_time) && isset($content->default_end_time)) {
@@ -107,6 +108,7 @@ class ShiftTypesController extends Controller
         $shiftType->setShort($content->short);
         $shiftType->setBreadDuration($content->bread_duration);
         $shiftType->setTeamFk($team);
+        $shiftType->setColor($content->color);
 
         if(isset($content->default_start_time) && isset($content->default_end_time)) {
             $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));

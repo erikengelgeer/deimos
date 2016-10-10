@@ -1,6 +1,3 @@
-<!--<select class="form-control" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.selectTeam()">-->
-<!--</select>-->
-
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
         <div class="heading">
@@ -24,7 +21,7 @@
                     </span>
 
                     <div class="shift" ng-if="key > 0">
-                        <i class="fa fa-circle {{ today.shift.shiftTypeShort }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
+                        <i class="fa fa-circle" style="color: {{ today.shift.shiftColor }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
 
                         <!--<div class="actions">-->
                             <!--<i class="fa fa-pencil"></i>-->

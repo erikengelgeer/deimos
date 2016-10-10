@@ -31,7 +31,7 @@
 
                     <div class="shift-container col-md-8" ng-show="vm.selectedShift">
                         <div class=" shift">
-                            <i class="fa fa-circle state-1"></i>
+                            <i class="fa fa-circle" style="color: {{vm.selectedShift.shift_type_fk.color}}"></i>
                             <span>{{ vm.selectedShift.start_time | date: 'H:mm'}}</span> -
                             <span>{{ vm.selectedShift.end_time | date: 'H:mm'}}</span>
                         </div>
