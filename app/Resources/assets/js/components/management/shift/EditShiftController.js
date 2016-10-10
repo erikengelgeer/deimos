@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('EditShiftController', EditShiftController);
 
-function EditShiftController($rootScope, Api, $stateParams, $q) {
+function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var shiftId = $stateParams.shiftTypeId;
 
@@ -11,6 +11,10 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
     vm.shift = null;
 
     vm.update = update;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index')
+    }
 
     // Make a promise
     var promises = [];

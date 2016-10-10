@@ -1,6 +1,6 @@
 angular.module('app').controller('PlanUserController', PlanUserController);
 
-function PlanUserController($rootScope, Api, $q) {
+function PlanUserController($rootScope, Api, $q,$state) {
     var vm = this;
     var promises = [];
 
@@ -11,6 +11,10 @@ function PlanUserController($rootScope, Api, $q) {
 
     vm.checkUser = checkUser;
     vm.addShifts = addShifts;
+
+    if($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
+        $state.go('index');
+    }
 
     // find all users
     promises.push(Api.users.find().then(function (response) {

@@ -1,6 +1,6 @@
 angular.module('app').controller('EditUserController', EditUserController);
 
-function EditUserController($rootScope, Api, $stateParams, $q) {
+function EditUserController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var userId = $stateParams.userId;
     var promises = [];
@@ -11,6 +11,10 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
     vm.roles = null;
     vm.teams = null;
     vm.dataLoading = false;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     promises.push(Api.users.findOne(userId).then(function (response) {
         vm.user = response.data;

@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('NewTeamController', NewTeamController);
 
-function NewTeamController($rootScope, Api) {
+function NewTeamController($rootScope, Api, $state) {
     var vm = this;
 
     vm.team = {};
@@ -12,6 +12,10 @@ function NewTeamController($rootScope, Api) {
     vm.message = null;
 
     vm.add = add;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     // See if we can load timezones before everything (in the app.js) or keep it here
     Api.timezones.find().then(function (response) {

@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('ShiftController', ShiftController);
 
-function ShiftController($rootScope, Api, $q) {
+function ShiftController($rootScope, Api, $q, $state) {
     var vm = this;
     var promises = [];
 
@@ -13,6 +13,12 @@ function ShiftController($rootScope, Api, $q) {
 
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
+
+    console.log($rootScope.user.role_fk.role);
 
     promises.push(Api.shiftType.find().then(function (response) {
         vm.shifts = response.data;

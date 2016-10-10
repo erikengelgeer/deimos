@@ -12,6 +12,10 @@ function TeamController($rootScope, Api, $state) {
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
 
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
+
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
         console.log(response);

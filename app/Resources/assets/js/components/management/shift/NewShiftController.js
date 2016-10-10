@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('NewShiftController', NewShiftController);
 
-function NewShiftController($rootScope, Api) {
+function NewShiftController($rootScope, Api, $state) {
     var vm = this;
 
     vm.shift = {};
@@ -12,6 +12,11 @@ function NewShiftController($rootScope, Api) {
     vm.message = null;
 
     vm.add = add;
+
+    console.log($rootScope.user.role_fk.role);
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     Api.teams.find().then(function (response) {
         vm.team = response.data;

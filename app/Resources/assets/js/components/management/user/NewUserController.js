@@ -3,14 +3,17 @@
  */
 angular.module('app').controller('NewUserController', NewUserController);
 
-function NewUserController($rootScope, Api, $q) {
+function NewUserController($rootScope, Api, $q, $state) {
     var vm = this;
+    var promises = [];
 
     vm.add = add;
 
     vm.user = {};
 
-    var promises = [];
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     promises.push(Api.teams.find().then(function (response) {
         vm.teams = response.data;

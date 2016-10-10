@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('TaskController', TaskController);
 
-function TaskController($rootScope, Api) {
+function TaskController($rootScope, Api, $state) {
     var vm = this;
 
     vm.taskTypes = null;
@@ -11,6 +11,10 @@ function TaskController($rootScope, Api) {
 
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     Api.taskTypes.find().then(function (response) {
         vm.taskTypes = response.data;

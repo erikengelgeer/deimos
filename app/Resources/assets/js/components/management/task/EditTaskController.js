@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('EditTaskController', EditTaskController);
 
-function EditTaskController($rootScope, Api, $stateParams, $q) {
+function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var taskTypeId = $stateParams.taskTypeId;
 
@@ -11,6 +11,10 @@ function EditTaskController($rootScope, Api, $stateParams, $q) {
 
     vm.taskType = null;
     vm.dataLoading = false;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     Api.taskTypes.findOne(taskTypeId).then(function (response) {
         vm.taskType = response.data;

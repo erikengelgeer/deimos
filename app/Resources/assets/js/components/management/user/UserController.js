@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('UserController', UserController);
 
-function UserController($rootScope, Api, $q) {
+function UserController($rootScope, Api, $q, $state) {
     var vm = this;
     var promises = [];
 
@@ -14,6 +14,10 @@ function UserController($rootScope, Api, $q) {
     vm.updateRole = updateRole;
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
 
     promises.push(Api.users.find().then(function (response) {

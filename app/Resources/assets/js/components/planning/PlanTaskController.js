@@ -1,6 +1,6 @@
 angular.module('app').controller('PlanTaskController', PlanTaskController);
 
-function PlanTaskController($rootScope, Api, $q) {
+function PlanTaskController($rootScope, Api, $q, $state) {
     var vm = this;
     var promises = [];
 
@@ -14,6 +14,10 @@ function PlanTaskController($rootScope, Api, $q) {
     vm.selectUser = selectUser;
     vm.deleteTask = deleteTask;
     vm.addTask = addTask;
+
+    if($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
+        $state.go('index');
+    }
 
     vm.message = {
         'title': 'Information',

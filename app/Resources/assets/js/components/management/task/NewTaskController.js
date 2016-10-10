@@ -3,13 +3,17 @@
  */
 angular.module('app').controller('NewTaskController', NewTaskController);
 
-function NewTaskController($rootScope, Api) {
+function NewTaskController($rootScope, Api, $state) {
     var vm = this;
 
     vm.taskType = {};
     vm.dataLoading = false;
 
     vm.add = add;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     $rootScope.loading = false;
 

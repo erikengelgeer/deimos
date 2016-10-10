@@ -3,7 +3,7 @@
  */
 angular.module('app').controller('EditTeamController', EditTeamController);
 
-function EditTeamController($rootScope, Api, $stateParams, $q) {
+function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var teamId = $stateParams.teamId;
 
@@ -12,6 +12,10 @@ function EditTeamController($rootScope, Api, $stateParams, $q) {
     vm.dataLoading = false;
 
     vm.update = update;
+
+    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+        $state.go('index');
+    }
 
     // Make a promise
     var promises = [];
