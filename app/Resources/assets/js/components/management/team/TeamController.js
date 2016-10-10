@@ -32,7 +32,7 @@ function TeamController($rootScope, Api, $state) {
 
         Api.teams.disable(team.id).then(function () {
             vm.message = {
-                'title': 'Successful disabled',
+                'title': 'Successfully disabled',
                 'content': '<em>' + team.name + '</em> is successful disabled.',
                 'icon': 'fa-check',
                 'type': 'alert-success'

@@ -55,7 +55,7 @@ function NewShiftController($rootScope, Api) {
                 if (!result) {
                     // If name is not unique, show error message
                     vm.message = {
-                        'title': 'Name already taken',
+                        'title': 'Name is already taken',
                         'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'

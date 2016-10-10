@@ -124,20 +124,23 @@ function PlanTaskController($rootScope, Api, $q) {
             shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
 
             // TODO: validate this if
-            if (task.startTime < shiftStartTime && task.startTime > shiftEndTime) {
+            if (task.startTime < shiftStartTime || task.startTime > shiftEndTime || task.endTime <= task.startTime || task.endTime > shiftEndTime) {
                 vm.message = {
-                    'title': 'Start time is invalid',
+                    'title': 'The given times are invalid.',
                     'content': 'The chosen start time is invalid, please try again.',
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 }
-            } else if (task.endTime <= task.startTime && task.endTime > shiftEndTime) {
-                vm.message = {
-                    'title': 'End time is invalid',
-                    'content': 'The chosen end time is invalid, please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
+
+                console.log(task.startTime, task.endTime);
+            // } else if (task.endTime <= task.startTime || task.endTime > shiftEndTime) {
+            //     vm.message = {
+            //         'title': 'End time is invalid',
+            //         'content': 'The chosen end time is invalid, please try again.',
+            //         'icon': 'fa-exclamation',
+            //         'type': 'alert-danger'
+            //     }
+                console.log(shiftStartTime, shiftEndTime);
             } else {
                 var startTime = task.startTime.split(':');
                 var endTime = task.endTime.split(':');

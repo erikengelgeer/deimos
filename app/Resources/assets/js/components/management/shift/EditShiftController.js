@@ -68,7 +68,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
                 if (!result) {
                     // If name is not unique, show error message
                     vm.message = {
-                        'title': 'Name already taken',
+                        'title': 'Name is already taken',
                         'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
@@ -76,7 +76,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful updated',
+                        'title': 'Successfully updated the shift',
                         'content': '<em>' + vm.shift.short + '</em> is successful updated. return to the <a href="#/manage/shifts">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'

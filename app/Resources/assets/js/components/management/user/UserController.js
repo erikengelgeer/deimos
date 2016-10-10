@@ -40,7 +40,7 @@ function UserController($rootScope, Api, $q) {
 
         Api.users.updateRole(user).then(function () {
             vm.message = {
-                'title': 'Role successful changed',
+                'title': 'Role changed successfully',
                 'content': 'The role of user: <em>' + user.username + '</em> is successfuly changed.',
                 'icon': 'fa-check',
                 'type': 'alert-success'
@@ -62,7 +62,7 @@ function UserController($rootScope, Api, $q) {
 
         Api.users.disable(user.id).then(function () {
             vm.message = {
-                'title': 'Successful disabled',
+                'title': 'Successfully disabled',
                 'content': '<em>' + user.username + '</em> is successful disabled.',
                 'icon': 'fa-check',
                 'type': 'alert-success'

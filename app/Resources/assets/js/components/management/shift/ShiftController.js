@@ -39,7 +39,7 @@ function ShiftController($rootScope, Api, $q) {
         shift.disableLoading = true;
         Api.shiftType.disable(shift.id).then(function () {
             vm.message = {
-                'title': 'Successful disabled',
+                'title': 'Successfully disabled',
                 'content': '<em>' + shift.short + '</em> is successful disabled.',
                 'icon': 'fa-check',
                 'type': 'alert-success'

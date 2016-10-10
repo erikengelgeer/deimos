@@ -44,7 +44,7 @@ function NewTaskController($rootScope, Api) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful added',
+                        'title': 'Successfully added',
                         'content': '<em>' + vm.taskType.short + '</em> is successful added. return to the <a href="#/manage/tasks">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'

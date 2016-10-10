@@ -52,7 +52,7 @@ function NewUserController($rootScope, Api, $q) {
                 if (!result) {
                     // If username is not unique, show error message
                     vm.message = {
-                        'title': 'username or email is already taken',
+                        'title': 'Username or email is already taken',
                         'content': '<em>' + vm.user.username + '</em> and/or ' + vm.user.email + ' is already present in our system, please choose an another username and/or email.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
@@ -60,7 +60,7 @@ function NewUserController($rootScope, Api, $q) {
                 } else {
                     // If successful, show success message.
                     vm.message = {
-                        'title': 'Successful added',
+                        'title': 'Successfully added',
                         'content': '<em>' + vm.user.username + '</em> is successful added. return to the <a href="#/manage/users">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
