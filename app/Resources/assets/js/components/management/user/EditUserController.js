@@ -57,7 +57,7 @@ function EditUserController($rootScope, Api, $stateParams, $q) {
             vm.user.newRole = newRoleId;
             vm.user.newTeam = newTeamId;
 
-            Api.users.update(vm.user).then(function (response) {
+            Api.users.update.update(vm.user).then(function (response) {
                 var result = response.data.result;
 
                 if (!result) {

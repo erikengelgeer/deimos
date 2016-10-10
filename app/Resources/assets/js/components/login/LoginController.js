@@ -1,34 +1,63 @@
 angular.module('app').controller('LoginController', LoginController);
 
-function LoginController($rootScope, $state, Api) {
+function LoginController($rootScope, $state, Api, $localStorage, $http) {
     var vm = this;
 
+    $rootScope.loading = false;
+    vm.dataLoading = false;
     vm.username = '';
     vm.password = '';
-    vm.hasPassword = false;
+    vm.message = null;
+    vm.roleId = null;
 
-    vm.checkUser = checkUser;
-    vm.login = login;
 
-    $rootScope.loading = false;
+    vm.checkLogin = checkLogin;
 
-    function checkUser() {
-        console.log(vm.username);
-        if (vm.username.trim() != '') {
-            Api.users.find(null, vm.username).then(function (response) {
-                console.log(response.data);
-                vm.hasPassword = true;
+    function checkLogin() {
+        if(!vm.username || !vm.password) {
+            vm.message = {
+                title: "Login failed",
+                content: "Both username and password are required to login. Please try again.",
+                type: "alert-danger"
+            };
+        }
+        else {
+            vm.dataLoading = true;
+
+            // checks the credentials
+            Api.login.check(vm.username, vm.password).then(function (response) {
+                var token = response.data.token;
+
+                // calls a api call to find the current logged in user.
+                Api.users.findLoggedIn().then(function (response) {
+                    if(response.data.locked) {
+                        vm.dataLoading = false;
+                        vm.message = {
+                            title: "Locked",
+                            content: "Your account is locked. Please contact the admin.",
+                            type: "alert-danger"
+                        };
+
+                        // removes the default header authorization
+                        $http.defaults.headers.common['Authorization'] = null;
+                    }
+                    else {
+                        $localStorage.token = token;
+                        $rootScope.user = response.data;
+                        $state.go('index');
+                    }
+                });
+
+            }).catch(function (error) {
+                vm.dataLoading = false;
+                if(error.status == 401) {
+                    vm.message = {
+                        title: "Login failed",
+                        content: "Either your username or your password is incorrect. Please try again.",
+                        type: "alert-danger"
+                    };
+                }
             });
-            // TODO: make here an api call to check the user's role.
-            // TODO: if the user does not exist, return warning/error?
-
         }
-    }
-
-    function login() {
-        if(vm.username != '' && vm.password != '') {
-            console.log('login');
-        }
-
     }
 }

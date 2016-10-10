@@ -1,15 +1,15 @@
 angular.module('app').controller('ProfileController', ProfileController);
 
-function ProfileController($rootScope) {
+function ProfileController($rootScope, Api) {
     var vm = this;
     $rootScope.loading = false;
 
     vm.measurePassword = measurePassword;
     vm.save = save;
 
+    vm.message = null;
     vm.password = "";
     vm.confirmationPassword = "";
-    vm.strengthText = '';
 
     var progressBar = $(".progress-bar");
     var strength = 0;
@@ -37,24 +37,47 @@ function ProfileController($rootScope) {
     }
 
     function save() {
-        if (vm.password.trim() != '' && vm.confirmationPassword.trim() != '') {
+        vm.message = null;
+        if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
 
+            // error if empty
+            vm.message = {
+                title: "Fields may not be blank",
+                content: "Fill in both required fields to change password.",
+                type: "alert-danger"
+            };
+
+        } else {
             if (vm.password.trim() == vm.confirmationPassword.trim()) {
 
-                var result = zxcvbn(vm.password);
+                vm.dataLoading = true;
 
-                if (result.score == 0 || result.score == 1) {
-                    var message = "are you sure? your password is " + strengths[result.score].toLowerCase() + ", \nyou might want to change your password. \nThe given password can be guessed within " + Math.ceil(result.crack_times_seconds.online_throttling_100_per_hour / 86400) + " day(s).";
-                    console.log(message);
-                }
 
-            //    maybe api call?
+                Api.users.update.password(vm.password).then(function () {
+                    // $rootScope.user = response.data;
+
+                    vm.message = {
+                        title: 'Successfully updated',
+                        content: 'Successfully updated your password.',
+                        type: 'alert-success'
+                    };
+
+                    vm.password = '';
+                    vm.confirmationPassword = '';
+                    vm.dataLoading = false;
+
+                    measurePassword();
+
+                });
 
             } else {
-                console.log('an another error yay!')
+                vm.message = {
+                    title: "passwords are not the same",
+                    content: "Please be sure to fill in the same password.",
+                    type: "alert-danger"
+                };
             }
-        } else {
-            console.log("error");
         }
     }
+
 }

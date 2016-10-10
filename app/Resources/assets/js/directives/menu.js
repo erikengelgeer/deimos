@@ -2,17 +2,16 @@ angular.module('app').directive('menu', menu);
 
 function menu() {
 
-
     return {
         restrict: "A",
         templateUrl: "partials/nav.html",
         scope: {},
         controllerAs: 'vm',
-        controller: function ($scope, $rootScope, $state, $timeout) {
+        controller: function ($scope, $rootScope, $state, $timeout, $localStorage) {
             var vm = this;
 
             vm.checkStates = checkStates;
-
+            vm.logout = logout;
 
             function checkStates() {
                 var states = [  'manage-shifts', 'manage-shifts-edit', 'manage-shifts-new',
@@ -30,7 +29,12 @@ function menu() {
                 }
                 return result;
             }
+
+            function logout() {
+                delete $localStorage.token;
+                delete $localStorage.loggedInUser;
+                console.log('Trying to log out.');
+            }
         }
     }
-
 }

@@ -1,18 +1,42 @@
 var dependencies = [
     "ui.router",
+    "ngStorage",
     "ngSanitize"
 ];
 
-function AppRun($rootScope, $state) {
+function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
     $rootScope.loading = true;
     $rootScope.$state = $state;
-    // $rootScope.tasks = [
-    //     {
-    //         startTime:"12:00",
-    //         endTime:"13:00",
-    //         taskName:"Deimos design"
-    //     }
-    // ];
+
+    if ($localStorage.token) {
+        $http.defaults.headers.common['Authorization'] = 'Bearer ' + $localStorage.token;
+
+        var promises = [];
+
+        promises.push(Api.users.findLoggedIn().then(function (response) {
+            $rootScope.user = response.data;
+
+            console.log($rootScope.user);
+        }));
+
+        $q.all(promises).catch(function (err) {
+            if (err.status == 401) {
+                delete $localStorage.token;
+                $state.go('login');
+            }
+        });
+    }
+
+    $rootScope.$on('$stateChangeStart', function (e, toState) {
+        console.log('state changed');
+        if (!$localStorage.token && toState.name != 'login' && toState.name != 'reset-password' && toState.name != 'change-password') {
+            e.preventDefault();
+            $state.go('login');
+        } else if ($localStorage.token && toState.name == 'login' && toState.name == 'reset-password' && toState.name == 'change-password') {
+            e.preventDefault();
+            $state.go('index');
+        }
+    });
 }
 
 function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
@@ -35,7 +59,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controllerAs: "vm"
         })
         .state('change-password', {
-            url: "/change-password",
+            url: "/change-password/{token}",
             templateUrl: "partials/login/change-password.html",
             controller: "ChangePasswordController",
             controllerAs: "vm"
@@ -46,19 +70,19 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "ResetPasswordController",
             controllerAs: "vm"
         })
-        .state('profile',{
+        .state('profile', {
             url: "/profile",
             templateUrl: "partials/profile/profile.html",
             controller: "ProfileController",
             controllerAs: "vm"
         })
-        .state('manage-teams',{
+        .state('manage-teams', {
             url: "/manage/teams",
             templateUrl: "partials/management/team/index.html",
             controller: "TeamController",
             controllerAs: "vm"
         })
-        .state('manage-teams-new',{
+        .state('manage-teams-new', {
             url: "/manage/teams/new",
             templateUrl: "partials/management/team/new.html",
             controller: "NewTeamController",
@@ -70,13 +94,13 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "EditTeamController",
             controllerAs: "vm"
         })
-        .state('manage-users',{
+        .state('manage-users', {
             url: "/manage/users",
             templateUrl: "partials/management/user/index.html",
             controller: "UserController",
             controllerAs: "vm"
         })
-        .state('manage-users-new',{
+        .state('manage-users-new', {
             url: "/manage/users/new",
             templateUrl: "partials/management/user/new.html",
             controller: "NewUserController",
@@ -88,13 +112,13 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "EditUserController",
             controllerAs: "vm"
         })
-        .state('manage-shifts',{
+        .state('manage-shifts', {
             url: "/manage/shifts",
             templateUrl: "partials/management/shift/index.html",
             controller: "ShiftController",
             controllerAs: "vm"
         })
-        .state('manage-shifts-new',{
+        .state('manage-shifts-new', {
             url: "/manage/shifts/new",
             templateUrl: "partials/management/shift/new.html",
             controller: "NewShiftController",
@@ -112,7 +136,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "TaskController",
             controllerAs: "vm"
         })
-        .state('manage-tasks-new',{
+        .state('manage-tasks-new', {
             url: "/manage/tasks/new",
             templateUrl: "partials/management/task/new.html",
             controller: "NewTaskController",
@@ -124,7 +148,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "EditTaskController",
             controllerAs: "vm"
         })
-        .state('plan-users',{
+        .state('plan-users', {
             url: "/plan/users",
             templateUrl: "partials/planning/users.html",
             controller: "PlanUserController",
