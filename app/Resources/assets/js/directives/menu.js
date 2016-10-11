@@ -11,23 +11,20 @@ function menu() {
         controller: function ($scope, $rootScope, $state, $timeout, $localStorage, Api) {
             var vm = this;
 
-            vm.setTeam = setTeam;
             vm.logout = logout;
             vm.checkStates = checkStates;
 
+            vm.toggleTeamSelectMenu = toggleTeamSelectMenu;
+            vm.selectTeam = selectTeam;
+
             vm.selectedTeam = null;
+            vm.selectTeamActive = false;
 
             Api.teams.find().then(function (response) {
                 vm.teams = response.data;
 
-                vm.selectedTeam = vm.teams[0];
-                $rootScope.team = vm.selectedTeam;
+                $rootScope.team = vm.teams[0];
             });
-
-
-            function setTeam() {
-                $rootScope.team = vm.selectedTeam;
-            }
 
             function checkStates() {
                 var states = [  'manage-shifts', 'manage-shifts-edit', 'manage-shifts-new',
@@ -50,6 +47,15 @@ function menu() {
                 delete $localStorage.token;
                 delete $localStorage.loggedInUser;
                 console.log('Trying to log out.');
+            }
+
+            function toggleTeamSelectMenu() {
+                vm.selectTeamActive = !vm.selectTeamActive;
+            }
+
+            function selectTeam(team) {
+                $rootScope.team = team;
+                vm.selectTeamActive = false;
             }
         }
     }

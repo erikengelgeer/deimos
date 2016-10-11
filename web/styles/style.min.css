@@ -154,6 +154,63 @@
       font-weight: 700;
       font-style: italic;
       line-height: 64px; }
+  .nav-bar .team-select {
+    float: left;
+    transition: all .15s ease-in-out;
+    cursor: pointer;
+    position: relative; }
+    .nav-bar .team-select span {
+      padding: 0 15px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+      line-height: 64px;
+      text-transform: uppercase; }
+      .nav-bar .team-select span i {
+        margin-right: 10px; }
+      .nav-bar .team-select span span {
+        padding-right: 0; }
+    .nav-bar .team-select.active, .nav-bar .team-select:hover {
+      background: rgba(255, 255, 255, 0.125); }
+      .nav-bar .team-select.active span, .nav-bar .team-select:hover span {
+        color: #fff; }
+    .nav-bar .team-select .team-select-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      float: left;
+      min-width: 160px;
+      padding: 5px 0;
+      margin: 2px 0 0;
+      font-size: 14px;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+      .nav-bar .team-select .team-select-dropdown li {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: #999;
+        white-space: nowrap;
+        transition: all .15s ease-in-out; }
+        .nav-bar .team-select .team-select-dropdown li.active {
+          background-color: #06AECE;
+          color: #fff; }
+          .nav-bar .team-select .team-select-dropdown li.active:hover {
+            background-color: #06AECE;
+            color: #fff; }
+        .nav-bar .team-select .team-select-dropdown li:hover {
+          color: #262626;
+          text-decoration: none;
+          background-color: #f5f5f5; }
   .nav-bar .account {
     float: right;
     margin: 15px 15px 15px 0; }

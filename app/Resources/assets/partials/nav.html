@@ -4,6 +4,14 @@
         <span>Deimos</span>
     </div>
 
+    <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}">
+        <span><i class="fa fa-globe"></i>{{ $root.team.name }} <span class="fa fa-caret-down"></span></span>
+
+        <ul class="team-select-dropdown" ng-show="vm.selectTeamActive">
+            <li ng-repeat="team in vm.teams" ng-click="vm.selectTeam(team); $event.stopPropagation();" ng-class="{'active': team.name == $root.team.name}">{{ team.name }}</li>
+        </ul>
+    </div>
+
     <div ng-if="!$root.$state.is('login') && !$root.$state.is('change-password') && !$root.$state.is('reset-password')">
         <div class="account dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
@@ -27,10 +35,10 @@
         <div class="item">
             <i class="fa fa-calendar-minus-o"></i>
         </div>
-        <div >
-            <select class="form-control selectTeam" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.setTeam()">
-            </select>
-        </div>
+        <!--<div >-->
+            <!--<select class="form-control selectTeam" ng-model="vm.selectedTeam.id" ng-options="team.id as team.name for team in vm.teams" ng-change="vm.setTeam()">-->
+            <!--</select>-->
+        <!--</div>-->
     </div>
 </div>
 
