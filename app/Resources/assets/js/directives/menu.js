@@ -16,15 +16,18 @@ function menu() {
             vm.logout = logout;
             vm.checkStates = checkStates;
 
+            vm.toggleTeamSelectMenu = toggleTeamSelectMenu;
+            vm.selectTeam = selectTeam;
+
             vm.selectedTeam = null;
+            vm.selectTeamActive = false;
             vm.selectedDate = null;
 
             // TODO: make promise
             Api.teams.find().then(function (response) {
                 vm.teams = response.data;
 
-                vm.selectedTeam = vm.teams[0];
-                $rootScope.team = vm.selectedTeam;
+                $rootScope.team = vm.teams[0];
             });
 
             Api.shifts.findByUserAndDate($rootScope.user.id, date).then(function (response) {
@@ -61,6 +64,15 @@ function menu() {
                 delete $localStorage.token;
                 delete $localStorage.loggedInUser;
                 console.log('Trying to log out.');
+            }
+
+            function toggleTeamSelectMenu() {
+                vm.selectTeamActive = !vm.selectTeamActive;
+            }
+
+            function selectTeam(team) {
+                $rootScope.team = team;
+                vm.selectTeamActive = false;
             }
         }
     }
