@@ -7,6 +7,7 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
     vm.confirmationPassword = '';
     vm.message = null;
     vm.user = null;
+    vm.dataLoading = false;
 
     vm.changePassword = changePassword;
 
@@ -21,7 +22,9 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
     });
 
     function changePassword() {
-        if (vm.password.trim() == '' && vm.confirmationPassword.trim() == '') {
+        vm.message = null;
+
+        if (vm.password.trim() == '' || vm.confirmationPassword.trim() == '') {
             // error if empty
             vm.message = {
                 title: "Fields may not be blank",
@@ -32,7 +35,6 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
             if (vm.password.trim() == vm.confirmationPassword.trim()) {
 
                 vm.dataLoading = true;
-
                 vm.user.newPassword = vm.password;
 
                 Api.users.passwordReset(vm.user).then(function () {
@@ -59,7 +61,9 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
                                 $state.go('index');
                             }
                         });
-                    })
+                    }).finally(function () {
+                        vm.dataLoading = false;
+                    });
                 });
 
             } else {

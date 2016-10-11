@@ -1021,6 +1021,15 @@ body {
   .form-requirement i {
     margin-right: 5px; }
 
+.loading-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999; }
+
 .loading-logo::after, .loading-logo::before {
   content: '';
   top: 0;

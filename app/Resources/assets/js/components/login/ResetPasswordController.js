@@ -5,13 +5,15 @@ function ResetPasswordController($rootScope, Api) {
 
     vm.email = "";
     vm.message = null;
+    vm.dataLoading = null;
 
     vm.resetPassword = resetPassword;
 
     $rootScope.loading = false;
 
     function resetPassword() {
-        console.log(vm.email);
+        vm.message = null;
+
         if (vm.email == undefined) {
             vm.message = {
                 title: "Fields may not be blank",
@@ -19,6 +21,7 @@ function ResetPasswordController($rootScope, Api) {
                 type: "alert-danger"
             };
         } else if (vm.email.trim() != '') {
+            vm.dataLoading = true;
             Api.users.passwordRequest(vm.email).then(function () {
                 vm.message = {
                     title: "Successful send",
@@ -26,12 +29,16 @@ function ResetPasswordController($rootScope, Api) {
                     type: "alert-success"
                 };
 
+                vm.email = "";
+
             }).catch(function (error) {
                 vm.message = {
                     title: "Error",
                     content: "ERROR",
                     type: "alert-danger"
                 };
+            }).finally(function () {
+                vm.dataLoading = false;
             });
 
         }
