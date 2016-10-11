@@ -1046,9 +1046,9 @@ body {
   margin: -32px 0 0 -32px;
   z-index: 9; }
   .loading-logo img {
-    width: 42px;
-    margin-top: 16px;
-    margin-left: 11px; }
+    width: 46px;
+    margin-top: 14px;
+    margin-left: 9px; }
   .loading-logo::before {
     animation: pulsate-2 1.2s ease-in-out;
     animation-iteration-count: infinite;

@@ -4,7 +4,7 @@
         <span>Deimos</span>
     </div>
 
-    <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}">
+    <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}" ng-if="!$root.$state.is('login') && !$root.$state.is('change-password') && !$root.$state.is('reset-password')">
         <span><i class="fa fa-globe"></i>{{ $root.team.name }} <span class="fa fa-caret-down"></span></span>
 
         <ul class="team-select-dropdown" ng-show="vm.selectTeamActive">

@@ -18,6 +18,7 @@ class ShiftRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('AppBundle:Team', 'tm', 'WITH', 'u.teamFk = tm.id')
             ->where('s.date BETWEEN :firstDate AND :lastDate')
             ->andWhere('tm.id = :teamId')
+            ->andWhere('u.enabled = 1')
             ->addOrderBy('s.id')
             ->addOrderBy('t.startTime', 'ASC')
             ->setParameter('firstDate', $firstDate)

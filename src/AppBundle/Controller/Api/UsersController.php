@@ -361,7 +361,7 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findBy(array('teamFk' => $team));
+        $users = $repository->findBy(array('teamFk' => $team, 'enabled' => 1));
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
