@@ -55,12 +55,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="tasksModalLabel">Assigned Tasks for: </h4>
+                <h4 class="modal-title" id="tasksModalLabel">Assigned Tasks for: {{ $root.user.real_name }}</h4>
             </div>
             <div class="modal-body">
                 <div class="tasks-container">
-                    <div class="task"><span>12:00 - 13:00</span> Meeting</div>
-                    <div class="task"><span>12:00 - 13:00</span> Deimos Design</div>
+                    <div class="task" ng-repeat="task in vm.shift.tasks">
+                        <span>{{ task.start_time | date:'H:mm'}} - {{ task.end_time | date:'H:mm'}}</span>
+                        <span>{{ task.description }}</span>
+                    </div>
                 </div>
             </div>
         </div>
