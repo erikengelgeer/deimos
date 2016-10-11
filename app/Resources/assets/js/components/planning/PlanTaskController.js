@@ -2,20 +2,21 @@ angular.module('app').controller('PlanTaskController', PlanTaskController);
 
 function PlanTaskController($rootScope, Api, $q, $state) {
     var vm = this;
+    var datepicker = $('#datetimepicker-2');
     var promises = [];
 
     vm.users = [];
     vm.taskTypes = [];
 
-    vm.selectedUser = null;
     vm.activeDates = [];
+    vm.selectedUser = null;
     vm.selectedShift = null;
 
     vm.selectUser = selectUser;
     vm.deleteTask = deleteTask;
     vm.addTask = addTask;
 
-    if($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
+    if ($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
         $state.go('index');
     }
 
@@ -39,8 +40,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     });
 
     function selectUser() {
-
+        vm.activeDates = [];
+        vm.selectedShift = null;
         vm.message = null;
+
+        if (datepicker != undefined) {
+            datepicker.datepicker('destroy');
+        }
 
         Api.shifts.findByUser(vm.selectedUser).then(function (response) {
             vm.activeDates = response.data;
@@ -60,7 +66,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     function buildDatepicker() {
         var startDate = new Date();
-        var datepicker = $('#datetimepicker-2');
 
         datepicker.datepicker({
             multidate: false,
@@ -88,15 +93,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     }
                 }
             }
-        });
-
-        //    Datepicker events
-        datepicker.datepicker().on('changeDate', function (e) {
-            var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
-
-            Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
-                vm.selectedShift = response.data;
-            })
         });
     }
 
@@ -127,24 +123,18 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
             shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
 
-            // TODO: validate this if
-            if (task.startTime < shiftStartTime || task.startTime > shiftEndTime || task.endTime <= task.startTime || task.endTime > shiftEndTime) {
+            if (Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                Date.parse('01/01/1970 ' + task.endTime) <= Date.parse('01/01/1970 ' + task.startTime) ||
+                Date.parse('01/01/1970 ' + task.endTime) > Date.parse('01/01/1970 ' + shiftEndTime)) {
+
                 vm.message = {
                     'title': 'The given times are invalid.',
-                    'content': 'The chosen start time is invalid, please try again.',
+                    'content': 'The chosen time is invalid, please try again.',
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 }
 
-                console.log(task.startTime, task.endTime);
-            // } else if (task.endTime <= task.startTime || task.endTime > shiftEndTime) {
-            //     vm.message = {
-            //         'title': 'End time is invalid',
-            //         'content': 'The chosen end time is invalid, please try again.',
-            //         'icon': 'fa-exclamation',
-            //         'type': 'alert-danger'
-            //     }
-                console.log(shiftStartTime, shiftEndTime);
             } else {
                 var startTime = task.startTime.split(':');
                 var endTime = task.endTime.split(':');
@@ -197,6 +187,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             });
         })
     }
+
+    datepicker.datepicker().on('changeDate', function (e) {
+        var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
+
+        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
+            vm.selectedShift = response.data;
+        })
+    });
 
 
 }
