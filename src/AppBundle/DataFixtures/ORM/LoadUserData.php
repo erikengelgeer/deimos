@@ -22,7 +22,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user1->setUsername('admin');
         $user1->setPlainPassword('test');
         $user1->setRealName('Erik');
-        $user1->setEmail('admin@local.host');
+        $user1->setEmail('erik.engelgeer@agfa.com');
         $user1->setEnabled(true);
         $user1->setLocked(false);
         $user1->setExpired(false);
@@ -32,7 +32,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user2->setUsername('user');
         $user2->setPlainPassword('null');
         $user2->setRealName('Nick');
-        $user2->setEmail('user@local.host');
+        $user2->setEmail('danny.nieuwmans@agfa.com');
         $user2->setEnabled(true);
         $user2->setLocked(false);
         $user2->setExpired(false);

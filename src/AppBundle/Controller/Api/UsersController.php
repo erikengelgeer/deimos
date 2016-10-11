@@ -103,6 +103,17 @@ class UsersController extends Controller
 
         $manager->updateUser($user);
 
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Deimos - Password request')
+            ->setFrom('noreply@agfa.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView('emails/password-request.html.twig', array("user" => $user, "token" => $token)), 'text/html'
+            );
+
+        $this->get('mailer')->send($message);
+
+
         $data = $this->get('serializer')->serialize([], 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
