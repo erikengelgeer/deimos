@@ -37,7 +37,9 @@
             </div>
             <div class="col-md-4">
                 <label for="color">Color:</label>
-                <input type="text" class="form-control" id="color" ng-model="vm.shift.color" >
+                <select id="color" class="form-control" ng-model="vm.shift.color" ng-options="color for color in vm.colors">
+                    <option value="" ng-disabled="!!vm.shift.color">Select a color</option>
+                </select>
             </div>
             <div class="col-md-4">
                 <label for="inputTeam">Team:</label>

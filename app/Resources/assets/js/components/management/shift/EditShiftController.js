@@ -9,6 +9,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.teams = null;
     vm.shift = null;
+    vm.colors = {};
 
     vm.update = update;
 
@@ -30,6 +31,11 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     // Fetch the team with the given team id.
     promises.push(Api.teams.find().then(function (response) {
         vm.teams = response.data;
+    }));
+
+    // fetch all the colors.
+    promises.push(Api.colors.find().then(function (response) {
+        vm.colors = response.data;
     }));
 
     $q.all(promises).catch(function (response) {
