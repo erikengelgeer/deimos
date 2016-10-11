@@ -1020,3 +1020,56 @@ body {
   font-style: italic; }
   .form-requirement i {
     margin-right: 5px; }
+
+.loading-logo::after, .loading-logo::before {
+  content: '';
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #06AECE;
+  position: absolute;
+  border-radius: 50%;
+  animation: pulsate 1.2s ease-in-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  z-index: 8; }
+
+.loading-logo {
+  width: 64px;
+  height: 64px;
+  background: #06AECE;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -32px 0 0 -32px;
+  z-index: 9; }
+  .loading-logo img {
+    width: 42px;
+    margin-top: 16px;
+    margin-left: 11px; }
+  .loading-logo::before {
+    animation: pulsate-2 1.2s ease-in-out;
+    animation-iteration-count: infinite;
+    animation-delay: 0.2s; }
+
+@-webkit-keyframes pulsate {
+  0% {
+    transform: scale(1, 1);
+    opacity: 0.0; }
+  50% {
+    opacity: 1.0; }
+  100% {
+    transform: scale(1.6, 1.6);
+    opacity: 0.0; } }
+
+@-webkit-keyframes pulsate-2 {
+  0% {
+    transform: scale(1, 1);
+    opacity: 0.0; }
+  50% {
+    opacity: 1.0; }
+  100% {
+    transform: scale(1.4, 1.4);
+    opacity: 0.0; } }
