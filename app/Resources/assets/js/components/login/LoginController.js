@@ -14,7 +14,9 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
     vm.checkLogin = checkLogin;
 
     function checkLogin() {
-        if(!vm.username || !vm.password) {
+        vm.message = null;
+
+        if (!vm.username || !vm.password) {
             vm.message = {
                 title: "Login failed",
                 content: "Both username and password are required to login. Please try again.",
@@ -30,7 +32,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
 
                 // calls a api call to find the current logged in user.
                 Api.users.findLoggedIn().then(function (response) {
-                    if(response.data.locked) {
+                    if (response.data.locked) {
                         vm.dataLoading = false;
                         vm.message = {
                             title: "Locked",
@@ -50,7 +52,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
 
             }).catch(function (error) {
                 vm.dataLoading = false;
-                if(error.status == 401) {
+                if (error.status == 401) {
                     vm.message = {
                         title: "Login failed",
                         content: "Either your username or your password is incorrect. Please try again.",
