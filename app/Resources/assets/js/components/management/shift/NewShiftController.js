@@ -3,24 +3,31 @@
  */
 angular.module('app').controller('NewShiftController', NewShiftController);
 
-function NewShiftController($rootScope, Api, $state) {
+function NewShiftController($rootScope, Api, $state, $q) {
     var vm = this;
+    var promises = [];
 
     vm.shift = {};
     vm.team = {};
+    vm.colors = {};
     vm.dataLoading = false;
     vm.message = null;
 
     vm.add = add;
 
-    console.log($rootScope.user.role_fk.role);
     if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
     }
 
-    Api.teams.find().then(function (response) {
+    promises.push(Api.colors.find().then(function (response) {
+        vm.colors = response.data;
+    }));
+
+    promises.push(Api.teams.find().then(function (response) {
         vm.team = response.data;
-    }, function errorCallback(response) {
+    }));
+
+    $q.all(promises).catch(function (response) {
         vm.message = {
             'title': response.status + ', ' + response.statusText + '.',
             'content': 'Please notify the admin regarding this error.',
