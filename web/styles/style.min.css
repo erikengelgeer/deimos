@@ -156,7 +156,7 @@
       line-height: 64px; }
   .nav-bar .account {
     float: right;
-    margin: 15px 15px 15px 0; }
+    margin: 15px; }
     .nav-bar .account button i {
       margin-right: 10px; }
     .nav-bar .account button .caret {
@@ -165,7 +165,7 @@
     float: right;
     color: rgba(255, 255, 255, 0.7);
     display: block;
-    margin: 15px;
+    margin: 15px 5px 15px 0px;
     border-radius: 9999px;
     width: 34px;
     height: 34px;
@@ -250,6 +250,9 @@
   border-radius: 3px;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 2px rgba(0, 0, 0, 0.1);
   border: none; }
+
+.legend i {
+  margin-right: 10px; }
 
 .task {
   width: 100%;

@@ -31,21 +31,26 @@ function menu() {
                 vm.shift = response.data;
             });
 
+            Api.shiftType.find().then(function (response) {
+                vm.shiftTypes = response.data;
+                console.log(vm.shiftTypes);
+            });
+
             function setTeam() {
                 $rootScope.team = vm.selectedTeam;
             }
 
             function checkStates() {
-                var states = [  'manage-shifts', 'manage-shifts-edit', 'manage-shifts-new',
-                                'manage-tasks', 'manage-tasks-edit', 'manage-tasks-new',
-                                'manage-users', 'manage-users-edit', 'manage-users-new',
-                                'manage-teams', 'manage-teams-edit', 'manage-teams-new',
-                                'plan-users', 'plan-tasks'];
-                
-                for(var i = 0; i < states.length; i++) {
+                var states = ['manage-shifts', 'manage-shifts-edit', 'manage-shifts-new',
+                    'manage-tasks', 'manage-tasks-edit', 'manage-tasks-new',
+                    'manage-users', 'manage-users-edit', 'manage-users-new',
+                    'manage-teams', 'manage-teams-edit', 'manage-teams-new',
+                    'plan-users', 'plan-tasks'];
+
+                for (var i = 0; i < states.length; i++) {
                     result = $state.current.name == states[i];
 
-                    if(result) {
+                    if (result) {
                         break;
                     }
                 }
