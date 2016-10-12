@@ -1,6 +1,6 @@
 angular.module('app').controller('LoginController', LoginController);
 
-function LoginController($rootScope, $state, Api, $localStorage, $http) {
+function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
     var vm = this;
 
     $rootScope.loading = false;
@@ -46,7 +46,27 @@ function LoginController($rootScope, $state, Api, $localStorage, $http) {
                     else {
                         $localStorage.token = token;
                         $rootScope.user = response.data;
-                        $state.go('index');
+
+                        var promises = [];
+                        var dateToday = new Date();
+                        var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
+
+                        promises.push(Api.teams.find().then(function (response) {
+                            $rootScope.teams = response.data;
+                            $rootScope.team = $rootScope.user.team_fk;
+                        }));
+
+                        promises.push(Api.shiftType.find().then(function (response) {
+                            $rootScope.shiftTypes = response.data;
+                        }));
+
+                        promises.push(Api.shifts.findByUserAndDate($rootScope.user.id, date).then(function (response) {
+                            $rootScope.dailyShift = response.data;
+                        }));
+
+                        $q.all(promises).then(function () {
+                            $state.go('index');
+                        });
                     }
                 });
 

@@ -4,11 +4,11 @@
         <span>Deimos</span>
     </div>
 
-    <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}" ng-if="!$root.$state.is('login') && !$root.$state.is('change-password') && !$root.$state.is('reset-password')">
+    <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}" ng-if="!$root.$state.is('login') && !$root.$state.is('change-password') && !$root.$state.is('reset-password') && !$root.loading">
         <span><i class="fa fa-globe"></i>{{ $root.team.name }} <span class="fa fa-caret-down"></span></span>
 
         <ul class="team-select-dropdown" ng-show="vm.selectTeamActive">
-            <li ng-repeat="team in vm.teams" ng-click="vm.selectTeam(team); $event.stopPropagation();"
+            <li ng-repeat="team in $root.teams" ng-click="vm.selectTeam(team); $event.stopPropagation();"
                 ng-class="{'active': team.name == $root.team.name}">{{ team.name }}
             </li>
         </ul>
@@ -75,12 +75,12 @@
             </div>
             <div class="modal-body">
                 <div class="tasks-container">
-                    <div class="task" ng-repeat="task in vm.shift.tasks">
+                    <div class="task" ng-repeat="task in $root.dailyShift.tasks">
                         <span>{{ task.start_time | date:'H:mm'}} - {{ task.end_time | date:'H:mm'}}</span>
                         <span>{{ task.description }}</span>
                     </div>
 
-                    <div class="alert alert-info" ng-show="!vm.shift || vm.shift.tasks.length == 0">
+                    <div class="alert alert-info" ng-show="!$root.dailyShift || $root.dailyShift.tasks.length == 0">
                         <strong><i class="fa fa-info"></i>No tasks today</strong> <br>
                         <span>It appears that you don't have any tasks today.</span>
                     </div>
@@ -100,7 +100,7 @@
             </div>
             <div class="modal-body">
                 <div class="row legend">
-                    <div class="col-md-4" ng-repeat="shiftType in vm.shiftTypes">
+                    <div class="col-md-4" ng-repeat="shiftType in $root.shiftTypes">
                         <i class="fa fa-circle" style="color: {{shiftType.color}}"></i>
                         <span>{{shiftType.description}}</span>
                     </div>

@@ -19,7 +19,25 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
             console.log($rootScope.user);
         }));
 
-        $q.all(promises).catch(function (err) {
+        promises.push(Api.teams.find().then(function (response) {
+            $rootScope.teams = response.data;
+        }));
+
+        promises.push(Api.shiftType.find().then(function (response) {
+            $rootScope.shiftTypes = response.data;
+        }));
+
+        $q.all(promises).then(function () {
+            $rootScope.team = $rootScope.user.team_fk;
+
+            var dateToday = new Date();
+            var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
+
+            Api.shifts.findByUserAndDate($rootScope.user.id, date).then(function (response) {
+                $rootScope.dailyShift = response.data;
+            })
+
+        }).catch(function (err) {
             if (err.status == 401) {
                 delete $localStorage.token;
                 $state.go('login');
