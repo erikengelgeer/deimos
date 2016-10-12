@@ -11,7 +11,10 @@
             <div class="col-md-12">
                 <h4>Add Shift</h4>
                 <hr>
-
+                <div class="alert alert-warning">
+                    <strong><i class="fa fa-exclamation-triangle"></i>Caution!</strong> <br>
+                    <span>Because of an unknown error the date will be inserted incorrectly into the database. Instead, add an hour to the current date.</span>
+                </div>
                 <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
                     <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
                     <span ng-bind-html="vm.message.content"></span>

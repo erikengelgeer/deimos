@@ -356,7 +356,7 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $user->setEnabled(false);
-        dump($user);
+        //dump($user);
 
         $em->flush();
 

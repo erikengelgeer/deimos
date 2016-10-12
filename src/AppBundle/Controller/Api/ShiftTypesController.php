@@ -64,7 +64,7 @@ class ShiftTypesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team->id));
-        dump($team);
+        //dump($team);
         $shiftType = new ShiftType();
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);

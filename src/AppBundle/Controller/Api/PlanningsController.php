@@ -138,7 +138,7 @@ class PlanningsController extends Controller
         }
 
 
-        dump($plannings);
+        //dump($plannings);
 
 
 //        dump($planningArray);
