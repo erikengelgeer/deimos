@@ -1,0 +1,10 @@
+<p>Hello {{ user.realName }}, </p>
+
+<p>
+    Welcome to Deimos, <br>
+    An account has been created for you, click the following link to set your password.
+</p>
+
+<p>
+    <a href="{{ url('homepage') }}#/change-password/{{ token }}">{{ url('homepage') }}#/change-password/{{ token }}</a>
+</p>

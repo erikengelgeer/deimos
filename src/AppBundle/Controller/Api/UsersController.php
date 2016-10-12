@@ -224,7 +224,9 @@ class UsersController extends Controller
     {
         $data = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
-        dump($data);
+
+        $tokenGenerator = $this->get('fos_user.util.token_generator');
+        $token = $tokenGenerator->generateToken();
 
         $user = new User();
         $user->setUsername($data->username);
@@ -233,7 +235,10 @@ class UsersController extends Controller
         $user->setEnabled(true);
 
 //        Logic for password? maybe use token?
-        $user->setPlainPassword('test');
+        $user->setPlainPassword('Agfa');
+        $user->setLastLogin(null);
+        $user->setConfirmationToken($token);
+        $user->setCredentialsExpired(true);
 
         $countByUsername = count($em->getRepository('AppBundle:User')->findBy(array("username" => $user->getUsername())));
         $countByEmail = count($em->getRepository('AppBundle:User')->findBy(array("email" => $user->getEmail())));
@@ -251,7 +256,16 @@ class UsersController extends Controller
 
         $em->persist($user);
         $em->flush();
-        dump($user);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Deimos - Welcome to Deimos')
+            ->setFrom('noreply@agfa.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView('emails/new-user.html.twig', array("user" => $user, "token" => $token)), 'text/html'
+            );
+
+        $this->get('mailer')->send($message);
 
         $data = $this->get('serializer')->serialize(array("result" => true), 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
