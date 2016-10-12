@@ -57,9 +57,7 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
                                 $http.defaults.headers.common['Authorization'] = null;
                             }
                             else {
-                                $localStorage.token = token;
-                                $rootScope.user = response.data;
-                                $state.go('index');
+                                $state.go('login');
                             }
                         });
                     }).finally(function () {
