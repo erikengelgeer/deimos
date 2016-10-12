@@ -53,6 +53,7 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
                                 };
 
                                 // removes the default header authorization
+                                // Adds $http to the injections
                                 $http.defaults.headers.common['Authorization'] = null;
                             }
                             else {
