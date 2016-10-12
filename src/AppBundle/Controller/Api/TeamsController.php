@@ -28,7 +28,7 @@ class TeamsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:Team");
 
-        $teams = $repository->findBy(array("enabled" => true));
+        $teams = $repository->findBy(array("enabled" => true, "visible" => true));
 
         $data = $this->get('serializer')->serialize($teams, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

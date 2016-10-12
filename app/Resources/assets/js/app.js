@@ -28,7 +28,11 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
         }));
 
         $q.all(promises).then(function () {
-            $rootScope.team = $rootScope.user.team_fk;
+            if ($rootScope.user.team_fk.visible) {
+                $rootScope.team = $rootScope.user.team_fk;
+            } else {
+                $rootScope.team = $rootScope.teams[0];
+            }
 
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
@@ -106,7 +110,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "NewTeamController",
             controllerAs: "vm"
         })
-        .state('manage-teams-edit',{
+        .state('manage-teams-edit', {
             url: "/manage/teams/edit/{teamId}",
             templateUrl: "partials/management/team/edit.html",
             controller: "EditTeamController",
@@ -124,7 +128,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "NewUserController",
             controllerAs: "vm"
         })
-        .state('manage-users-edit',{
+        .state('manage-users-edit', {
             url: "/manage/users/edit/{userId}",
             templateUrl: "partials/management/user/edit.html",
             controller: "EditUserController",
@@ -142,13 +146,13 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "NewShiftController",
             controllerAs: "vm"
         })
-        .state('manage-shifts-edit',{
+        .state('manage-shifts-edit', {
             url: "/manage/shifts/edit/{shiftTypeId}",
             templateUrl: "partials/management/shift/edit.html",
             controller: "EditShiftController",
             controllerAs: "vm"
         })
-        .state('manage-tasks',{
+        .state('manage-tasks', {
             url: "/manage/tasks",
             templateUrl: "partials/management/task/index.html",
             controller: "TaskController",
@@ -160,7 +164,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "NewTaskController",
             controllerAs: "vm"
         })
-        .state('manage-tasks-edit',{
+        .state('manage-tasks-edit', {
             url: "/manage/tasks/edit/{taskTypeId}",
             templateUrl: "partials/management/task/edit.html",
             controller: "EditTaskController",
@@ -172,7 +176,7 @@ function AppConfig($stateProvider, $urlRouterProvider, $compileProvider) {
             controller: "PlanUserController",
             controllerAs: "vm"
         })
-        .state('plan-tasks',{
+        .state('plan-tasks', {
             url: "/plan/tasks",
             templateUrl: "partials/planning/tasks.html",
             controller: "PlanTaskController",

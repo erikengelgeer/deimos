@@ -35,6 +35,11 @@ class User extends BaseUser
     private $realName;
 
     /**
+     * @ORM\Column(name="plannable", type="boolean")
+     */
+    private $plannable = true;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="team_fk", referencedColumnName="pk")
      */
@@ -126,5 +131,29 @@ class User extends BaseUser
     public function getRoleFk()
     {
         return $this->roleFk;
+    }
+
+    /**
+     * Set plannable
+     *
+     * @param boolean $plannable
+     *
+     * @return User
+     */
+    public function setPlannable($plannable)
+    {
+        $this->plannable = $plannable;
+
+        return $this;
+    }
+
+    /**
+     * Get plannable
+     *
+     * @return boolean
+     */
+    public function getPlannable()
+    {
+        return $this->plannable;
     }
 }

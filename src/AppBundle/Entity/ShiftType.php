@@ -321,4 +321,28 @@ class ShiftType
     {
         return $this->color;
     }
+
+    /**
+     * Set breakDuration
+     *
+     * @param float $breakDuration
+     *
+     * @return ShiftType
+     */
+    public function setBreakDuration($breakDuration)
+    {
+        $this->breakDuration = $breakDuration;
+
+        return $this;
+    }
+
+    /**
+     * Get breakDuration
+     *
+     * @return float
+     */
+    public function getBreakDuration()
+    {
+        return $this->breakDuration;
+    }
 }

@@ -47,6 +47,11 @@ class Team
     private $enabled = true;
 
     /**
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = true;
+
+    /**
      * Get id
      *
      * @return int
@@ -174,5 +179,29 @@ class Team
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return Team
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
     }
 }
