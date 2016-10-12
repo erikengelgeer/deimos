@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ShiftType
  *
- * @ORM\Table(name="shift_types")
+ * @ORM\Table(name="dbo.shift_types")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftTypeRepository")
  */
 class ShiftType
@@ -15,7 +15,7 @@ class ShiftType
     /**
      * @var int
      *
-     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Column(name="pk", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -47,9 +47,9 @@ class ShiftType
     private $shiftDuration;
 
     /**
-     * @ORM\Column(name="bread_duration", type="float")
+     * @ORM\Column(name="break_duration", type="float")
      */
-    private $breadDuration;
+    private $breakDuration;
 
     /**
      * @ORM\Column(name="workhours_duration_h", type="float")

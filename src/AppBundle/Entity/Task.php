@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Task
  *
- * @ORM\Table(name="tasks")
+ * @ORM\Table(name="dbo.tasks")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskRepository")
  */
 class Task
@@ -15,7 +15,7 @@ class Task
     /**
      * @var int
      *
-     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Column(name="pk", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

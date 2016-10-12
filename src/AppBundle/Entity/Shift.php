@@ -7,7 +7,7 @@ use AppBundle\Entity\Task;
 /**
  * Shift
  *
- * @ORM\Table(name="shifts")
+ * @ORM\Table(name="dbo.shifts")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShiftRepository")
  */
 class Shift
@@ -15,7 +15,7 @@ class Shift
     /**
      * @var int
      *
-     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Column(name="pk", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

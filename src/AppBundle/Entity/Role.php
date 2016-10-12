@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Role
  *
- * @ORM\Table(name="roles")
+ * @ORM\Table(name="dbo.roles")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RoleRepository")
  */
 class Role
@@ -15,7 +15,7 @@ class Role
     /**
      * @var int
      *
-     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Column(name="pk", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

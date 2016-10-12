@@ -68,9 +68,6 @@ class ShiftTypesController extends Controller
         $shiftType = new ShiftType();
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
-        $shiftType->setShiftDuration('');
-        $shiftType->setWorkhoursDurationH('');
-        $shiftType->setBreadDuration('');
         $shiftType->setColor($content->color);
         $shiftType->setTeamFk($team);
 
@@ -106,7 +103,6 @@ class ShiftTypesController extends Controller
 
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
-        $shiftType->setBreadDuration($content->bread_duration);
         $shiftType->setTeamFk($team);
         $shiftType->setColor($content->color);
 

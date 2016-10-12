@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Team
  *
- * @ORM\Table(name="teams")
+ * @ORM\Table(name="dbo.teams")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  */
 class Team
@@ -15,7 +15,7 @@ class Team
     /**
      * @var int
      *
-     * @ORM\Column(name="pk", type="integer")
+     * @ORM\Column(name="pk", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
