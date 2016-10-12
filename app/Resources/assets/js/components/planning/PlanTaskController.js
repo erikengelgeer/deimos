@@ -11,6 +11,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     vm.activeDates = [];
     vm.selectedUser = null;
     vm.selectedShift = null;
+    vm.dataLoading = true;
 
     vm.selectUser = selectUser;
     vm.deleteTask = deleteTask;
@@ -37,12 +38,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     $q.all(promises).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function selectUser() {
         vm.activeDates = [];
         vm.selectedShift = null;
         vm.message = null;
+        vm.dataLoading = true;
 
         if (datepicker != undefined) {
             datepicker.datepicker('destroy');
@@ -61,6 +64,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     'type': 'alert-danger'
                 }
             }
+        }).finally(function () {
+            vm.dataLoading = false;
         })
     }
 
@@ -156,6 +161,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 } else {
                     task.shift = vm.selectedShift;
 
+                    vm.dataLoading = true;
                     Api.tasks.add(task).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);
                         vm.task = null;
@@ -166,6 +172,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                             'icon': 'fa-check',
                             'type': 'alert-success'
                         }
+                    }).finally(function () {
+                        vm.dataLoading = false;
                     })
                 }
 
@@ -174,6 +182,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     }
 
     function deleteTask(task) {
+        vm.dataLoading = true;
         Api.tasks.delete(task.id).then(function () {
             vm.message = {
                 'title': 'Task deleted',
@@ -185,14 +194,19 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             _.remove(vm.selectedShift.tasks, function (t) {
                 return t.id == task.id;
             });
+        }).finally(function () {
+            vm.dataLoading = false;
         })
     }
 
     datepicker.datepicker().on('changeDate', function (e) {
         var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
 
+        vm.dataLoading = true;
+
         Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
             vm.selectedShift = response.data;
+            vm.dataLoading = false;
         })
     });
 

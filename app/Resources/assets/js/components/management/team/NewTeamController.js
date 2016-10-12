@@ -8,7 +8,7 @@ function NewTeamController($rootScope, Api, $state) {
 
     vm.team = {};
     vm.timezones = null;
-    vm.dataLoading = false;
+    vm.dataLoading = true;
     vm.message = null;
 
     vm.add = add;
@@ -29,6 +29,7 @@ function NewTeamController($rootScope, Api, $state) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
 

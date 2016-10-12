@@ -8,6 +8,7 @@ function TaskController($rootScope, Api, $state) {
 
     vm.taskTypes = null;
     vm.selectedTaskType = null;
+    vm.dataLoading = true;
 
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
@@ -23,6 +24,7 @@ function TaskController($rootScope, Api, $state) {
         console.log(response);
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function showDisableModal(taskType) {

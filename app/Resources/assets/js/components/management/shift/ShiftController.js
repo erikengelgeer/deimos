@@ -10,6 +10,7 @@ function ShiftController($rootScope, Api, $q, $state) {
     vm.shifts = null;
     vm.teams = null;
     vm.selectedShiftType = null;
+    vm.dataLoading = true;
 
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
@@ -33,6 +34,7 @@ function ShiftController($rootScope, Api, $q, $state) {
         console.log("done", vm.shifts, vm.teams);
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function showDisableModal(shift) {

@@ -10,7 +10,7 @@ function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
     vm.update = update;
 
     vm.taskType = null;
-    vm.dataLoading = false;
+    vm.dataLoading = true;
 
     if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
@@ -27,6 +27,7 @@ function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
         };
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function update() {

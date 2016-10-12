@@ -10,6 +10,7 @@ function NewUserController($rootScope, Api, $q, $state) {
     vm.add = add;
 
     vm.user = {};
+    vm.dataLoading = true;
 
     if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
@@ -32,6 +33,7 @@ function NewUserController($rootScope, Api, $q, $state) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function add() {

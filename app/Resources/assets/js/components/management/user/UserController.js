@@ -10,6 +10,7 @@ function UserController($rootScope, Api, $q, $state) {
     vm.users = [];
     vm.roles = [];
     vm.selectedUser = null;
+    vm.dataLoading = true;
 
     vm.updateRole = updateRole;
     vm.showDisableModal = showDisableModal;
@@ -33,6 +34,7 @@ function UserController($rootScope, Api, $q, $state) {
         console.log("done", vm.users, vm.roles);
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
 
@@ -45,7 +47,7 @@ function UserController($rootScope, Api, $q, $state) {
         Api.users.updateRole(user).then(function () {
             vm.message = {
                 'title': 'Role changed successfully',
-                'content': 'The role of user: <em>' + user.username + '</em> is successfuly changed.',
+                'content': 'The role of user: <em>' + user.username + '</em> is successfully changed.',
                 'icon': 'fa-check',
                 'type': 'alert-success'
             }

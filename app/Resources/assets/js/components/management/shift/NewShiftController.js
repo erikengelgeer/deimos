@@ -10,7 +10,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
     vm.shift = {};
     vm.team = {};
     vm.colors = {};
-    vm.dataLoading = false;
+    vm.dataLoading = true;
     vm.message = null;
 
     vm.add = add;
@@ -36,6 +36,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function add() {

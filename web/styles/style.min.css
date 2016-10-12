@@ -119,7 +119,9 @@
 .segment {
   margin-right: -15px;
   margin-left: -15px;
-  padding: 20px 0; }
+  padding: 20px 0;
+  position: relative;
+  min-height: 200px; }
   .segment.darker-bg {
     background-color: #f3f3f3; }
   .segment.light-bg {
@@ -553,6 +555,9 @@
     color: #888;
     margin-bottom: 20px;
     display: block; }
+
+.tab-pane {
+  position: relative; }
 
 .day.shift {
   background-color: #d9edf7; }

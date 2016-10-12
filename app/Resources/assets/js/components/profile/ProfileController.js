@@ -2,6 +2,7 @@ angular.module('app').controller('ProfileController', ProfileController);
 
 function ProfileController($rootScope, Api) {
     var vm = this;
+    vm.dataLoading = false;
     $rootScope.loading = false;
 
     vm.measurePassword = measurePassword;
@@ -52,7 +53,6 @@ function ProfileController($rootScope, Api) {
 
                 vm.dataLoading = true;
 
-
                 Api.users.update.password(vm.password).then(function () {
                     // $rootScope.user = response.data;
 
@@ -68,6 +68,8 @@ function ProfileController($rootScope, Api) {
 
                     measurePassword();
 
+                }).finally(function () {
+                    vm.dataLoading = false;
                 });
 
             } else {

@@ -10,6 +10,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     vm.teams = null;
     vm.shift = null;
     vm.colors = {};
+    vm.dataLoading = true;
 
     vm.update = update;
 
@@ -47,6 +48,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function update() {

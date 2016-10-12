@@ -1,6 +1,3 @@
-/**
- * Created by EAETV on 13/09/2016.
- */
 angular.module('app').controller('TeamController', TeamController);
 
 function TeamController($rootScope, Api, $state) {
@@ -8,6 +5,7 @@ function TeamController($rootScope, Api, $state) {
 
     vm.teams = null;
     vm.selectedTeam = null;
+    vm.dataLoading = true;
 
     vm.showDisableModal = showDisableModal;
     vm.disable = disable;
@@ -23,6 +21,7 @@ function TeamController($rootScope, Api, $state) {
         console.log(response);
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function showDisableModal(team) {

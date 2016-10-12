@@ -10,7 +10,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
     vm.user = null;
     vm.roles = null;
     vm.teams = null;
-    vm.dataLoading = false;
+    vm.dataLoading = true;
 
     if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
@@ -37,6 +37,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function update() {

@@ -9,7 +9,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.team = null;
     vm.timezones = null;
-    vm.dataLoading = false;
+    vm.dataLoading = true;
 
     vm.update = update;
 
@@ -39,6 +39,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
         }
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     function update() {

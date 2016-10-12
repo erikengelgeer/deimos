@@ -7,7 +7,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
     vm.users = [];
     vm.shiftTypes = [];
     vm.selectedDates = [];
-    vm.dataLoading = false;
+    vm.dataLoading = true;
 
     vm.checkUser = checkUser;
     vm.addShifts = addShifts;
@@ -29,6 +29,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
     $q.all(promises).then(function () {
     }).finally(function () {
         $rootScope.loading = false;
+        vm.dataLoading = false;
     });
 
     // Remove the function
