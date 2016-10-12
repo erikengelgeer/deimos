@@ -30,7 +30,7 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findBy(array("enabled" => true));
+        $users = $repository->findBy(array("enabled" => true, "plannable" => true));
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
@@ -375,7 +375,7 @@ class UsersController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findBy(array('teamFk' => $team, 'enabled' => 1));
+        $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true, "plannable" => true));
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

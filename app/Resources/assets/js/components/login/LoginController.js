@@ -53,7 +53,12 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
 
                         promises.push(Api.teams.find().then(function (response) {
                             $rootScope.teams = response.data;
-                            $rootScope.team = $rootScope.user.team_fk;
+                            
+                            if ($rootScope.user.team_fk.visible) {
+                                $rootScope.team = $rootScope.user.team_fk;
+                            } else {
+                                $rootScope.team = $rootScope.teams[0];
+                            }
                         }));
 
                         promises.push(Api.shiftType.find().then(function (response) {
