@@ -10,6 +10,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTeam = null;
 
     vm.getPlanningContent = getPlanningContent;
+    vm.redirect = redirect;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -214,5 +215,10 @@ function HomeController($rootScope, Api, $timeout) {
             $rootScope.loading = false;
         });
     }
+
+    function redirect(taskUrl) {
+        window.open(taskUrl, '_blank');
+    }
+
 
 }

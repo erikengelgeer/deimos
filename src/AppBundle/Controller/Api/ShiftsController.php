@@ -52,6 +52,7 @@ class ShiftsController extends Controller
                     $newShift['taskDescription'] = $otherShift['taskDescription'];
                     $newShift['taskStartTime'] = $otherShift['taskStartTime'];
                     $newShift['taskEndTime'] = $otherShift['taskEndTime'];
+                    $newShift['taskUrl'] = $otherShift['taskUrl'];
 
                     array_push($tasks, $newShift);
                 }
@@ -61,6 +62,7 @@ class ShiftsController extends Controller
             unset($shift['taskDescription']);
             unset($shift['taskStartTime']);
             unset($shift['taskEndTime']);
+            unset($shift['taskUrl']);
 
             array_push($processedData, [$shift, $tasks]);
             $tasks = [];

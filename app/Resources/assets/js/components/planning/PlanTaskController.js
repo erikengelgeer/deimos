@@ -160,7 +160,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     }
                 } else {
                     task.shift = vm.selectedShift;
-
+                    console.log(task);
                     vm.dataLoading = true;
                     Api.tasks.add(task).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);

@@ -83,6 +83,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="link">Link:</label>
+                                <input type="checkbox"  id="link" ng-model="link">
+                                <input type="text" class="form-control" ng-if="link" ng-model="vm.task.url">
+                            </div>
                         </div>
 
                     </div>

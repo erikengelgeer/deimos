@@ -325,6 +325,11 @@
     font-size: 12px;
     font-style: italic;
     margin-right: 5px; }
+  .task .link-icon {
+    margin-right: 5px;
+    color: rgba(255, 255, 255, 0.8); }
+  .task.clickable {
+    cursor: pointer; }
 
 .tasks-container .task {
   padding: 10px;
