@@ -26,20 +26,28 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         'content': 'Select a user to continue.',
         'icon': 'fa-info',
         'type': 'alert-info'
-    }
+    };
 
+    // finds all users
+    promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        vm.users = response.data;
+    }));
+
+    // watches for a change in the team.id
     $rootScope.$watch('team.id', function () {
         vm.dataLoading = true;
 
-        promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        // when there is a change it reloads the shown data
+        Api.users.findByTeam($rootScope.team.id).then(function (response) {
             vm.users = response.data;
+        }).finally(function () {
             vm.dataLoading = false;
-        }));
+        })
     });
 
     promises.push(Api.taskTypes.find().then(function (response) {
         vm.taskTypes = response.data;
-    }))
+    }));
 
     $q.all(promises).finally(function () {
         $rootScope.loading = false;

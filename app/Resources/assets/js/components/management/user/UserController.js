@@ -20,17 +20,23 @@ function UserController($rootScope, Api, $q, $state) {
         $state.go('index');
     }
 
-        $rootScope.$watch('team.id', function () {
-            // console.log($rootScope.team.id);
-            vm.dataLoading = true;
+    // finds all users
+    promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        vm.users = response.data;
+        // console.log(response);
+    }));
 
-            promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
-                vm.users = response.data;
-                vm.dataLoading = false;
-            }));
-        });
+    // watches for a change in the team.id
+    $rootScope.$watch('team.id', function () {
+        vm.dataLoading = true;
 
-
+        // when there is a change it reloads the shown data
+        Api.users.findByTeam($rootScope.team.id).then(function (response) {
+            vm.users = response.data;
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
+    });
 
     promises.push(Api.roles.find().then(function (response) {
         vm.roles = response.data;

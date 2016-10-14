@@ -17,19 +17,38 @@ function PlanUserController($rootScope, Api, $q,$state) {
     }
 
     // find all users
+    promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        vm.users = response.data;
+    }));
+
+    // watches for a change in the team.id
     $rootScope.$watch('team.id', function () {
         vm.dataLoading = true;
 
-        promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        // when there is a change it reloads the shown data
+        Api.users.findByTeam($rootScope.team.id).then(function (response) {
             vm.users = response.data;
+        }).finally(function () {
             vm.dataLoading = false;
-        }));
+        })
     });
 
     // find all shiftTypes
-    promises.push(Api.shiftType.find().then(function (response) {
+    promises.push(Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
         vm.shiftTypes = response.data;
     }));
+
+    // watches for changes in team.id
+    $rootScope.$watch('team.id', function () {
+        vm.dataLoading = true;
+
+        // reloads the shiftTypes to show
+        Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+            vm.shifts = response.data;
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
+    });
 
     $q.all(promises).then(function () {
     }).finally(function () {

@@ -95,6 +95,9 @@ function Api($http) {
             },
             disable: function (id) {
                 return $http.post('api/shift-types/' + id);
+            },
+            findByTeam: function (team) {
+                return $http.get('api/shift-types/'+ team);
             }
         },
         teams: {

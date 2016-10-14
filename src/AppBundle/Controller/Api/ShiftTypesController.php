@@ -38,6 +38,23 @@ class ShiftTypesController extends Controller
     }
 
     /**
+     * @Route("/{team}")
+     * @Method("GET")
+     *
+     * Get all the shiftTypes by team
+     */
+    public function findAllByTeamAction($team)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:ShiftType");
+
+        $shiftTypes = $repository->findBy(array("teamFk" => $team, "enabled" => true));
+
+        $data = $this->get('serializer')->serialize($shiftTypes, 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
      * @Route("/{id}")
      * @Method("GET")
      *

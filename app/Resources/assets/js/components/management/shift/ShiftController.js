@@ -21,10 +21,22 @@ function ShiftController($rootScope, Api, $q, $state) {
 
     console.log($rootScope.user.role_fk.role);
 
-    promises.push(Api.shiftType.find().then(function (response) {
+    promises.push(Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
         vm.shifts = response.data;
         console.log(response);
     }));
+
+    // watches for changes in team.id
+    $rootScope.$watch('team.id', function () {
+        vm.dataLoading = true;
+
+        // reloads the shiftTypes to show
+        Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+            vm.shifts = response.data;
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
+    });
 
     promises.push(Api.teams.find().then(function (response) {
         vm.teams = response.data;
