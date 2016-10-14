@@ -52,6 +52,11 @@ class User extends BaseUser
     private $roleFk;
 
     /**
+     * @ORM\Column(name="CWID", type="string")
+     */
+    private $cwid;
+
+    /**
      * Get id
      *
      * @return integer
@@ -155,5 +160,28 @@ class User extends BaseUser
     public function getPlannable()
     {
         return $this->plannable;
+    }
+
+    /**
+     * set cwid
+     *
+     * @param string $cwid
+     *
+     * @return string
+     */
+    public function getCwid($cwid)
+    {
+        $this->cwid = $cwid;
+        return $this;
+    }
+
+    /**
+     * Get cwid
+     * 
+     * @return string
+     */
+    public function setCwid()
+    {
+        return $this->cwid;
     }
 }

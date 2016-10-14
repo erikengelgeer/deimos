@@ -25,8 +25,9 @@
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
-                    <th>Username</th>
                     <th>Real name</th>
+                    <th>Username</th>
+                    <th>CWID</th>
                     <th>Email</th>
                     <th>Team</th>
                     <th>Role</th>
@@ -34,8 +35,9 @@
                     </thead>
                     <tbody ng-repeat="user in vm.users">
                     <tr>
-                        <td>{{ user.username }}</td>
                         <td>{{ user.real_name }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.cwid }}</td>
                         <td>{{ user.email}}</td>
                         <td>{{ user.team_fk.name }}</td>
                         <td>
