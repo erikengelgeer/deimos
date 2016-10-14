@@ -54,7 +54,7 @@
             <div class="col-md-4">
                 <label for="inputTeam">Team:</label>
                 <select name="team" class="form-control" id="inputTeam" ng-model="vm.shift.team"
-                        ng-options="team.location for team in vm.team">
+                        ng-options="team.name for team in vm.team">
                     <option value="" ng-disabled="!!vm.shift.team_fk">Select a team</option>
                 </select>
             </div>
