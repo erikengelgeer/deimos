@@ -19,11 +19,18 @@
 
         </div>
         <div class="row" ng-if="vm.teams && vm.roles">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputUserName">Username:</label>
-                    <input type="text" placeholder="AAAAA" class="form-control" id="inputUserName"
+                    <input type="text" placeholder="John" class="form-control" id="inputUserName"
                            ng-model="vm.user.username">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="inputCWID">CWID:</label>
+                    <input type="text" placeholder="AAAAA" class="form-control" id="inputCWID"
+                           ng-model="vm.user.cwid">
                 </div>
             </div>
             <div class="col-md-6">

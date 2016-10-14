@@ -39,7 +39,7 @@ function NewUserController($rootScope, Api, $q, $state) {
     function add() {
         vm.message = null;
 
-        if (vm.user.username == null || vm.user.real_name == null || vm.user.email == null || vm.user.role == null || vm.user.team == null) {
+        if (vm.user.username == null ||  vm.user.real_name == null || vm.user.email == null || vm.user.role == null || vm.user.team == null || vm.user.cwid == null) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',

@@ -231,6 +231,7 @@ class UsersController extends Controller
         $user = new User();
         $user->setUsername($data->username);
         $user->setRealName($data->real_name);
+        $user->setCwid($data->cwid);
         $user->setEmail($data->email);
         $user->setEnabled(true);
 
@@ -285,6 +286,7 @@ class UsersController extends Controller
 
         $user->setUsername($data->username);
         $user->setRealName($data->real_name);
+        $user->setCwid($data->cwid);
         $user->setEmail($data->email);
 
         if ($data->username != $user->getUsername()) {

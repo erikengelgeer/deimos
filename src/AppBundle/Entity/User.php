@@ -169,7 +169,7 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getCwid($cwid)
+    public function setCwid($cwid)
     {
         $this->cwid = $cwid;
         return $this;
@@ -177,10 +177,10 @@ class User extends BaseUser
 
     /**
      * Get cwid
-     * 
+     *
      * @return string
      */
-    public function setCwid()
+    public function getCwid()
     {
         return $this->cwid;
     }
