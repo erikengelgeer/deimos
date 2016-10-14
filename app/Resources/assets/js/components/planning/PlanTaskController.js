@@ -28,9 +28,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         'type': 'alert-info'
     }
 
-    promises.push(Api.users.find().then(function (response) {
-        vm.users = response.data;
-    }));
+    $rootScope.$watch('team.id', function () {
+        vm.dataLoading = true;
+
+        promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+            vm.users = response.data;
+            vm.dataLoading = false;
+        }));
+    });
 
     promises.push(Api.taskTypes.find().then(function (response) {
         vm.taskTypes = response.data;
