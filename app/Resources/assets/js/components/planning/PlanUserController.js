@@ -17,9 +17,14 @@ function PlanUserController($rootScope, Api, $q,$state) {
     }
 
     // find all users
-    promises.push(Api.users.find().then(function (response) {
-        vm.users = response.data;
-    }));
+    $rootScope.$watch('team.id', function () {
+        vm.dataLoading = true;
+
+        promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+            vm.users = response.data;
+            vm.dataLoading = false;
+        }));
+    });
 
     // find all shiftTypes
     promises.push(Api.shiftType.find().then(function (response) {

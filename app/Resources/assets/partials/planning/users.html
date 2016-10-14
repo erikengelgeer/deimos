@@ -34,7 +34,7 @@
                     </thead>
                     <tbody ng-repeat="user in vm.users">
                     <tr>
-                        <td>{{ user.username }}</td>
+                        <td>{{ user.real_name }}</td>
                         <td>
                             <select class="form-control" ng-model="user.newShift" ng-options="shiftType.id as shiftType.description for shiftType in vm.shiftTypes">
                                 <option value="" ng-disabled="!!user.newShift">Select a shift</option>

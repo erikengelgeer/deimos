@@ -20,11 +20,17 @@ function UserController($rootScope, Api, $q, $state) {
         $state.go('index');
     }
 
+        $rootScope.$watch('team.id', function () {
+            // console.log($rootScope.team.id);
+            vm.dataLoading = true;
 
-    promises.push(Api.users.find().then(function (response) {
-        vm.users = response.data;
-        console.log(response);
-    }));
+            promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+                vm.users = response.data;
+                vm.dataLoading = false;
+            }));
+        });
+
+
 
     promises.push(Api.roles.find().then(function (response) {
         vm.roles = response.data;
