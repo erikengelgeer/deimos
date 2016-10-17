@@ -996,6 +996,25 @@
   margin-top: 40px; }
   .manage-shifts table th:last-child {
     width: 100px; }
+  .manage-shifts .colors .color {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: left;
+    cursor: pointer;
+    margin: 0 5px 0 0; }
+    .manage-shifts .colors .color .inner-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px; }
+    .manage-shifts .colors .color.active, .manage-shifts .colors .color:hover {
+      background-color: rgba(0, 0, 0, 0.1); }
+  .manage-shifts .colors:after {
+    content: '';
+    display: table;
+    clear: both; }
 
 .manage-tasks {
   margin-top: 40px; }

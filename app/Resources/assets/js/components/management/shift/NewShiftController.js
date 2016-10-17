@@ -9,19 +9,21 @@ function NewShiftController($rootScope, Api, $state, $q) {
 
     vm.shift = {};
     vm.team = {};
-    vm.colors = {};
+    vm.colors = ['#ffeb3b', '#ffc107', '#ff9800', '#EE4A25', '#00b050', '#06AECE', '#999999'];
     vm.dataLoading = true;
     vm.message = null;
+    vm.selectedColor = null;
 
     vm.add = add;
+    vm.selectColor = selectColor;
 
-    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+    if ($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
     }
 
-    promises.push(Api.colors.find().then(function (response) {
-        vm.colors = response.data;
-    }));
+    // promises.push(Api.colors.find().then(function (response) {
+    //     vm.colors = response.data;
+    // }));
 
     promises.push(Api.teams.find().then(function (response) {
         vm.team = response.data;
@@ -41,8 +43,10 @@ function NewShiftController($rootScope, Api, $state, $q) {
 
     function add() {
         vm.message = null;
-        console.log(vm.shift);
-        if(vm.shift.team == null || vm.shift.description == null || vm.shift.short == null) {
+
+        vm.shift.color = vm.selectedColor;
+
+        if (vm.shift.team == null || vm.shift.description == null || vm.shift.short == null || vm.shift.color == null) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
@@ -95,5 +99,9 @@ function NewShiftController($rootScope, Api, $state, $q) {
                 vm.dataLoading = false;
             });
         }
+    }
+
+    function selectColor(color) {
+        vm.selectedColor = color;
     }
 }

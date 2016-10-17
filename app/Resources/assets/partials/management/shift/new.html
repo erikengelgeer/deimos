@@ -39,17 +39,22 @@
         <div class="row">
             <div class="col-md-2">
                 <label for="inputStartTime">Start Time:</label>
-                <input type="time" class="form-control" id="inputStartTime" ng-model="vm.shift.default_start_time" step="900">
+                <input type="time" class="form-control" id="inputStartTime" ng-model="vm.shift.default_start_time"
+                       step="900">
             </div>
             <div class="col-md-2">
                 <label for="inputEndTime">End Time:</label>
-                <input type="time" class="form-control" id="inputEndTime" ng-model="vm.shift.default_end_time" step="900">
+                <input type="time" class="form-control" id="inputEndTime" ng-model="vm.shift.default_end_time"
+                       step="900">
             </div>
             <div class="col-md-4">
                 <label for="color">Color:</label>
-                <select id="color" class="form-control" ng-model="vm.shift.color" ng-options="color for color in vm.colors">
-                    <option value="" ng-disabled="!!vm.shift.color">Select a color</option>
-                </select>
+
+                <div class="colors" id="color">
+                    <div class="color" ng-repeat="color in vm.colors" ng-click="vm.selectColor(color)" ng-class="{'active': color == vm.selectedColor}">
+                        <div class="inner-color" ng-style="{'background-color': color}"></div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <label for="inputTeam">Team:</label>
