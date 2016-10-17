@@ -40,4 +40,18 @@
             clear: both;
         }
     }
+
+    .select-time {
+        select {
+            float: left;
+            width: 45%;
+        }
+
+        span {
+            width: 10%;
+            float: left;
+            padding: 6px 0;
+            text-align: center;
+        }
+    }
 }

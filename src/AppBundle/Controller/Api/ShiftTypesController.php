@@ -64,7 +64,7 @@ class ShiftTypesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team->id));
-        //dump($team);
+
         $shiftType = new ShiftType();
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
@@ -75,6 +75,15 @@ class ShiftTypesController extends Controller
             $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
             $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
         }
+
+        $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
+
+        $shiftType->setBreakDuration($content->break_duration / 60);
+        $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
+        $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
+
+//        dump($diff, $diff->i / 60, $diff->h + ($diff->i / 60), $content->break_duration / 60);
+//        dump($shiftType);
 
         if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');
