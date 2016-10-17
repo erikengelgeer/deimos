@@ -996,6 +996,8 @@
     margin-right: 15px; }
   .plan-tasks .form-control.select {
     width: 300px !important; }
+  .plan-tasks .row:last-child {
+    margin-top: 15px; }
 
 .manage-shifts {
   margin-top: 40px; }
