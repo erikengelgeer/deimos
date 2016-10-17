@@ -19,6 +19,13 @@
 
         </div>
         <div class="row" ng-if="vm.teams && vm.roles">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputName">Real Name:</label>
+                    <input type="text" placeholder="John Doe" class="form-control" id="inputName"
+                           ng-model="vm.user.real_name">
+                </div>
+            </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="inputUserName">Username:</label>
@@ -31,13 +38,6 @@
                     <label for="inputCWID">CWID:</label>
                     <input type="text" placeholder="AAAAA" class="form-control" id="inputCWID"
                            ng-model="vm.user.cwid">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputName">Real Name:</label>
-                    <input type="text" placeholder="John Doe" class="form-control" id="inputName"
-                           ng-model="vm.user.real_name">
                 </div>
             </div>
             <div class="col-md-6">
