@@ -23,9 +23,9 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
             $rootScope.teams = response.data;
         }));
 
-        promises.push(Api.shiftType.find().then(function (response) {
-            $rootScope.shiftTypes = response.data;
-        }));
+        // promises.push(Api.shiftType.findByTeam().then(function (response) {
+        //     $rootScope.shiftTypes = response.data;
+        // }));
 
         $q.all(promises).then(function () {
             if ($rootScope.user.team_fk.visible) {
@@ -37,9 +37,14 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
 
-            Api.shifts.findByUserAndDate($rootScope.user.id, date).then(function (response) {
-                $rootScope.dailyShift = response.data;
-            })
+            // watches for changes in team.id
+            $rootScope.$watch('team.id', function () {
+
+                // reloads the shiftTypes to show
+                Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+                    $rootScope.shiftTypes = response.data;
+                });
+            });
 
         }).catch(function (err) {
             if (err.status == 401) {

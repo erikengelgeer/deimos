@@ -6,7 +6,7 @@ function menu() {
         templateUrl: "partials/nav.html",
         scope: {},
         controllerAs: 'vm',
-        controller: function ($scope, $rootScope, $state, $timeout, $localStorage) {
+        controller: function ($scope, $rootScope, $state, $timeout, $localStorage, Api) {
             var vm = this;
 
             // var dateToday = new Date();
