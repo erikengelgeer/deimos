@@ -27,6 +27,7 @@
                     <thead>
                     <th>Shift</th>
                     <th>Duration</th>
+                    <th>Break</th>
                     <th>Team</th>
                     <th>Color</th>
                     <th>Options</th>
@@ -35,6 +36,7 @@
                     <tr>
                         <td>{{ shift.short }}</td>
                         <td>{{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</td>
+                        <td>{{ shift.break_duration}}</td>
                         <td>{{ shift.team_fk.location }}</td>
                         <td><div class="badge" style="background-color: {{shift.color}}">{{shift.color}}</div></td>
                         <td>

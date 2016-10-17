@@ -93,6 +93,7 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setBreakDuration($shiftType->getBreakDuration());
 
                 } else {
                     $shift = new Shift();
@@ -101,6 +102,7 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setBreakDuration($shiftType->getShiftDuration());
                     $shift->setDate(new \DateTime($date));
 
                     $em->persist($shift);
