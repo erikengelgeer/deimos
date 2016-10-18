@@ -9,6 +9,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
     vm.selectedDates = [];
     vm.dataLoading = true;
 
+    vm.checkHome = checkHome;
     vm.checkUser = checkUser;
     vm.addShifts = addShifts;
 
@@ -89,9 +90,14 @@ function PlanUserController($rootScope, Api, $q,$state) {
     });
     // });
 
-    // checks is the checkbox is checked
+    // checks if the checkbox is checked
     function checkUser(user) {
         user.checked = !user.checked;
+    }
+
+    // checks if the home is checked
+    function checkHome(user) {
+        user.home = !user.home;
     }
 
     // checks if all fields are filled in correct and adds a shift
@@ -119,7 +125,8 @@ function PlanUserController($rootScope, Api, $q,$state) {
                 if (vm.users[i].checked) {
                     data.shifts.push({
                         userId: vm.users[i].id,
-                        shiftId: vm.users[i].newShift
+                        shiftId: vm.users[i].newShift,
+                        home: vm.users[i].home
                     });
                 }
             }
@@ -133,7 +140,6 @@ function PlanUserController($rootScope, Api, $q,$state) {
                 }
             } else {
                 vm.dataLoading = true;
-
                 Api.shifts.add(data).then(function () {
 
                     vm.message = {
@@ -161,5 +167,4 @@ function PlanUserController($rootScope, Api, $q,$state) {
             }
         }
     }
-
 }

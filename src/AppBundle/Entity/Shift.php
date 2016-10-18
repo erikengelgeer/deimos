@@ -67,6 +67,11 @@ class Shift
     private $tasks;
 
     /**
+     * @ORM\Column(name="home", type="boolean")
+     */
+    private $home;
+
+    /**
      * Get id
      *
      * @return int
@@ -259,5 +264,29 @@ class Shift
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Set home
+     *
+     * @param boolean $home
+     *
+     * @return Shift
+     */
+    public function setHome($home)
+    {
+        $this->home = $home;
+
+        return $this;
+    }
+
+    /**
+     * Get home
+     *
+     * @return boolean
+     */
+    public function getHome()
+    {
+        return $this->home;
     }
 }

@@ -93,7 +93,6 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
-
                 } else {
                     $shift = new Shift();
                     $shift->setUserFk($user);
@@ -102,6 +101,7 @@ class ShiftsController extends Controller
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
                     $shift->setDate(new \DateTime($date));
+                    $shift->setHome($item->home);
 
                     $em->persist($shift);
                 }

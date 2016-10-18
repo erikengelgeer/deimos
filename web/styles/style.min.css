@@ -417,6 +417,9 @@
 .schedule.active .body {
   margin-top: 58px; }
 
+.schedule .working-home {
+  margin-left: 5px; }
+
 .shift-container .shift {
   margin-bottom: 20px;
   height: 32px;
@@ -983,7 +986,7 @@
 .plan-users {
   margin-top: 40px; }
   .plan-users table th.check {
-    width: 57px; }
+    width: 100px; }
 
 .plan-tasks {
   margin-top: 40px; }
