@@ -27,6 +27,7 @@ class TasksController extends Controller
 
         $tasks = $repository->findAll();
 
+        dump($tasks);
         $data = $this->get('serializer')->serialize($tasks, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
@@ -39,8 +40,9 @@ class TasksController extends Controller
      */
     public function addAction(Request $request)
     {
-        $data = json_decode($request->getContent());
 
+        $data = json_decode($request->getContent());
+        dump($data);
         $em = $this->getDoctrine()->getManager();
 
         $taskType = $em->getRepository('AppBundle:TaskType')->find($data->taskType->id);
@@ -52,6 +54,7 @@ class TasksController extends Controller
         $task->setDescription($data->taskType->description);
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
+        $task->setUrl($data->url);
 
         $em->persist($task);
         $em->flush();

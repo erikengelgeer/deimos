@@ -1,8 +1,8 @@
 <div class="nav-bar navbar-fixed-top">
-    <div class="logo">
+    <a class="logo" ui-sref="index">
         <img src="images/logo.png" alt="">
         <span>Deimos</span>
-    </div>
+    </a>
 
     <div class="team-select dropdown" ng-click="vm.toggleTeamSelectMenu()" ng-class="{'active': vm.selectTeamActive}" ng-if="!$root.$state.is('login') && !$root.$state.is('change-password') && !$root.$state.is('reset-password') && !$root.loading">
         <span><i class="fa fa-globe"></i>{{ $root.team.name }} <span class="fa fa-caret-down"></span></span>

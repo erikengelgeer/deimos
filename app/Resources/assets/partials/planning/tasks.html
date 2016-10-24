@@ -78,13 +78,21 @@
                                     <select name="" id="" class="form-control" ng-model="vm.task.taskType" ng-options="taskType as taskType.description for taskType in vm.taskTypes">
                                         <option value="" ng-disabled="!!vm.task.taskType">Select a task</option>
                                     </select>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary" ng-click="vm.addTask(vm.task)"><i class="fa fa-plus"></i></button>
-                                    </div>
                                 </div>
                             </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <i class="fa fa-link pull-left"></i>
+                                <input type="checkbox" id="link" ng-model="link" >
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.task.url">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary pull-right" ng-click="vm.addTask(vm.task)">Plan Task</button>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>

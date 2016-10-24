@@ -15,6 +15,15 @@
         font-style: italic;
         margin-right: 5px;
     }
+
+    .link-icon {
+        margin-right: 5px;
+        color: rgba(255, 255, 255, .8)
+    }
+
+    &.clickable {
+        cursor: pointer;
+    }
 }
 
 .tasks-container {

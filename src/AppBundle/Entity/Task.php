@@ -55,6 +55,13 @@ class Task
     private $taskTypeFk;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string")
+     */
+    private $url;
+
+    /**
      * Get id
      *
      * @return int
@@ -182,5 +189,29 @@ class Task
     public function getTaskTypeFk()
     {
         return $this->taskTypeFk;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return Task
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
