@@ -10,8 +10,15 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
     vm.message = null;
     vm.roleId = null;
 
-
     vm.checkLogin = checkLogin;
+
+    document.getElementById("password")
+        .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode == 13) {
+                checkLogin();
+            }
+        });
 
     function checkLogin() {
         vm.message = null;
