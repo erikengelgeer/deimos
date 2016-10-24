@@ -18,8 +18,8 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
 
     promises.push(Api.users.findOne(userId).then(function (response) {
         vm.user = response.data;
-        var str = vm.user.email.length;
-        vm.user.email = vm.user.email.substr(0, str-9);
+        //this takes the email and removes the last nine characters which will always be @agfa.com
+        vm.user.email = vm.user.email.substr(0, vm.user.email.length -9);
     }));
 
     promises.push(Api.roles.find().then(function (response) {

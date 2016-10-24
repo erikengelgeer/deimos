@@ -287,7 +287,8 @@ class UsersController extends Controller
         $user->setUsername($data->username);
         $user->setRealName($data->real_name);
         $user->setCwid($data->cwid);
-        $user->setEmail($data->email  . '@agfa.com');
+        $user->setEmail($data->email  . "@agfa.com");
+        dump($user);
         
 
         if ($data->username != $user->getUsername()) {
@@ -299,7 +300,7 @@ class UsersController extends Controller
             }
         }
 
-        if ($data->email != $user->getEmail()) {
+        if ($data->email."@agfa.com" != $user->getEmail()) {
             $countByEmail = count($em->getRepository('AppBundle:User')->findBy(array("email" => $user->getEmail())));
 
             if ($countByEmail > 0) {
