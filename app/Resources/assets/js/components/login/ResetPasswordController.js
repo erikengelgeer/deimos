@@ -11,6 +11,14 @@ function ResetPasswordController($rootScope, Api) {
 
     $rootScope.loading = false;
 
+    document.getElementById("email")
+        .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode == 13) {
+                resetPassword();
+            }
+        });
+
     function resetPassword() {
         vm.message = null;
 
