@@ -18,6 +18,8 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
 
     promises.push(Api.users.findOne(userId).then(function (response) {
         vm.user = response.data;
+        var str = vm.user.email.length;
+        vm.user.email = vm.user.email.substr(0, str-9);
     }));
 
     promises.push(Api.roles.find().then(function (response) {

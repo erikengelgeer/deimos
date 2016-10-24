@@ -232,7 +232,7 @@ class UsersController extends Controller
         $user->setUsername($data->username);
         $user->setRealName($data->real_name);
         $user->setCwid($data->cwid);
-        $user->setEmail($data->email);
+        $user->setEmail($data->email . '@agfa.com');
         $user->setEnabled(true);
 
 //        Logic for password? maybe use token?
@@ -287,7 +287,8 @@ class UsersController extends Controller
         $user->setUsername($data->username);
         $user->setRealName($data->real_name);
         $user->setCwid($data->cwid);
-        $user->setEmail($data->email);
+        $user->setEmail($data->email  . '@agfa.com');
+        
 
         if ($data->username != $user->getUsername()) {
             $countByUsername = count($em->getRepository('AppBundle:User')->findBy(array("username" => $user->getUsername())));
