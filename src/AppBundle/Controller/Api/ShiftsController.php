@@ -93,6 +93,8 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setBreakDuration($shiftType->getBreakDuration());
+
                 } else {
                     if($item->description != null) {
                         $shift = new Shift();
@@ -103,6 +105,7 @@ class ShiftsController extends Controller
                         $shift->setEndTime($shiftType->getDefaultEndTime());
                         $shift->setDate(new \DateTime($date));
                         $shift->setHome($item->home);
+                        $shift->setBreakDuration($shiftType->getShiftDuration());
 
                         $em->persist($shift);
                     }
@@ -115,9 +118,9 @@ class ShiftsController extends Controller
                         $shift->setEndTime($shiftType->getDefaultEndTime());
                         $shift->setDate(new \DateTime($date));
                         $shift->setHome($item->home);
+                        $shift->setBreakDuration($shiftType->getShiftDuration());
 
                         $em->persist($shift);
-                    }
                 }
             }
         }
@@ -126,6 +129,7 @@ class ShiftsController extends Controller
 
         $data = $this->get('serializer')->serialize(array("result" => true), 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
     }
 
     /**
