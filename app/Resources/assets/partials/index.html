@@ -21,7 +21,7 @@
                     </span>
 
                     <div class="shift" ng-if="key > 0">
-                        <i class="fa fa-circle" style="color: {{ today.shift.shiftColor }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
+                        <i class="fa fa-circle" style="color: {{ today.shift.shiftColor }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} <i class="fa fa-home working-home" ng-if="today.shift.home"></i><i class="fa fa-info index-info" ng-if="today.shift.date" ng-click="vm.showModal(today.shift)"></i>
 
                         <!--<div class="actions">-->
                             <!--<i class="fa fa-pencil"></i>-->
@@ -29,7 +29,28 @@
                         <!--</div>-->
                     </div>
 
-                    <div class="task" ng-if="key > 0 && today.tasks[0].length != 0" ng-repeat="task in today.tasks"><span>{{ task.taskStartTime | date: 'H:mm' }} - {{ task.taskEndTime | date: 'H:mm' }}</span> {{ task.taskDescription }}</div>
+                    <div class="task" style="max-height: 200px" ng-if="key > 0 && today.tasks[0].length != 0" ng-repeat="task in today.tasks"><span>{{ task.taskStartTime | date: 'H:mm' }} - {{ task.taskEndTime | date: 'H:mm' }}</span> {{ task.taskDescription }}</div>
+
+                    <div class="modal fade" tabindex="-1" role="dialog" id="index-modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Shift information {{ vm.info.date | date: 'yyyy/M/d' }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Date:</strong> {{ vm.info.date | date: 'yyyy/M/d'}}<br>
+                                    <strong>Agent:</strong> {{ vm.info.realName }}<br>
+                                    <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' }}<br>
+                                    <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' }}<br>
+                                    <strong>Description:</strong> {{ vm.info.description }}<br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" ng-click="vm.hideModal()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

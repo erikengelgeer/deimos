@@ -8,8 +8,11 @@ function HomeController($rootScope, Api, $timeout) {
     vm.planningUsers = [];
     vm.shifts = [];
     vm.selectedTeam = null;
+    vm.info = [];
 
     vm.getPlanningContent = getPlanningContent;
+    vm.showModal = showModal;
+    vm.hideModal = hideModal;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -22,6 +25,16 @@ function HomeController($rootScope, Api, $timeout) {
             loadShiftsByTeam($rootScope.team.id);
         })
     });
+
+    function showModal(shift) {
+        vm.info = shift;
+        $('#index-modal').modal('show');
+    }
+
+    function hideModal() {
+        vm.info = [];
+        $('#index-modal').modal('hide');
+    }
 
     function loadShiftsByTeam(teamId) {
 
