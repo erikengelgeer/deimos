@@ -420,6 +420,10 @@
 .schedule .working-home {
   margin-left: 5px; }
 
+.schedule .index-info {
+  margin-left: 5px;
+  cursor: pointer; }
+
 .shift-container .shift {
   margin-bottom: 20px;
   height: 32px;

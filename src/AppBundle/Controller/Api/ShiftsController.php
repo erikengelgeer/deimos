@@ -94,16 +94,30 @@ class ShiftsController extends Controller
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
                 } else {
-                    $shift = new Shift();
-                    $shift->setUserFk($user);
-                    $shift->setShiftTypeFk($shiftType);
-                    $shift->setDescription($shiftType->getDescription());
-                    $shift->setStartTime($shiftType->getDefaultStartTime());
-                    $shift->setEndTime($shiftType->getDefaultEndTime());
-                    $shift->setDate(new \DateTime($date));
-                    $shift->setHome($item->home);
+                    if($item->description != null) {
+                        $shift = new Shift();
+                        $shift->setUserFk($user);
+                        $shift->setShiftTypeFk($shiftType);
+                        $shift->setDescription($item->description);
+                        $shift->setStartTime($shiftType->getDefaultStartTime());
+                        $shift->setEndTime($shiftType->getDefaultEndTime());
+                        $shift->setDate(new \DateTime($date));
+                        $shift->setHome($item->home);
 
-                    $em->persist($shift);
+                        $em->persist($shift);
+                    }
+                    else {
+                        $shift = new Shift();
+                        $shift->setUserFk($user);
+                        $shift->setShiftTypeFk($shiftType);
+                        $shift->setDescription($shiftType->getDescription());
+                        $shift->setStartTime($shiftType->getDefaultStartTime());
+                        $shift->setEndTime($shiftType->getDefaultEndTime());
+                        $shift->setDate(new \DateTime($date));
+                        $shift->setHome($item->home);
+
+                        $em->persist($shift);
+                    }
                 }
             }
         }
