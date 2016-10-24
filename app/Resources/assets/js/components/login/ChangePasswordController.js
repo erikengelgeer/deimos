@@ -21,6 +21,14 @@ function ChangePasswordController($rootScope, $stateParams, Api, $state, $localS
         $rootScope.loading = false;
     });
 
+    document.getElementById("password")
+        .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode == 13) {
+                changePassword();
+            }
+        });
+
     function changePassword() {
         vm.message = null;
 
