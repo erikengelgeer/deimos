@@ -21,7 +21,7 @@
                     </span>
 
                     <div class="shift" ng-if="key > 0">
-                        <i class="fa fa-circle" style="color: {{ today.shift.shiftColor }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} <i class="fa fa-home working-home" ng-if="today.shift.home"></i><i class="fa fa-info index-info" ng-if="today.shift.date" ng-click="vm.showModal(today.shift)"></i>
+                        <i class="fa fa-circle" style="color: {{ today.shift.shiftColor }}"></i> {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} <i class="fa fa-info index-info" ng-if="today.shift.date" ng-click="vm.showModal(today.shift)"></i><i class="fa fa-home working-home" ng-if="today.shift.home"></i>
 
                         <!--<div class="actions">-->
                             <!--<i class="fa fa-pencil"></i>-->

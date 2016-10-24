@@ -418,11 +418,25 @@
   margin-top: 58px; }
 
 .schedule .working-home {
-  margin-left: 5px; }
+  margin-left: 5px;
+  margin-top: 10px;
+  float: right; }
 
 .schedule .index-info {
-  margin-left: 5px;
-  cursor: pointer; }
+  margin-top: 5px;
+  padding: 4px;
+  cursor: pointer;
+  color: rgba(125, 125, 125, 0.7);
+  display: block;
+  float: right;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  text-align: center;
+  transition: all .15s ease-in-out; }
+  .schedule .index-info:hover {
+    background: rgba(0, 0, 0, 0.125);
+    color: #000000; }
 
 .shift-container .shift {
   margin-bottom: 20px;
