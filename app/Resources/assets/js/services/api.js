@@ -80,7 +80,7 @@ function Api($http) {
                 return $http.get('api/shift-types');
             },
             findOne: function (id) {
-                return $http.get('api/shift-types/' + id);
+                return $http.get('api/shift-types/single/' + id);
             },
             update: function (data) {
                 return $http.put('api/shift-types/' + data.id, data)

@@ -55,7 +55,7 @@ class ShiftTypesController extends Controller
     }
 
     /**
-     * @Route("/{id}")
+     * @Route("/single/{id}")
      * @Method("GET")
      *
      * Get a single shiftType
@@ -136,6 +136,10 @@ class ShiftTypesController extends Controller
             $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
             $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
         }
+        $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
+        $shiftType->setBreakDuration($content->break_duration);
+        $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
+        $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
 
         if($content->short != $shiftType->getShort()) {
             if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
