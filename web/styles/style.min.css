@@ -428,7 +428,7 @@
   float: right; }
 
 .schedule .index-info {
-  margin-top: 5px;
+  margin-top: 7px;
   padding: 4px;
   cursor: pointer;
   color: rgba(125, 125, 125, 0.7);
@@ -1024,35 +1024,6 @@
   margin-top: 40px; }
   .manage-shifts table th:last-child {
     width: 100px; }
-  .manage-shifts .colors {
-    padding: 4px 0; }
-    .manage-shifts .colors .color {
-      width: 24px;
-      height: 24px;
-      padding: 4px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      float: left;
-      cursor: pointer;
-      margin: 0 5px 0 0; }
-      .manage-shifts .colors .color .inner-color {
-        width: 14px;
-        height: 14px;
-        border-radius: 3px; }
-      .manage-shifts .colors .color.active, .manage-shifts .colors .color:hover {
-        background-color: rgba(0, 0, 0, 0.1); }
-    .manage-shifts .colors:after {
-      content: '';
-      display: table;
-      clear: both; }
-  .manage-shifts .select-time select {
-    float: left;
-    width: 45%; }
-  .manage-shifts .select-time span {
-    width: 10%;
-    float: left;
-    padding: 6px 0;
-    text-align: center; }
   .manage-shifts .select-start-time {
     display: block;
     width: 40%;
@@ -1085,6 +1056,35 @@
     -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
+  .manage-shifts .colors {
+    padding: 4px 0; }
+    .manage-shifts .colors .color {
+      width: 24px;
+      height: 24px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      float: left;
+      cursor: pointer;
+      margin: 0 5px 0 0; }
+      .manage-shifts .colors .color .inner-color {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px; }
+      .manage-shifts .colors .color.active, .manage-shifts .colors .color:hover {
+        background-color: rgba(0, 0, 0, 0.1); }
+    .manage-shifts .colors:after {
+      content: '';
+      display: table;
+      clear: both; }
+  .manage-shifts .select-time select {
+    float: left;
+    width: 45%; }
+  .manage-shifts .select-time span {
+    width: 10%;
+    float: left;
+    padding: 6px 0;
+    text-align: center; }
 
 .manage-tasks {
   margin-top: 40px; }

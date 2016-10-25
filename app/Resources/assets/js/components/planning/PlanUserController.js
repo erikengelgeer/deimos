@@ -153,6 +153,8 @@ function PlanUserController($rootScope, Api, $q,$state) {
                     for (var i = 0; i < vm.users.length; i++) {
                         vm.users[i].checked = false;
                         vm.users[i].newShift = null;
+                        vm.users[i].home = null;
+                        vm.users[i].description = null;
                     }
 
                     // Dirty hax, destroys datepicker and build it up again instead of clearing.
