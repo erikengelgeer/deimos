@@ -75,11 +75,6 @@ function Api($http) {
                 return $http.get('api/timezones');
             }
         },
-        colors: {
-            find: function () {
-                return $http.get('api/colors');
-            }
-        },
         shiftType: {
             find: function () {
                 return $http.get('api/shift-types');

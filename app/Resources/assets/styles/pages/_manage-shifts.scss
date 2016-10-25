@@ -44,4 +44,51 @@
         -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
         transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     }
+
+    .colors {
+        padding: 4px 0;
+        .color {
+            width: 24px;
+            height: 24px;
+            padding: 4px;
+
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            float: left;
+            cursor: pointer;
+            margin: 0 5px 0 0;
+
+            .inner-color {
+                width: 14px;
+                height: 14px;
+                border-radius: 3px;
+            }
+
+            &.active,
+            &:hover {
+                background-color: rgba(0, 0, 0, .1);
+            }
+
+        }
+
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    }
+
+    .select-time {
+        select {
+            float: left;
+            width: 45%;
+        }
+
+        span {
+            width: 10%;
+            float: left;
+            padding: 6px 0;
+            text-align: center;
+        }
+    }
 }

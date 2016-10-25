@@ -1,6 +1,3 @@
-/**
- * Created by EAETV on 13/09/2016.
- */
 angular.module('app').controller('NewShiftController', NewShiftController);
 
 function NewShiftController($rootScope, Api, $state, $q) {
@@ -9,19 +6,26 @@ function NewShiftController($rootScope, Api, $state, $q) {
 
     vm.shift = {};
     vm.team = {};
-    vm.colors = {};
+    vm.colors = ['#ffeb3b', '#ffc107', '#ff9800', '#EE4A25', '#00b050', '#06AECE', '#999999'];
+    vm.hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+        '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+    vm.minutes = ['00', '15', '30', '45'];
+    vm.breakMinutes = ['00', '15', '30', '45', '60'];
+
     vm.dataLoading = true;
     vm.message = null;
+    vm.selectedColor = null;
+
+    vm.shift.start_time = ['00', '00'];
+    vm.shift.end_time = ['00', '00'];
+    vm.shift.break_duration = '00';
 
     vm.add = add;
+    vm.selectColor = selectColor;
 
-    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+    if ($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
     }
-
-    promises.push(Api.colors.find().then(function (response) {
-        vm.colors = response.data;
-    }));
 
     promises.push(Api.teams.find().then(function (response) {
         vm.team = response.data;
@@ -41,8 +45,10 @@ function NewShiftController($rootScope, Api, $state, $q) {
 
     function add() {
         vm.message = null;
-        console.log(vm.shift);
-        if(vm.shift.team == null || vm.shift.description == null || vm.shift.short == null) {
+
+        vm.shift.color = vm.selectedColor;
+
+        if (vm.shift.team == null || vm.shift.description == null || vm.shift.short == null || vm.shift.color == null) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
@@ -59,41 +65,63 @@ function NewShiftController($rootScope, Api, $state, $q) {
                 'type': 'alert-danger'
             }
         } else {
-            // Enables showing a loading indicator.
-            vm.dataLoading = true;
-            // Send a request to the insert API to add a shiftType.
-            Api.shiftType.add(vm.shift).then(function (response) {
-                var result = response.data.result;
 
-                if (!result) {
-                    // If name is not unique, show error message
-                    vm.message = {
-                        'title': 'Name is already taken',
-                        'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-danger'
-                    }
-                } else {
-                    // If successful, show success message.
-                    vm.message = {
-                        'title': 'Successful added',
-                        'content': '<em>' + vm.shift.short + '</em> is successful added. return to the <a href="#/manage/shifts">overview</a>.',
-                        'icon': 'fa-check',
-                        'type': 'alert-success'
-                    }
-                    // Resets team so it can not be send again.
-                    vm.shift = null;
-                }
-            }, function errorCallback(response) {
+            vm.shift.default_start_time = vm.shift.start_time[0] + ":" + vm.shift.start_time[1];
+            vm.shift.default_end_time = vm.shift.end_time[0] + ":" + vm.shift.end_time[1];
+
+            if (Date.parse('01/01/1970 ' + vm.shift.default_start_time) > Date.parse('01/01/1970 ' + vm.shift.default_end_time)) {
                 vm.message = {
-                    'title': response.status + ', ' + response.statusText + '.',
-                    'content': 'Please notify the admin regarding this error.',
+                    'title': 'Invalid time',
+                    'content': 'The end time may not be lower than the start time. Please try again.',
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 }
-            }).finally(function () {
-                vm.dataLoading = false;
-            });
+            } else {
+                // Enables showing a loading indicator.
+                vm.dataLoading = true;
+                // Send a request to the insert API to add a shiftType.
+                Api.shiftType.add(vm.shift).then(function (response) {
+                    var result = response.data.result;
+
+                    if (!result) {
+                        // If name is not unique, show error message
+                        vm.message = {
+                            'title': 'Name is already taken',
+                            'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
+                            'icon': 'fa-exclamation',
+                            'type': 'alert-danger'
+                        }
+                    } else {
+                        // If successful, show success message.
+                        vm.message = {
+                            'title': 'Successful added',
+                            'content': '<em>' + vm.shift.short + '</em> is successful added. return to the <a href="#/manage/shifts">overview</a>.',
+                            'icon': 'fa-check',
+                            'type': 'alert-success'
+                        }
+                        // Resets everything so it can not be send again.
+                        /*vm.shift = {};
+                         vm.shift.start_time = ['00', '00'];
+                         vm.shift.end_time = ['00', '00'];
+                         vm.shift.break_duration = '00';
+                         vm.selectedColor = null;*/
+                    }
+                }, function errorCallback(response) {
+                    vm.message = {
+                        'title': response.status + ', ' + response.statusText + '.',
+                        'content': 'Please notify the admin regarding this error.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                }).finally(function () {
+                    vm.dataLoading = false;
+                });
+            }
+
         }
+    }
+
+    function selectColor(color) {
+        vm.selectedColor = color;
     }
 }

@@ -9,10 +9,12 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.teams = null;
     vm.shift = null;
-    vm.colors = {};
+    vm.colors = ['#FFEB3B', '#FFC107', '#FF9800', '#EE4A25', '#00B050', '#06AECE', '#999999'];
+    vm.selectedColor = null;
     vm.dataLoading = true;
 
     vm.update = update;
+    vm.selectColor = selectColor;
 
     if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index')
@@ -26,17 +28,14 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         vm.shift = response.data;
         vm.shift.default_end_time = new Date(vm.shift.default_end_time);
         vm.shift.default_start_time = new Date(vm.shift.default_start_time);
-        console.log(vm.shift.team_fk)
+
+        vm.selectedColor = vm.shift.color.toUpperCase();
+        console.log(vm.shift);
     }));
 
     // Fetch the team with the given team id.
     promises.push(Api.teams.find().then(function (response) {
         vm.teams = response.data;
-    }));
-
-    // fetch all the colors.
-    promises.push(Api.colors.find().then(function (response) {
-        vm.colors = response.data;
     }));
 
     $q.all(promises).catch(function (response) {
@@ -52,7 +51,8 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     });
 
     function update() {
-        console.log(vm.shift);
+        vm.shift.color = vm.selectedColor;
+
         if(vm.shift.team_fk == null || vm.shift.description == null || vm.shift.short == null) {
             // if fields is empty, show error message.
             vm.message = {
@@ -105,5 +105,9 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
                 vm.dataLoading = false;
             });
         }
+    }
+
+    function selectColor(color) {
+        vm.selectedColor = color;
     }
 }

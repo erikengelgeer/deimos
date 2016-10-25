@@ -95,43 +95,33 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
-                    $shift->setBreakDuration($shiftType->getBreakDuration());
+//                    $shift->setBreakDuration($shiftType->getBreakDuration());
 
                 } else {
-                    if($item->description != null) {
-                        $shift = new Shift();
-                        $shift->setUserFk($user);
-                        $shift->setShiftTypeFk($shiftType);
+                    $shift = new Shift();
+                    $shift->setUserFk($user);
+                    $shift->setShiftTypeFk($shiftType);
+                    $shift->setDescription($item->description);
+                    $shift->setStartTime($shiftType->getDefaultStartTime());
+                    $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setDate(new \DateTime($date));
+                    $shift->setHome($item->home);
+//                    $shift->setBreakDuration($shiftType->getShiftDuration());
+
+                    if ($item->description != null) {
                         $shift->setDescription($item->description);
-                        $shift->setStartTime($shiftType->getDefaultStartTime());
-                        $shift->setEndTime($shiftType->getDefaultEndTime());
-                        $shift->setDate(new \DateTime($date));
-                        $shift->setHome($item->home);
-                        $shift->setBreakDuration($shiftType->getShiftDuration());
-
-                        $em->persist($shift);
                     }
-                    else {
-                        $shift = new Shift();
-                        $shift->setUserFk($user);
-                        $shift->setShiftTypeFk($shiftType);
-                        $shift->setDescription($shiftType->getDescription());
-                        $shift->setStartTime($shiftType->getDefaultStartTime());
-                        $shift->setEndTime($shiftType->getDefaultEndTime());
-                        $shift->setDate(new \DateTime($date));
-                        $shift->setHome($item->home);
-                        $shift->setBreakDuration($shiftType->getShiftDuration());
 
-                        $em->persist($shift);
+                    $em->persist($shift);
+
                 }
             }
+
+            $em->flush();
+
+            $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+            return new Response($data, 200, ['Content-Type' => 'application/json']);
         }
-
-        $em->flush();
-
-        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
-    }
     }
 
     /**

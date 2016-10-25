@@ -11,10 +11,10 @@
             <div class="col-md-12">
                 <h4>Add Shift</h4>
                 <hr>
-                <div class="alert alert-warning">
+                <!--<div class="alert alert-warning">
                     <strong><i class="fa fa-exclamation-triangle"></i>Caution!</strong> <br>
                     <span>Because of an unknown error the date will be inserted incorrectly into the database. Instead, add an hour to the current date.</span>
-                </div>
+                </div>-->
                 <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
                     <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
                     <span ng-bind-html="vm.message.content"></span>
@@ -22,118 +22,64 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group ">
                     <label for="inputShort">Short:</label>
                     <input type="text" placeholder="QM" class="form-control" id="inputShort" ng-model="vm.shift.short">
                 </div>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <label for="inputDescription">Description:</label>
                 <input type="text" placeholder="Queue Manager" class="form-control" id="inputDescription"
                        ng-model="vm.shift.description">
             </div>
 
+            <div class="col-md-4">
+                <label for="color">Color:</label>
+
+                <div class="colors" id="color">
+                    <div class="color" ng-repeat="color in vm.colors" ng-click="vm.selectColor(color)"
+                         ng-class="{'active': color == vm.selectedColor}">
+                        <div class="inner-color" ng-style="{'background-color': color}"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-2">
                 <label>Start Time:</label>
-                <select name="" class="select-start-time">
-                    <option value="00">00</option>
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                </select>
-                <p>:</p>
-                <select name="" class="select-start-time">
-                    <option value="00">00</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                </select>
+                <div class="select-time">
+                    <select class="form-control" ng-model="vm.shift.start_time[0]" ng-options="hour for hour in vm.hours"></select>
+                    <span>:</span>
+                    <select class="form-control" ng-model="vm.shift.start_time[1]" ng-options="minute for minute in vm.minutes"></select>
+                </div>
             </div>
             <div class="col-md-2">
                 <label>End Time:</label>
-                <select name="" class="select-start-time">
-                    <option value="00">00</option>
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                </select>
-                <p>:</p>
-                <select name="" class="select-start-time">
-                    <option value="00">00</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                </select>
+                <div class="select-time">
+                    <select class="form-control" ng-model="vm.shift.end_time[0]" ng-options="hour for hour in vm.hours"></select>
+                    <span>:</span>
+                    <select class="form-control" ng-model="vm.shift.end_time[1]" ng-options="minute for minute in vm.minutes"></select>
+                </div>
             </div>
+
             <div class="col-md-4">
-                <label for="color">Color:</label>
-                <select id="color" class="form-control" ng-model="vm.shift.color"
-                        ng-options="color for color in vm.colors">
-                    <option value="" ng-disabled="!!vm.shift.color">Select a color</option>
-                </select>
+                <label for="breakDuration">Break Duration:</label>
+                <select class="form-control" id="breakDuration" ng-model="vm.shift.break_duration" ng-options="minute for minute in vm.breakMinutes"></select>
             </div>
+
             <div class="col-md-4">
                 <label for="inputTeam">Team:</label>
                 <select name="team" class="form-control" id="inputTeam" ng-model="vm.shift.team"
                         ng-options="team.name for team in vm.team">
                     <option value="" ng-disabled="!!vm.shift.team_fk">Select a team</option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <label>Break Duration:</label>
-                <select name="" class="select-break-time">
-                    <option value="" disabled selected>Select break duration</option>
-                    <option value="00">00</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                    <option value="60">60</option>
                 </select>
             </div>
         </div>
