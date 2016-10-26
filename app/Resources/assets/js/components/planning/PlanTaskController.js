@@ -207,12 +207,43 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     function showModal(task) {
         vm.message = null;
+        var startHour;
+        var startMin;
+        var endHour;
+        var endMin;
         if(task.start_time.length > 6) {
             startTime = new Date(task.start_time);
             endTime = new Date(task.end_time);
 
-            startTime = startTime.getHours() + ":" + startTime.getMinutes();
-            endTime = endTime.getHours() + ":" + endTime.getMinutes();
+            startHour = startTime.getHours();
+            startMin = startTime.getMinutes();
+
+            if(startHour < 10)
+            {
+                // console.log(hour = "0"+hour);
+                startHour = "0" + startHour;
+            }
+
+            if(startMin < 10) {
+                startMin = "0" + startMin;
+            }
+
+            endHour = endTime.getHours();
+            endMin = endTime.getMinutes();
+
+            if(endHour < 10)
+            {
+                // console.log(hour = "0"+hour);
+                endHour = "0" + endHour;
+            }
+
+            if(endMin < 10) {
+                endMin = "0" + endMin;
+            }
+
+            startTime = startHour + ":" + startMin;
+            endTime = endHour + ":"  + endMin;
+
             task.start_time = startTime;
             task.end_time = endTime;
         }

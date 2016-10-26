@@ -82,7 +82,10 @@ class ShiftsController extends Controller
         $data = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
+        dump($data);
         foreach ($data->selectedDates as $date) {
+
+            dump($date);
 
             foreach ($data->shifts as $item) {
                 $user = $em->getRepository('AppBundle:User')->find($item->userId);
@@ -92,41 +95,31 @@ class ShiftsController extends Controller
 
                 if ($shift != null) {
                     $shift->setShiftTypeFk($shiftType);
-                    $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
-                    $shift->setHome($item->home);
-//                    $shift->setBreakDuration($shiftType->getBreakDuration());
-
-                    if ($item->description != null) {
-                        $shift->setDescription($item->description);
-                    }
+                    (isset($item->home)) ? $shift->setHome($item->home) : $shift->setHome(0);
+                    (isset($item->description)) ? $shift->setDescription($item->description) : $shift->setDescription($shiftType->getDescription());
 
                 } else {
                     $shift = new Shift();
                     $shift->setUserFk($user);
                     $shift->setShiftTypeFk($shiftType);
-                    $shift->setDescription($item->description);
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
                     $shift->setDate(new \DateTime($date));
-                    $shift->setHome($item->home);
-//                    $shift->setBreakDuration($shiftType->getShiftDuration());
-
-                    if ($item->description != null) {
-                        $shift->setDescription($item->description);
-                    }
+                    (isset($item->home)) ? $shift->setHome($item->home) : $shift->setHome(0);
+                    (isset($item->description)) ? $shift->setDescription($item->description) : $shift->setDescription($shiftType->getDescription());
 
                     $em->persist($shift);
 
                 }
+                $em->flush();
             }
 
-            $em->flush();
-
-            $data = $this->get('serializer')->serialize(array("result" => true), 'json');
-            return new Response($data, 200, ['Content-Type' => 'application/json']);
         }
+
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 
     /**

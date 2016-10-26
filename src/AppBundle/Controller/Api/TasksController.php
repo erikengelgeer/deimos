@@ -53,7 +53,10 @@ class TasksController extends Controller
         $task->setDescription($data->taskType->description);
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
-        $task->setUrl($data->url);
+
+        if(isset($data->url)){
+            $task->setUrl($data->url);
+        }
 
         $em->persist($task);
         $em->flush();
@@ -70,13 +73,16 @@ class TasksController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-        dump($content);
+//        dump($content);
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
 
         $task->setStartTime(new \DateTime($content->start_time));
         $task->setEndTime(new \DateTime($content->end_time));
         $task->setTaskTypeFk($taskType);
-        $task->setUrl($content->url);
+
+        if(isset($content->url)){
+            $task->setUrl($content->url);
+        }
 
         $em->flush();
 

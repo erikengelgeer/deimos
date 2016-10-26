@@ -134,6 +134,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
                 }
             } else {
                 vm.dataLoading = true;
+                console.log(data);
                 Api.shifts.add(data).then(function () {
 
                     vm.message = {
