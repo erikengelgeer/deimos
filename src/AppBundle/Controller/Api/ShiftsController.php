@@ -95,7 +95,12 @@ class ShiftsController extends Controller
                     $shift->setDescription($shiftType->getDescription());
                     $shift->setStartTime($shiftType->getDefaultStartTime());
                     $shift->setEndTime($shiftType->getDefaultEndTime());
+                    $shift->setHome($item->home);
 //                    $shift->setBreakDuration($shiftType->getBreakDuration());
+
+                    if ($item->description != null) {
+                        $shift->setDescription($item->description);
+                    }
 
                 } else {
                     $shift = new Shift();

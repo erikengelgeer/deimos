@@ -119,7 +119,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
                     data.shifts.push({
                         userId: vm.users[i].id,
                         shiftId: vm.users[i].newShift,
-                        home: vm.users[i].home,
+                        home: (vm.users[i].home == undefined) ? 0 : vm.users[i].home,
                         description: vm.users[i].description
                     });
                 }
