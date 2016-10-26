@@ -42,7 +42,6 @@ class TasksController extends Controller
     {
 
         $data = json_decode($request->getContent());
-        dump($data);
         $em = $this->getDoctrine()->getManager();
 
         $taskType = $em->getRepository('AppBundle:TaskType')->find($data->taskType->id);
@@ -57,6 +56,28 @@ class TasksController extends Controller
         $task->setUrl($data->url);
 
         $em->persist($task);
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize($task, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/{id}")
+     * @Method("PUT")
+     */
+    public function updateAction(Task $task, Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $content = json_decode($request->getContent());
+
+        dump($content);
+        $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
+
+        $task->setStartTime(new \DateTime($content->start_time));
+        $task->setEndTime(new \DateTime($content->end_time));
+        $task->setTaskTypeFk($taskType);
+        $task->setUrl($content->url);
+
         $em->flush();
 
         $data = $this->get('serializer')->serialize($task, 'json');

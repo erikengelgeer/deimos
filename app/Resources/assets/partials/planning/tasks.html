@@ -53,6 +53,7 @@
                                 <span>{{ task.description }}</span>
                                 <div class="actions">
                                     <!--<a href="#" class="fa fa-pencil"></a>-->
+                                    <a href="" class="fa fa-pencil" ng-click="vm.showModal(task)"></a>
                                     <a href="" class="fa fa-times" ng-click="vm.deleteTask(task)"></a>
                                 </div>
                             </div>
@@ -95,6 +96,62 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="plan-task-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="hideModal()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit task</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                    <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                    <span ng-bind-html="vm.message.content"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="input-group">
+                                    <span class="input-group-addon" id="sizing-addon4"><i
+                                            class="fa fa-clock-o"></i></span>
+                            <input type="text" class="form-control" placeholder="Start"
+                                   aria-describedby="sizing-addon1" ng-model="vm.editTask.start_time">
+                            <span class="input-group-addon mid" id="sizing-addon5">-</span>
+                            <input type="text" class="form-control" placeholder="End"
+                                   aria-describedby="sizing-addon2" ng-model="vm.editTask.end_time">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="sizing-addon6"><i
+                                    class="fa fa-tasks"></i></span>
+                            <select class="form-control" ng-model="vm.editTask.task_type_fk.id" ng-options="taskType.id as taskType.description for taskType in vm.taskTypes">
+                                <option value="" ng-disabled="!!vm.editTask.task_type_fk">Select a task</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-1">
+                        <i class="fa fa-link pull-right"></i>
+                        <input type="checkbox" ng-model="link" class="pull-right">
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.editTask.url">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="vm.hideModal()">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.updateTask(vm.editTask)">Save</button>
             </div>
         </div>
     </div>

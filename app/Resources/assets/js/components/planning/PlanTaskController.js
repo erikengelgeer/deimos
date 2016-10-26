@@ -4,6 +4,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     var vm = this;
     var datepicker = $('#datetimepicker-2');
     var promises = [];
+    var startTime = null;
+    var endTime = null;
 
     vm.users = [];
     vm.taskTypes = [];
@@ -12,10 +14,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     vm.selectedUser = null;
     vm.selectedShift = null;
     vm.dataLoading = true;
+    vm.editTask = null;
 
+    vm.showModal = showModal;
+    vm.hideModal = hideModal;
     vm.selectUser = selectUser;
     vm.deleteTask = deleteTask;
     vm.addTask = addTask;
+    vm.updateTask = updateTask;
 
     if ($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
         $state.go('index');
@@ -190,6 +196,93 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     })
                 }
 
+            }
+        }
+    }
+
+    function hideModal() {
+        vm.editTask = null;
+        $('#plan-task-modal').modal('hide');
+    }
+
+    function showModal(task) {
+        vm.message = null;
+        if(task.start_time.length > 6) {
+            startTime = new Date(task.start_time);
+            endTime = new Date(task.end_time);
+
+            startTime = startTime.getHours() + ":" + startTime.getMinutes();
+            endTime = endTime.getHours() + ":" + endTime.getMinutes();
+            task.start_time = startTime;
+            task.end_time = endTime;
+        }
+
+        vm.editTask = task;
+        $('#plan-task-modal').modal('show');
+    }
+
+    function updateTask(task) {
+
+        if (task.start_time == null || task.end_time == null || task.task_type_fk == null) {
+            vm.message = {
+                'title': 'All fields are required',
+                'content': 'You can not add an empty task to the shift.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        } else {
+            var shiftStartTime = new Date(vm.selectedShift.start_time);
+            var shiftEndTime = new Date(vm.selectedShift.end_time);
+
+            shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
+            shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
+
+            if (Date.parse('01/01/1970 ' + task.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                Date.parse('01/01/1970 ' + task.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                Date.parse('01/01/1970 ' + task.end_time) <= Date.parse('01/01/1970 ' + task.start_time) ||
+                Date.parse('01/01/1970 ' + task.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
+
+                vm.message = {
+                    'title': 'The given times are invalid.',
+                    'content': 'The chosen time is invalid, please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+
+            } else {
+                var startTime = task.start_time.split(':');
+                var endTime = task.end_time.split(':');
+
+                if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
+                    vm.message = {
+                        'title': 'Start time is invalid',
+                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
+                    vm.message = {
+                        'title': 'End time is invalid',
+                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                } else {
+                    $('#plan-task-modal').modal('hide');
+                    vm.dataLoading = true;
+                    Api.tasks.update(vm.editTask).then(function () {
+
+                    }).finally(function () {
+                        vm.message = {
+                            'title': 'Task updated',
+                            'content': 'The task is successfully updated',
+                            'icon': 'fa-check',
+                            'type': 'alert-success'
+                        };
+                        vm.editTask = null;
+                        vm.dataLoading = false;
+                    })
+                }
             }
         }
     }
