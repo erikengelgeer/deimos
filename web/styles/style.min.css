@@ -443,6 +443,9 @@
     background: rgba(0, 0, 0, 0.125);
     color: #000000; }
 
+.absent {
+  background-color: rgba(0, 0, 0, 0.1); }
+
 .shift-container .shift {
   margin-bottom: 20px;
   height: 32px;
