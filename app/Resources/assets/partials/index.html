@@ -15,7 +15,7 @@
         <!-- loop through the users -->
         <div class="body">
             <div class="body-row" ng-repeat="user in vm.planningUsers[key]">
-                <div class="item" ng-repeat="(key, day) in user" ng-init="today = vm.getPlanningContent(day, key, planningKey)" ng-class="{'absent': today.shift.shiftTypeShort == 'A' || today.shift.shiftTypeShort == 'H' || today.shift.shiftTypeShort == 'W' && key > 0}">
+                <div class="item" ng-repeat="(key, day) in user" ng-init="today = vm.getPlanningContent(day, key, planningKey)" ng-class="{'absent': today.shift.shiftTypeShort == 'A' || today.shift.shiftTypeShort == 'H' || today.shift.shiftTypeShort == 'W' || today.shift.shiftTypeShort == 'WAH' && key > 0}">
                     <span ng-if="key == 0">
                         {{ day.user.real_name }}
                     </span>

@@ -230,7 +230,11 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function redirect(taskUrl) {
-        window.open(taskUrl, '_blank');
+        console.log(taskUrl);
+        if(taskUrl != null && taskUrl != '')
+        {
+            window.open(taskUrl, '_blank');
+        }
     }
 
 
