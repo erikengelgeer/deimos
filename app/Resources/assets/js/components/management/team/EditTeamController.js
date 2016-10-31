@@ -50,14 +50,14 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
-                'content': 'Please fill in all the required fields.',
+                'content': 'Please fill in all required fields.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
         } else if (vm.team.short.length > 3) {
             // if short is larger than 3, show error message.
             vm.message = {
-                'title': 'Short is to long',
+                'title': 'Short is too long',
                 'content': 'Short may not be longer than 3 characters.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
@@ -74,7 +74,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
                     // If name is not unique, show error message
                     vm.message = {
                         'title': 'Name already taken',
-                        'content': '<em>' + vm.team.name + '</em> is already present in our system, please choose an another name.',
+                        'content': '<em>' + vm.team.name + '</em> is already present in our system, please choose a different name.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
@@ -82,7 +82,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
                     // If successful, show success message.
                     vm.message = {
                         'title': 'Successfully updated',
-                        'content': '<em>' + vm.team.name + '</em> is successful updated. return to the <a href="#/manage/teams">overview</a>.',
+                        'content': '<em>' + vm.team.name + '</em> is successfully updated. Return to the <a href="#/manage/teams">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
                     }

@@ -41,7 +41,7 @@ function NewTaskController($rootScope, Api, $state) {
                     // If name is not unique, show error message
                     vm.message = {
                         'title': 'Short already taken',
-                        'content': '<em>' + vm.taskType.short + '</em> is already present in our system, please choose another short.',
+                        'content': '<em>' + vm.taskType.short + '</em> is already present in our system, please choose a different short.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }

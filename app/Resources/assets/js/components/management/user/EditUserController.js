@@ -50,7 +50,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
-                'content': 'Please fill in all the required fields.',
+                'content': 'Please fill in all required fields.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
@@ -71,7 +71,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
                     // If username is not unique, show error message
                     vm.message = {
                         'title': 'Username or email is already taken',
-                        'content': '<em>' + vm.user.username + '</em> and/or ' + vm.user.email + ' is already present in our system, please choose an another username and/or email.',
+                        'content': '<em>' + vm.user.username + '</em> and/or ' + vm.user.email + ' is already present in our system, please choose a different username and/or email.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
@@ -79,7 +79,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
                     // If successful, show success message.
                     vm.message = {
                         'title': 'Successfully updated',
-                        'content': '<em>' + vm.user.username + '</em> is successful updated. return to the <a href="#/manage/users">overview</a>.',
+                        'content': '<em>' + vm.user.username + '</em> is successfully updated. Return to the <a href="#/manage/users">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
                     }

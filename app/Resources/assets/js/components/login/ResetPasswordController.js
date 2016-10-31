@@ -32,8 +32,8 @@ function ResetPasswordController($rootScope, Api) {
             vm.dataLoading = true;
             Api.users.passwordRequest(vm.email).then(function () {
                 vm.message = {
-                    title: "Successful send",
-                    content: "Success, check your email for a password reset link.",
+                    title: "Successfully send",
+                    content: "Check your email for a password reset link.",
                     type: "alert-success"
                 };
 
