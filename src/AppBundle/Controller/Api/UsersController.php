@@ -288,7 +288,7 @@ class UsersController extends Controller
         $user->setRealName($data->real_name);
         $user->setCwid($data->cwid);
         $user->setEmail($data->email  . "@agfa.com");
-        dump($user);
+//        dump($user);
         
 
         if ($data->username != $user->getUsername()) {

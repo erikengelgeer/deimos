@@ -27,7 +27,7 @@ class TasksController extends Controller
 
         $tasks = $repository->findAll();
 
-        dump($tasks);
+//        dump($tasks);
         $data = $this->get('serializer')->serialize($tasks, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
