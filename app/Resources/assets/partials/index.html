@@ -26,7 +26,7 @@
 
                     <div class="shift" ng-if="key > 0">
 
-                        <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'">-</span>
+                        <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'">Whole day</span>
                         <span ng-if="(today.shift.startTime | date: 'H:mm') != '0:00' && (today.shift.endTime | date: 'H:mm') != '0:00'">{{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} </span>
 
                         <i class="fa fa-info index-info" ng-if="today.shift.date" ng-click="vm.showModal(today.shift)"></i>
