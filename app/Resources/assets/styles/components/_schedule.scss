@@ -52,11 +52,28 @@
         min-height: 52px;
         border-right: 1px solid #ddd;
         float: left;
-
+        position: relative;
         display: flex;
         flex-wrap: inherit;
         align-items: flex-start;
         align-content: flex-start;
+
+        .shift {
+          position: relative;
+          z-index: 80;
+          background-color: #fff;
+        }
+
+        .shift-tasks {
+          padding: 0 4px 4px 12px;
+          width: 100%;
+
+          .task {
+            margin: 4px 0 0 0;
+            background-color: #e8e8e8;
+            color:inherit;
+          }
+        }
 
         &:hover {
           .shift {
@@ -123,4 +140,12 @@
 
 .absent {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.shift-type {
+  position: absolute;
+  //top:28px;
+  width:8px;
+  height: 100%;
+  background-color: #000;
 }
