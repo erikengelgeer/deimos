@@ -100,11 +100,12 @@ function NewShiftController($rootScope, Api, $state, $q) {
                             'type': 'alert-success'
                         }
                         // Resets everything so it can not be send again.
-                        /*vm.shift = {};
-                         vm.shift.start_time = ['00', '00'];
-                         vm.shift.end_time = ['00', '00'];
-                         vm.shift.break_duration = '00';
-                         vm.selectedColor = null;*/
+                        vm.shift = null;
+                        vm.team = null;
+                        vm.shift.start_time = ['00', '00'];
+                        vm.shift.end_time = ['00', '00'];
+                        vm.shift.break_duration = '00';
+                        vm.selectedColor = null;
                     }
                 }, function errorCallback(response) {
                     vm.message = {
