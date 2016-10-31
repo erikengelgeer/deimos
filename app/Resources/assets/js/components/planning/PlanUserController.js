@@ -67,7 +67,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
     datepicker.datepicker({
         multidate: true,
         todayHighlight: true,
-        startDate: startDate
+
     });
 
     datepicker.on("changeDate", function (e) {

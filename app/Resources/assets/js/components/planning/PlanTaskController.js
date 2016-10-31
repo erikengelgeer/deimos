@@ -72,7 +72,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
         Api.shifts.findByUser(vm.selectedUser).then(function (response) {
             vm.activeDates = response.data;
-
             if (vm.activeDates.length > 0) {
                 buildDatepicker();
             } else {
@@ -88,13 +87,11 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         })
     }
 
+    // TODO: show assigned shifts in the past
     function buildDatepicker() {
-        var startDate = new Date();
-
         datepicker.datepicker({
             multidate: false,
             todayHighlight: true,
-            startDate: startDate,
             beforeShowDay: function (date) {
                 var d = date;
 
@@ -105,6 +102,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 var formattedDate = year + "-" + month + "-" + day;
 
                 for (var i = 0; i < vm.activeDates.length; i++) {
+                    console.log();
                     var activeDate = new Date(vm.activeDates[i].date);
                     var date = activeDate.getFullYear() + "-" + (activeDate.getMonth() + 1) + "-" + activeDate.getDate();
 
