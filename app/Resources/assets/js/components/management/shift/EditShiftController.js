@@ -76,14 +76,14 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
-                'content': 'Please fill in all the required fields.',
+                'content': 'Please fill in all required fields.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
         } else if (vm.shift.short.length > 3) {
             // if short is larger than 3, show error message.
             vm.message = {
-                'title': 'Short is to long',
+                'title': 'Short is too long',
                 'content': 'Short may not be longer than 3 characters.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
@@ -112,7 +112,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
                         // If name is not unique, show error message
                         vm.message = {
                             'title': 'Name is already taken',
-                            'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose an another name.',
+                            'content': '<em>' + vm.shift.short + '</em> is already present in our system, please choose a different name.',
                             'icon': 'fa-exclamation',
                             'type': 'alert-danger'
                         }
@@ -120,7 +120,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
                         // If successful, show success message.
                         vm.message = {
                             'title': 'Successful added',
-                            'content': '<em>' + vm.shift.short + '</em> is successful added. return to the <a href="#/manage/shifts">overview</a>.',
+                            'content': '<em>' + vm.shift.short + '</em> is successfully added. return to the <a href="#/manage/shifts">overview</a>.',
                             'icon': 'fa-check',
                             'type': 'alert-success'
                         }

@@ -38,8 +38,7 @@ function TaskController($rootScope, Api, $state) {
 
         Api.taskTypes.disable(taskType.id).then(function () {
             vm.message = {
-                'title': 'Successfully disabled',
-                'content': '<em>' + taskType.short + '</em> is successful disabled.',
+                'title': taskType.short + ' is successfully disabled.',
                 'icon': 'fa-check',
                 'type': 'alert-success'
             }

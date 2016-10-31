@@ -125,7 +125,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
             vm.message = {
                 'title': 'Error',
-                'content': 'You can not add an empty task to the shift.',
+                'content': 'You can\'t add an empty task to the shift.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
@@ -134,7 +134,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         } else if (task.startTime == null || task.endTime == null || task.taskType == null) {
             vm.message = {
                 'title': 'All fields are required',
-                'content': 'You can not add an empty task to the shift.',
+                'content': 'You can\'t add an empty task to the shift.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
@@ -164,14 +164,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                     vm.message = {
                         'title': 'Start time is invalid',
-                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
                 } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
                     vm.message = {
                         'title': 'End time is invalid',
-                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
@@ -255,7 +255,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         if (task.start_time == null || task.end_time == null || task.task_type_fk == null) {
             vm.message = {
                 'title': 'All fields are required',
-                'content': 'You can not add an empty task to the shift.',
+                'content': 'You can\'t add an empty task to the shift.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
@@ -285,14 +285,14 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                     vm.message = {
                         'title': 'Start time is invalid',
-                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
                 } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
                     vm.message = {
                         'title': 'End time is invalid',
-                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. please try again.',
+                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }

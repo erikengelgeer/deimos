@@ -40,14 +40,14 @@ function NewTeamController($rootScope, Api, $state) {
             // if fields is empty, show error message.
             vm.message = {
                 'title': 'Fields may not be blank',
-                'content': 'Please fill in all the required fields.',
+                'content': 'Please fill in all required fields.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
         } else if (vm.team.short.length > 3) {
             // if short is larger than 3, show error message.
             vm.message = {
-                'title': 'Short is to long',
+                'title': 'Short is too long',
                 'content': 'Short may not be longer than 3 characters.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
@@ -64,7 +64,7 @@ function NewTeamController($rootScope, Api, $state) {
                     // If name is not unique, show error message
                     vm.message = {
                         'title': 'Name is already taken',
-                        'content': '<em>' + vm.team.name + '</em> is already present in our system, please choose an another name.',
+                        'content': '<em>' + vm.team.name + '</em> is already present in our system, please choose a different name.',
                         'icon': 'fa-exclamation',
                         'type': 'alert-danger'
                     }
@@ -72,7 +72,7 @@ function NewTeamController($rootScope, Api, $state) {
                     // If successful, show success message.
                     vm.message = {
                         'title': 'Successfully added',
-                        'content': '<em>' + vm.team.name + '</em> is successful added. return to the <a href="#/manage/teams">overview</a>.',
+                        'content': '<em>' + vm.team.name + '</em> is successfully added. Return to the <a href="#/manage/teams">overview</a>.',
                         'icon': 'fa-check',
                         'type': 'alert-success'
                     }

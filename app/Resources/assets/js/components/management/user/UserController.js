@@ -81,7 +81,7 @@ function UserController($rootScope, Api, $q, $state) {
         Api.users.disable(user.id).then(function () {
             vm.message = {
                 'title': 'Successfully disabled',
-                'content': '<em>' + user.username + '</em> is successful disabled.',
+                'content': '<em>' + user.username + '</em> is successfully disabled.',
                 'icon': 'fa-check',
                 'type': 'alert-success'
             }
