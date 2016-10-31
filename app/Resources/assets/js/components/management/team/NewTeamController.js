@@ -78,6 +78,7 @@ function NewTeamController($rootScope, Api, $state) {
                     }
                     // Resets team so it can not be send again.
                     vm.team = null;
+                    
                 }
             }, function errorCallback(response) {
                 vm.message = {
