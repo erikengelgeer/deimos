@@ -9,6 +9,7 @@ function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.update = update;
 
+    vm.message = null;
     vm.taskType = null;
     vm.dataLoading = true;
 

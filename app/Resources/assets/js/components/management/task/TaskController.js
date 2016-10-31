@@ -6,6 +6,7 @@ angular.module('app').controller('TaskController', TaskController);
 function TaskController($rootScope, Api, $state) {
     var vm = this;
 
+    vm.message = null;
     vm.taskTypes = null;
     vm.selectedTaskType = null;
     vm.dataLoading = true;

@@ -7,6 +7,7 @@ function UserController($rootScope, Api, $q, $state) {
     var vm = this;
     var promises = [];
 
+    vm.message = null;
     vm.users = [];
     vm.roles = [];
     vm.selectedUser = null;

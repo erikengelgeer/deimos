@@ -7,6 +7,7 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var teamId = $stateParams.teamId;
 
+    vm.message = null;
     vm.team = null;
     vm.timezones = null;
     vm.dataLoading = true;

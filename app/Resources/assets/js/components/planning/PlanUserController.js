@@ -4,6 +4,7 @@ function PlanUserController($rootScope, Api, $q,$state) {
     var vm = this;
     var promises = [];
 
+    vm.message = null;
     vm.users = [];
     vm.shiftTypes = [];
     vm.selectedDates = [];

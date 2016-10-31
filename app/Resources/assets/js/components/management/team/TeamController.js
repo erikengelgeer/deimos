@@ -3,6 +3,7 @@ angular.module('app').controller('TeamController', TeamController);
 function TeamController($rootScope, Api, $state) {
     var vm = this;
 
+    vm.message = null;
     vm.teams = null;
     vm.selectedTeam = null;
     vm.dataLoading = true;

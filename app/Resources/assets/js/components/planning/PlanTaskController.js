@@ -9,7 +9,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     vm.users = [];
     vm.taskTypes = [];
-
+    vm.message = null;
     vm.activeDates = [];
     vm.selectedUser = null;
     vm.selectedShift = null;

@@ -7,6 +7,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.update = update;
 
+    vm.message = null;
     vm.user = null;
     vm.roles = null;
     vm.teams = null;
