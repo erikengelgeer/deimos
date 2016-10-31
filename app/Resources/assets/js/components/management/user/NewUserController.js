@@ -9,6 +9,7 @@ function NewUserController($rootScope, Api, $q, $state) {
 
     vm.add = add;
 
+    vm.message = null;
     vm.user = {};
     vm.dataLoading = true;
 
