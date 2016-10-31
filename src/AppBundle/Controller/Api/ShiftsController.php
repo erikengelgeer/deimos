@@ -143,7 +143,10 @@ class ShiftsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
 
-        $shifts = $repository->findShiftsByUser($user->getId(), new \DateTime());
+        $today = new \DateTime();
+        $aMonthAgo = ($today->format('Y') - 1) . "-" . ($today->format('m')) . "-1";
+
+        $shifts = $repository->findShiftsByUser($user->getId(), new \DateTime($aMonthAgo));
 
         $data = $this->get('serializer')->serialize($shifts, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);

@@ -35,7 +35,7 @@ class ShiftRepository extends \Doctrine\ORM\EntityRepository
         $qb->select(array('s.id', 's.date'))
             ->from('AppBundle:Shift', 's')
             ->where('s.userFk = :userId')
-            ->andWhere('s.date <= :date OR s.date >= :date')
+            ->andWhere('s.date >= :date')
             ->setParameter('userId', $userId)
             ->setParameter('date', $date->format("Y-m-d"));
 
