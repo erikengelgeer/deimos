@@ -29,7 +29,9 @@
                         <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'">Whole day</span>
                         <span ng-if="(today.shift.startTime | date: 'H:mm') != '0:00' && (today.shift.endTime | date: 'H:mm') != '0:00'">{{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} </span>
 
-                        <i class="fa fa-info index-info" ng-if="today.shift.date" ng-click="vm.showModal(today.shift)"></i>
+                        <i class="fa fa-pencil" ng-if="today.shift.date" ng-click="vm.editShift(today)"></i>
+                        <i class="fa fa-info index-info" ng-if="today.shift.date"
+                           ng-click="vm.showModal(today.shift)"></i>
                         <i class="fa fa-home working-home" ng-if="today.shift.home"></i>
                     </div>
 
@@ -58,7 +60,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Shift information {{ vm.info.date | date: 'yyyy/M/d' }}</h4>
+                <h4 class="modal-title">Shift information</h4>
             </div>
             <div class="modal-body">
                 <strong>Date:</strong> {{ vm.info.date | date: 'yyyy/M/d'}}<br>
@@ -68,8 +70,53 @@
                 <strong>Description:</strong> {{ vm.info.description }}<br>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="vm.hideModal()">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="edit-shift-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit shift</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            Edit shift for <strong>{{ vm.selectedShift.shift.realName }}</strong> on
+                            <em>{{ vm.selectedShift.shift.date | date:'d MMM' }}</em>
+                        </p>
+                        <hr>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Options</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="text" ng-model="vm.selectedShift.shift.newStartTime"
+                                           class="form-control"></td>
+                                <td><input type="text" ng-model="vm.selectedShift.shift.newEndTime"
+                                           class="form-control"></td>
+                                <td><button class="btn" ng-class="{'btn-gray': !vm.selectedShift.shift.home, 'btn-success': vm.selectedShift.shift.home }" ng-click="vm.toggleHome(vm.selectedShift.shift)" ng-model="vm.selectedShift.shift.home"><i class="fa fa-home"></i></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="vm.updateShift()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>

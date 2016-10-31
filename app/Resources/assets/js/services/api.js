@@ -149,6 +149,9 @@ function Api($http) {
             },
             add: function (data) {
                 return $http.post('api/shifts/', data);
+            },
+            update: function (data) {
+                return $http.put('api/shifts/' + data.id, data);
             }
         },
         tasks: {
