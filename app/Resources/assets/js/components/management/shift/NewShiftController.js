@@ -94,7 +94,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
                     } else {
                         // If successful, show success message.
                         vm.message = {
-                            'title': 'Successful added',
+                            'title': 'Successfully added',
                             'content': '<em>' + vm.shift.short + '</em> is successfully added. Return to the <a href="#/manage/shifts">overview</a>.',
                             'icon': 'fa-check',
                             'type': 'alert-success'
@@ -102,6 +102,8 @@ function NewShiftController($rootScope, Api, $state, $q) {
                         // Resets everything so it can not be send again.
                         vm.shift = null;
                         vm.team = null;
+                        vm.shift = {};
+                        vm.team = {};
                         vm.shift.start_time = ['00', '00'];
                         vm.shift.end_time = ['00', '00'];
                         vm.shift.break_duration = '00';
