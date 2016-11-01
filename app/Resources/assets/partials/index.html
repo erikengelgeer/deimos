@@ -14,7 +14,7 @@
 
         <!-- loop through the users -->
         <div class="body">
-            <div class="body-row" ng-repeat="user in vm.planningUsers[key]">
+            <div class="body-row" ng-repeat="user in vm.planningUsers[key]" ng-class="{'active': $root.user.id == user[0].user.id } ">
                 <div class="item" ng-repeat="(key, day) in user"
                      ng-init="today = vm.getPlanningContent(day, key, planningKey)">
                     <span ng-if="key == 0">

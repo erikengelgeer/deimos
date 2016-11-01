@@ -327,7 +327,7 @@
     margin-right: 5px; }
   .task .link-icon {
     margin-right: 5px;
-    color: rgba(255, 255, 255, 0.8); }
+    color: rgba(0, 0, 0, 0.5); }
   .task.clickable {
     cursor: pointer; }
 
@@ -391,18 +391,41 @@
   border-right: 0;
   border-bottom: 0; }
   .schedule .body .body-row {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
     background-color: #fff;
+    transition: background-color .15s ease-in-out;
     display: flex;
     flex-wrap: wrap; }
+    .schedule .body .body-row:hover {
+      background-color: #e8e8e8; }
+      .schedule .body .body-row:hover .item .shift {
+        background-color: #e8e8e8; }
+      .schedule .body .body-row:hover .item .shift-tasks .task {
+        background-color: #cacaca; }
     .schedule .body .body-row .item {
       min-height: 52px;
       border-right: 1px solid #ddd;
       float: left;
+      position: relative;
       display: flex;
       flex-wrap: inherit;
       align-items: flex-start;
       align-content: flex-start; }
+      .schedule .body .body-row .item .shift {
+        position: relative;
+        z-index: 80;
+        background-color: #fff;
+        font-size: 80%;
+        transition: background-color .15s ease-in-out; }
+      .schedule .body .body-row .item .shift-tasks {
+        padding: 0 4px 4px 12px;
+        width: 100%; }
+        .schedule .body .body-row .item .shift-tasks .task {
+          margin: 4px 0 0 0;
+          background-color: #e8e8e8;
+          color: inherit;
+          font-size: 80%;
+          transition: background-color .15s ease-in-out; }
       .schedule .body .body-row .item:hover .shift .actions {
         visibility: visible;
         opacity: 1; }
@@ -443,8 +466,14 @@
     background: rgba(0, 0, 0, 0.125);
     color: #000000; }
 
-.absent {
+.not-planned {
   background-color: rgba(0, 0, 0, 0.1); }
+
+.shift-type {
+  position: absolute;
+  width: 8px;
+  height: 100%;
+  background-color: #000; }
 
 .shift-container .shift {
   margin-bottom: 20px;
@@ -1187,23 +1216,3 @@ body {
 
 .alert i {
   margin-right: 5px; }
-
-.body-row .item {
-  position: relative; }
-  .body-row .item .shift {
-    position: relative;
-    z-index: 80;
-    background-color: #fff; }
-  .body-row .item .shift-tasks {
-    padding: 0 4px 4px 12px;
-    width: 100%; }
-    .body-row .item .shift-tasks .task {
-      margin: 4px 0 0 0;
-      background-color: #e8e8e8;
-      color: inherit; }
-
-.shift-type {
-  position: absolute;
-  width: 8px;
-  height: 100%;
-  background-color: #000; }

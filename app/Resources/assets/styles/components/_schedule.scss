@@ -42,11 +42,30 @@
         border-bottom: 0;
 
         .body-row {
-            border-bottom: 1px solid #ddd;
+            border-bottom: 2px solid #ddd;
             background-color: #fff;
+
+            transition: background-color .15s ease-in-out;
 
             display: flex;
             flex-wrap: wrap;
+
+            //&.active, Need to take a look for the active scheme
+            &:hover {
+                background-color: #e8e8e8;
+
+                .item {
+                    .shift {
+                        background-color: #e8e8e8;
+                    }
+
+                    .shift-tasks {
+                        .task {
+                            background-color: #cacaca;
+                        }
+                    }
+                }
+            }
 
             .item {
                 min-height: 52px;
@@ -63,6 +82,7 @@
                     z-index: 80;
                     background-color: #fff;
                     font-size: 80%;
+                    transition: background-color .15s ease-in-out;
                 }
 
                 .shift-tasks {
@@ -74,6 +94,7 @@
                         background-color: #e8e8e8;
                         color: inherit;
                         font-size: 80%;
+                        transition: background-color .15s ease-in-out;
                     }
                 }
 
