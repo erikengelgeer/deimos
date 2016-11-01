@@ -82,10 +82,10 @@ class ShiftsController extends Controller
         $data = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-//        dump($data);
+
         foreach ($data->selectedDates as $date) {
 
-//            dump($date);
+
 
             foreach ($data->shifts as $item) {
                 $user = $em->getRepository('AppBundle:User')->find($item->userId);
