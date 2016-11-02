@@ -54,6 +54,8 @@ class TasksController extends Controller
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
+        (isset($data->description)) ? $task->setDescription($data->taskType->description . " - " . $data->description) : $task->setDescription($data->taskType->description);
+
         if(isset($data->url)){
             $task->setUrl($data->url);
         }
@@ -79,6 +81,7 @@ class TasksController extends Controller
         $task->setStartTime(new \DateTime($content->start_time));
         $task->setEndTime(new \DateTime($content->end_time));
         $task->setTaskTypeFk($taskType);
+        $task->setDescription($taskType->getDescription());
 
         if(isset($content->url)){
             $task->setUrl($content->url);

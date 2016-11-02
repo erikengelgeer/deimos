@@ -93,6 +93,12 @@
                             <div class="col-md-3">
                                 <button class="btn btn-primary pull-right" ng-click="vm.addTask(vm.task)">Plan Task</button>
                             </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-8 col-md-offset-1" ng-if="vm.task.taskType.override_description">
+                                <label for="description">description</label>
+                                <input type="text" id="description" class="form-control" ng-model="vm.task.description">
+                            </div>
+
                         </div>
                     </div>
                 </div>
