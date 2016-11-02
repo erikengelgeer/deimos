@@ -11,8 +11,8 @@ function HomeController($rootScope, Api, $timeout) {
     vm.info = [];
 
     // ---
-    vm.totalWeeks = 4;
-    vm.startDate = new Date();
+    vm.totalWeeks = 14;
+    vm.startDate = new Date('2016-01-01');
 
 
     vm.getPlanningContent = getPlanningContent;

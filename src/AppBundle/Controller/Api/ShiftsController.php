@@ -35,7 +35,7 @@ class ShiftsController extends Controller
         $mondayThisWeek = date_timestamp_set(new \DateTime(), $timestamp);
 
         $strDate = 'sunday this week +' . ($weeks - 1) . ' weeks';
-        $timestamp2 = strtotime($strDate);
+        $timestamp2 = strtotime($strDate, mktime(0,0,0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
         $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
         $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, $team);
