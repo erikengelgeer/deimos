@@ -144,8 +144,8 @@ function Api($http) {
             findByUserAndDate: function (userId, date) {
                 return $http.get('api/shifts/user/' + userId + '/' + date);
             },
-            findByTeam: function (team) {
-                return $http.get('api/shifts/' + team);
+            findByTeam: function (team, startDate, weeks) {
+                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks);
             },
             add: function (data) {
                 return $http.post('api/shifts/', data);

@@ -9,17 +9,17 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.teams = null;
     vm.shift = null;
-    vm.colors = ['#FFEB3B', '#FFC107', '#FF9800', '#EE4A25', '#00B050', '#06AECE', '#999999', '#9ac534'];
+    vm.colors = ['#b7d66e', '#FFEB3B', '#FFC107', '#EE4A25', '#00B050', '#06AECE', '#999999'];
     vm.hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
         '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
     vm.minutes = ['00', '15', '30', '45'];
 
     vm.breakMinutes = [
-        {"minute": "00", "num":0},
-        {"minute": "15", "num":0.25},
-        {"minute": "30", "num":0.5},
-        {"minute": "45", "num":0.75},
-        {"minute": "60", "num":1}
+        {"minute": "00", "num": 0},
+        {"minute": "15", "num": 0.25},
+        {"minute": "30", "num": 0.5},
+        {"minute": "45", "num": 0.75},
+        {"minute": "60", "num": 1}
     ];
 
     vm.selectedColor = null;
@@ -28,7 +28,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     vm.update = update;
     vm.selectColor = selectColor;
 
-    if($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
+    if ($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index')
     }
 
@@ -41,11 +41,11 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         // vm.shift.default_end_time = new Date(vm.shift.default_end_time);
         // vm.shift.default_start_time = new Date(vm.shift.default_start_time);
 
-        vm.shift.start_time =  vm.shift.default_start_time.split(":");
-        vm.shift.start_time[0] = vm.shift.start_time[0].substr(11,2);
+        vm.shift.start_time = vm.shift.default_start_time.split(":");
+        vm.shift.start_time[0] = vm.shift.start_time[0].substr(11, 2);
 
-        vm.shift.end_time =  vm.shift.default_end_time.split(":");
-        vm.shift.end_time[0] = vm.shift.end_time[0].substr(11,2);
+        vm.shift.end_time = vm.shift.default_end_time.split(":");
+        vm.shift.end_time[0] = vm.shift.end_time[0].substr(11, 2);
 
         vm.selectedColor = vm.shift.color;
     }));

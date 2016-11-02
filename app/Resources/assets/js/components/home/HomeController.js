@@ -10,6 +10,11 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTeam = null;
     vm.info = [];
 
+    // ---
+    vm.totalWeeks = 4;
+    vm.startDate = new Date();
+
+
     vm.getPlanningContent = getPlanningContent;
     vm.showModal = showModal;
     vm.hideModal = hideModal;
@@ -47,7 +52,8 @@ function HomeController($rootScope, Api, $timeout) {
 
         $rootScope.loading = true;
 
-        Api.shifts.findByTeam(teamId).then(function (response) {
+        var startDate = vm.startDate.getFullYear() + "-" + (vm.startDate.getMonth() + 1) + "-" + vm.startDate.getDate();
+        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks).then(function (response) {
             vm.shifts = response.data;
 
             buildSchedule(teamId);
@@ -61,11 +67,11 @@ function HomeController($rootScope, Api, $timeout) {
 
     function buildScheduleStructure() {
         // Builds the schedule in a 7 days per 4 weeks structure.
-        var today = getMonday(new Date());
+        var today = getMonday(vm.startDate);
         var date = today.getTime();
         var week = [];
 
-        for (var i = 0; i <= 3; i++) {
+        for (var i = 0; i <= (vm.totalWeeks - 1); i++) {
 
             for (var j = 0; j <= 7; j++) {
                 week.push(new Date(date));
@@ -88,7 +94,7 @@ function HomeController($rootScope, Api, $timeout) {
             var user = [];
             var week = [];
 
-            for (var w = 0; w <= 3; w++) {
+            for (var w = 0; w <= (vm.totalWeeks - 1); w++) {
 
                 for (var i = 0; i < vm.users.length; i++) {
 
@@ -231,8 +237,7 @@ function HomeController($rootScope, Api, $timeout) {
 
     function redirect(taskUrl) {
         console.log(taskUrl);
-        if(taskUrl != null && taskUrl != '')
-        {
+        if (taskUrl != null && taskUrl != '') {
             window.open(taskUrl, '_blank');
         }
     }

@@ -21,15 +21,21 @@ class ShiftsController extends Controller
      *
      * Get all the shifts
      */
-    public function findAllAction($team)
+    public function findAllAction($team, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:Shift");
 
-        $timestamp = strtotime('monday this week');
+        $params = $request->query;
+        $startDate = new \DateTime($params->get('startDate'));
+        $weeks = $params->get('weeks');
+
+        // mktime (0,0,0, M, D, Y)
+        $timestamp = strtotime('monday this week', mktime(0,0,0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
         $mondayThisWeek = date_timestamp_set(new \DateTime(), $timestamp);
 
-        $timestamp2 = strtotime('sunday this week +3 weeks');
+        $strDate = 'sunday this week +' . ($weeks - 1) . ' weeks';
+        $timestamp2 = strtotime($strDate);
         $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
         $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, $team);
