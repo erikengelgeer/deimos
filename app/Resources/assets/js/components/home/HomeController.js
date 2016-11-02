@@ -10,6 +10,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTeam = null;
     vm.info = [];
     vm.selectedShift = null;
+    vm.message = null;
 
     vm.getPlanningContent = getPlanningContent;
     vm.showModal = showModal;
@@ -22,7 +23,6 @@ function HomeController($rootScope, Api, $timeout) {
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
 
-        //TODO: Team is hardcoded, needs to be read from logged in user.
         vm.selectedTeam = $rootScope.team;
 
         // Watch for change in rootScope.team, refresh data if it is changed.
@@ -241,6 +241,7 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function editShift(shift) {
+        vm.message = null;
         $('#edit-shift-modal').modal();
         vm.selectedShift = shift;
 
@@ -259,20 +260,65 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function updateShift() {
-        console.log(vm.selectedShift);
+        vm.message = null;
 
-        vm.selectedShift.shift.startTime = Date.parse('01/01/1970 ' + vm.selectedShift.shift.newStartTime);
-        vm.selectedShift.shift.endTime = Date.parse('01/01/1970 ' + vm.selectedShift.shift.newEndTime);
+        vm.dataLoading = true;
 
-        if (vm.selectedShift.shift.endTime >= vm.selectedShift.shift.startTime &&
-            vm.selectedShift.shift.startTime <= vm.selectedShift.shift.endTime) {
-            console.log(vm.selectedShift.shift);
-            Api.shifts.update(vm.selectedShift.shift).then(function (response) {
-                console.log(response);
-            })
-        } else {
-            // message error something
-            console.log('error');
+        var startDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.newStartTime));
+        var endDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.newEndTime));
+
+        if (endDate >= startDate &&
+            startDate <= endDate) {
+
+            var startTime = new Date(startDate);
+            var endTime = new Date(endDate);
+
+            if (startTime.getMinutes() % 15 != 0 || startTime.getHours() < 0 || startTime.getHours() > 23 || startTime.getMinutes() > 59 || startTime.getMinutes() < 0) {
+
+                vm.message = {
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+                vm.dataLoading = false;
+            } else if (endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) {
+
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+                vm.dataLoading = false;
+            } else {
+                vm.selectedShift.shift.setStartTime = startDate;
+                vm.selectedShift.shift.setEndTime = endDate;
+                
+                Api.shifts.update(vm.selectedShift.shift).then(function () {
+                    vm.message = {
+                        'title': 'Successfully updated',
+                        'content': 'The shift has successfully been updated.',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    };
+                    
+                    vm.selectedShift.shift.startTime = startDate;
+                    vm.selectedShift.shift.endTime = endDate;
+
+                    console.log(startDate, endDate);
+                    vm.dataLoading = false;
+                })
+            }
+        }
+        else {
+            vm.message = {
+                'title': 'Invalid time',
+                'content': 'The end time may not be lower than the start time. Please try again.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+            vm.dataLoading = false;
         }
     }
 

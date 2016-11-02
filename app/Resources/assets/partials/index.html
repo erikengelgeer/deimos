@@ -84,13 +84,25 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Edit shift</h4>
             </div>
+
             <div class="modal-body">
+                <div class="loading-container" ng-if="vm.dataLoading">
+                    <div class="loading">
+                        <div class="loading-logo">
+                            <img src="images/logo.png" alt="Deimos">
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <p>
                             Edit shift for <strong>{{ vm.selectedShift.shift.realName }}</strong> on
                             <em>{{ vm.selectedShift.shift.date | date:'d MMM' }}</em>
                         </p>
+                        <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                            <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                            <span ng-bind-html="vm.message.content"></span>
+                        </div>
                         <hr>
 
                         <table class="table">
@@ -107,7 +119,12 @@
                                            class="form-control"></td>
                                 <td><input type="text" ng-model="vm.selectedShift.shift.newEndTime"
                                            class="form-control"></td>
-                                <td><button class="btn" ng-class="{'btn-gray': !vm.selectedShift.shift.home, 'btn-success': vm.selectedShift.shift.home }" ng-click="vm.toggleHome(vm.selectedShift.shift)" ng-model="vm.selectedShift.shift.home"><i class="fa fa-home"></i></button></td>
+                                <td>
+                                    <button class="btn"
+                                            ng-class="{'btn-gray': !vm.selectedShift.shift.home, 'btn-success': vm.selectedShift.shift.home }"
+                                            ng-click="vm.toggleHome(vm.selectedShift.shift)"
+                                            ng-model="vm.selectedShift.shift.home"><i class="fa fa-home"></i></button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -120,3 +137,4 @@
             </div>
         </div>
     </div>
+</div>
