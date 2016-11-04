@@ -130,11 +130,17 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'type': 'alert-danger'
             }
 
-
         } else if (task.startTime == null || task.endTime == null || task.taskType == null) {
             vm.message = {
                 'title': 'All fields are required',
                 'content': 'You can\'t add an empty task to the shift.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        } else if(task.taskType.override_description == false && task.description != null){
+            vm.message = {
+                'title': 'This task can\'t have a description',
+                'content': 'You can only add a description to a task that can be overridden.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
@@ -299,7 +305,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 } else {
                     $('#plan-task-modal').modal('hide');
                     vm.dataLoading = true;
-                    Api.tasks.update(vm.editTask).then(function () {
+                    Api.tasks.update(task).then(function () {
 
                     }).finally(function () {
                         vm.message = {
