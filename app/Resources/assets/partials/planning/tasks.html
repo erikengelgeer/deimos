@@ -11,7 +11,8 @@
             <div class="col-md-12">
                 <h4 class="pull-left">Plan tasks for:</h4>
 
-                <select class="form-control pull-left select" ng-model="vm.selectedUser" ng-options="user.id as user.real_name for user in vm.users" ng-change="vm.selectUser()">
+                <select class="form-control pull-left select" ng-model="vm.selectedUser"
+                        ng-options="user.id as user.real_name for user in vm.users" ng-change="vm.selectUser()">
                     <option value="" ng-disabled="!!vm.selectedUser">Select a User</option>
                 </select>
 
@@ -76,29 +77,37 @@
                                 <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon3"><i
                                             class="fa fa-tasks"></i></span>
-                                    <select name="" id="" class="form-control" ng-model="vm.task.taskType" ng-options="taskType as taskType.description for taskType in vm.taskTypes">
+                                    <select name="" id="" class="form-control" ng-model="vm.task.taskType"
+                                            ng-options="taskType as taskType.description for taskType in vm.taskTypes">
                                         <option value="" ng-disabled="!!vm.task.taskType">Select a task</option>
                                     </select>
                                 </div>
                             </div>
-                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-1">
-                                <i class="fa fa-link pull-left"></i>
-                                <input type="checkbox" id="link" ng-model="link" >
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon task-link">
+                                        <i class="fa fa-link"></i>
+                                        <input type="checkbox" ng-model="link">
+                                    </span>
+                                    <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.task.url">
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.task.url">
+                            <div class="col-md-6">
+                                <div class="input-group" ng-if="vm.task.taskType.override_description">
+                                    <span class="input-group-addon task-link" id="sizing-addon1">
+                                        <i class="fa fa-info"></i>
+                                    </span>
+                                    <input type="text" id="description" class="form-control"
+                                           ng-model="vm.task.description">
+                                </div>
                             </div>
-                            <div class="col-md-3">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <button class="btn btn-primary pull-right" ng-click="vm.addTask(vm.task)">Plan Task</button>
                             </div>
-                            <div class="clearfix"></div>
-                            <div class="col-md-8 col-md-offset-1" ng-if="vm.task.taskType.override_description">
-                                <label for="description">description</label>
-                                <input type="text" id="description" class="form-control" ng-model="vm.task.description">
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -111,7 +120,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" ng-click="hideModal()"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" ng-click="hideModal()"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Edit task</h4>
             </div>
             <div class="modal-body">
@@ -138,7 +148,8 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="sizing-addon6"><i
                                     class="fa fa-tasks"></i></span>
-                            <select class="form-control" ng-model="vm.editTask.task_type_fk.id" ng-options="taskType.id as taskType.description for taskType in vm.taskTypes">
+                            <select class="form-control" ng-model="vm.editTask.task_type_fk.id"
+                                    ng-options="taskType.id as taskType.description for taskType in vm.taskTypes">
                                 <option value="" ng-disabled="!!vm.editTask.task_type_fk">Select a task</option>
                             </select>
                         </div>

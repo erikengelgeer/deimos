@@ -1,15 +1,25 @@
 .plan-tasks {
-  margin-top: 40px;
+    margin-top: 40px;
 
-  h4{
-    margin-right: 15px;
-  }
+    h4 {
+        margin-right: 15px;
+    }
 
-  .form-control.select{
-      width: 300px !important;
+    .form-control.select {
+        width: 300px !important;
 
-  }
-  .row:last-child{
-    margin-top: 15px;
-  }
+    }
+    .row:last-child {
+        margin-top: 15px;
+    }
+
+    .task-link {
+        i {
+            margin-right: 5px;
+        }
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
 }

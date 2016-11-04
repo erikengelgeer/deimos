@@ -1042,6 +1042,10 @@
     width: 300px !important; }
   .plan-tasks .row:last-child {
     margin-top: 15px; }
+  .plan-tasks .task-link i {
+    margin-right: 5px; }
+  .plan-tasks .input-group {
+    margin-bottom: 20px; }
 
 .manage-shifts {
   margin-top: 40px; }
