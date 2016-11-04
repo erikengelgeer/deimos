@@ -184,13 +184,11 @@ class ShiftsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-        $shift->setStartTime(new \DateTime(date('Y-m-d H:i', $content->startTime)));
-        $shift->setEndTime(new \DateTime(date('Y-m-d H:i', $content->endTime)));
+        $shift->setStartTime(new \DateTime(date('Y-m-d H:i', ($content->setStartTime/1000))));
+        $shift->setEndTime(new \DateTime(date('Y-m-d H:i', ($content->setEndTime/1000))));
         $shift->setHome($content->home);
 
         $em->flush();
-
-        dump($content, $shift);
 
         $data = $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

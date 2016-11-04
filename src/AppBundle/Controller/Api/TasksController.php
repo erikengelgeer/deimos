@@ -73,7 +73,6 @@ class TasksController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-//        dump($content);
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
 
         $task->setStartTime(new \DateTime($content->start_time));

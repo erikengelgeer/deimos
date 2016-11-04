@@ -170,28 +170,3 @@ function Api($http) {
         }
     }
 }
-
-
-// //Users
-// getUser: function (id) {
-//     return $http.get('api/user/' + id);
-// },
-// getUsers: function() {
-//     return $http.get('api/users');
-// },
-// getUsersByTeam: function(teamFk) {
-//     return $http.get('api/users/team/' + teamFk);
-// },
-//
-// //Shifts
-// getShift: function (id) {
-//     return $http.get('api/shift.' + id);
-// },
-// getAllShifts: function (team) {
-//     return $http.get('api/shifts/' + team);
-// },
-//
-// //Teams
-// getTeams: function () {
-//     return $http.get('api/teams/');
-// },

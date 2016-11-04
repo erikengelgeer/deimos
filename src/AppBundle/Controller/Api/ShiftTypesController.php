@@ -98,9 +98,7 @@ class ShiftTypesController extends Controller
         $shiftType->setBreakDuration($content->break_duration / 60);
         $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
         $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
-
-//        dump($diff, $diff->i / 60, $diff->h + ($diff->i / 60), $content->break_duration / 60);
-//        dump($shiftType);
+        
 
         if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');

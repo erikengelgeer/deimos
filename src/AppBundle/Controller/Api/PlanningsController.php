@@ -138,12 +138,6 @@ class PlanningsController extends Controller
         }
 
 
-        //dump($plannings);
-
-
-//        dump($planningArray);
-
-
         /**
          * @var ShiftRepository $repository
          */
