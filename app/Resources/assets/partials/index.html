@@ -29,7 +29,7 @@
                         <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'">Whole day</span>
                         <span ng-if="(today.shift.startTime | date: 'H:mm') != '0:00' && (today.shift.endTime | date: 'H:mm') != '0:00'">{{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} </span>
 
-                        <i class="fa fa-pencil" ng-if="today.shift.date" ng-click="vm.editShift(today)"></i>
+                        <i class="fa index-info fa-pencil" ng-if="today.shift.date && $root.user.role_fk.role != 'Agent'" ng-click="vm.editShift(today)" ></i>
                         <i class="fa fa-info index-info" ng-if="today.shift.date"
                            ng-click="vm.showModal(today.shift)"></i>
                         <i class="fa fa-home working-home" ng-if="today.shift.home"></i>
