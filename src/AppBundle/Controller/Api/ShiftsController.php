@@ -173,5 +173,27 @@ class ShiftsController extends Controller
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 
+    /**
+     * @Route("/{id}")
+     * @Method("PUT")
+     *
+     * Get a single shift
+     */
+    public function updateAction(Shift $shift, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $content = json_decode($request->getContent());
+
+        $shift->setStartTime(new \DateTime(date('Y-m-d H:i', $content->startTime)));
+        $shift->setEndTime(new \DateTime(date('Y-m-d H:i', $content->endTime)));
+        $shift->setHome($content->home);
+
+        $em->flush();
+
+        dump($content, $shift);
+
+        $data = $this->get('serializer')->serialize($shift, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
 
 }

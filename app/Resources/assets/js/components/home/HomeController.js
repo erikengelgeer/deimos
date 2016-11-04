@@ -9,6 +9,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.shifts = [];
     vm.selectedTeam = null;
     vm.info = [];
+    vm.selectedShift = null;
 
     // ---
     vm.currentYear = new Date().getFullYear();
@@ -40,6 +41,9 @@ function HomeController($rootScope, Api, $timeout) {
     vm.filterYear = filterYear;
     vm.applyFilter = applyFilter;
     vm.filterToday = filterToday;
+    vm.editShift = editShift;
+    vm.updateShift = updateShift;
+    vm.toggleHome = toggleHome;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -318,5 +322,46 @@ function HomeController($rootScope, Api, $timeout) {
 
         $('#filter-modal').modal('hide');
         loadShiftsByTeam($rootScope.team.id);
+    }
+
+    function editShift(shift) {
+        $('#edit-shift-modal').modal();
+        vm.selectedShift = shift;
+
+        var startTime = new Date(vm.selectedShift.shift.startTime);
+        var startTimeHours = (startTime.getHours() <= 9) ? "0" + startTime.getHours() : startTime.getHours();
+        var startTimeMinutes = (startTime.getMinutes() <= 9) ? "0" + startTime.getMinutes() : startTime.getMinutes();
+        vm.selectedShift.shift.newStartTime = startTimeHours + ":" + startTimeMinutes;
+
+        var endTime = new Date(vm.selectedShift.shift.endTime);
+        var endTimeHours = (endTime.getHours() <= 9) ? "0" + endTime.getHours() : endTime.getHours();
+        var endTimeMinutes = (endTime.getMinutes() <= 9) ? "0" + endTime.getMinutes() : endTime.getMinutes();
+        vm.selectedShift.shift.newEndTime = endTimeHours + ":" + endTimeMinutes;
+
+
+        console.log(vm.selectedShift)
+    }
+
+    function updateShift() {
+        console.log(vm.selectedShift);
+
+        vm.selectedShift.shift.startTime = Date.parse('01/01/1970 ' + vm.selectedShift.shift.newStartTime);
+        vm.selectedShift.shift.endTime = Date.parse('01/01/1970 ' + vm.selectedShift.shift.newEndTime);
+
+        if (vm.selectedShift.shift.endTime >= vm.selectedShift.shift.startTime &&
+            vm.selectedShift.shift.startTime <= vm.selectedShift.shift.endTime) {
+            console.log(vm.selectedShift.shift);
+            Api.shifts.update(vm.selectedShift.shift).then(function (response) {
+                console.log(response);
+            })
+        } else {
+            // message error something
+            console.log('error');
+        }
+    }
+
+    // toggled home for a shift
+    function toggleHome(shift) {
+        shift.home = !shift.home;
     }
 }
