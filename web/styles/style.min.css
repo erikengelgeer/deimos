@@ -475,6 +475,36 @@
   height: 100%;
   background-color: #000; }
 
+.schedule-filter {
+  height: 50px;
+  background-color: #fff;
+  padding: 0 15px; }
+  .schedule-filter .filter {
+    padding: 5px 10px;
+    display: inline-block;
+    background-color: #e8e8e8;
+    margin: 10px 10px 10px 0;
+    border-radius: 9999px;
+    cursor: pointer; }
+    .schedule-filter .filter:hover {
+      background-color: #06AECE;
+      color: #fff; }
+  .schedule-filter em {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 90%;
+    line-height: 50px; }
+
+.filter-modal .filter {
+  padding: 5px 10px;
+  display: inline-block;
+  background-color: #e8e8e8;
+  margin: 10px 10px 0 0;
+  border-radius: 9999px;
+  cursor: pointer; }
+  .filter-modal .filter.active, .filter-modal .filter:hover {
+    background-color: #06AECE;
+    color: #fff; }
+
 .shift-container .shift {
   margin-bottom: 20px;
   height: 32px;

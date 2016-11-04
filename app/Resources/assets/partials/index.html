@@ -1,3 +1,7 @@
+<div class="schedule-filter">
+    <div class="filter" ng-click="vm.filter()">{{ vm.selectedMonth }} - {{ vm.selectedYear }}</div>
+    <div class="filter" ng-click="vm.filterToday()">Today</div>
+</div>
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
         <div class="heading">
@@ -69,6 +73,37 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="vm.hideModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="filter-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Filter Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row filter-modal">
+                    <div class="col-md-6">
+                        <h4>Month</h4>
+                        <div class="filter" ng-repeat="(key, month) in vm.months" ng-class="{'active': month == vm.selectedMonthTemp }" ng-click="vm.filterMonth(key)">
+                            {{ month }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Year</h4>
+                        <div class="filter" ng-repeat="(key, year) in vm.years" ng-class="{'active': year == vm.selectedYearTemp }" ng-click="vm.filterYear(year)">
+                            {{ year }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.applyFilter()">Apply</button>
             </div>
         </div>
     </div>

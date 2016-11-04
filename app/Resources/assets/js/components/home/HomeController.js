@@ -11,14 +11,35 @@ function HomeController($rootScope, Api, $timeout) {
     vm.info = [];
 
     // ---
-    vm.totalWeeks = 14;
-    vm.startDate = new Date('2016-01-01');
+    vm.currentYear = new Date().getFullYear();
+    vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+    vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
 
+    // 604800000 = 1 week
+    vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
+
+    vm.years = [];
+    vm.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    vm.selectedYear = vm.currentYear;
+    vm.selectedMonth = vm.months[new Date().getMonth()];
+
+    vm.selectedYearTemp = vm.currentYear;
+    vm.selectedMonthTemp = vm.months[new Date().getMonth()];
+
+    for (var i = -5; i < 5; i++) {
+        vm.years.push(vm.currentYear + i);
+    }
 
     vm.getPlanningContent = getPlanningContent;
     vm.showModal = showModal;
     vm.hideModal = hideModal;
     vm.redirect = redirect;
+    vm.filter = filter;
+    vm.filterMonth = filterMonth;
+    vm.filterYear = filterYear;
+    vm.applyFilter = applyFilter;
+    vm.filterToday = filterToday;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -167,7 +188,7 @@ function HomeController($rootScope, Api, $timeout) {
             // Measures
             var columns = 8,
                 scheduleContainerWidth = 'inherit',
-                scheduleContainerHeight = $(window).height() - 95;
+                scheduleContainerHeight = $(window).height() - 145;
 
             var current = 1,
                 item = $('#' + current),
@@ -242,5 +263,60 @@ function HomeController($rootScope, Api, $timeout) {
         }
     }
 
+    function filter() {
+        vm.selectedMonthTemp = angular.copy(vm.selectedMonth);
+        vm.selectedYearTemp = angular.copy(vm.selectedYear);
 
+        $('#filter-modal').modal();
+    }
+
+    function filterMonth(key) {
+        // to make sure the selected Month won't appear in the filter before applying.
+        vm.selectedMonthTemp = vm.months[key];
+    }
+
+    function filterYear(year) {
+        // to make sure the selected year won't appear in the filter before applying.
+        vm.selectedYearTemp = year;
+    }
+
+    function filterToday() {
+        vm.currentYear = new Date().getFullYear();
+        vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+        vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+
+        // 604800000 = 1 week
+        vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
+
+        vm.selectedYear = vm.currentYear;
+        vm.selectedMonth = vm.months[new Date().getMonth()];
+
+        vm.selectedYearTemp = vm.currentYear;
+        vm.selectedMonthTemp = vm.months[new Date().getMonth()];
+
+        loadShiftsByTeam($rootScope.team.id);
+    }
+
+    function applyFilter() {
+        vm.selectedYear = vm.selectedYearTemp;
+        vm.selectedMonth = vm.selectedMonthTemp;
+
+        var monthKey = 0;
+
+        for (var i = 0; i < vm.months.length; i++) {
+            if (vm.months[i] == vm.selectedMonth) {
+                monthKey = i;
+                break;
+            }
+        }
+
+        vm.startDate = new Date(vm.selectedYear + '-' + (monthKey + 1) + '-1');
+        vm.endDate = new Date(vm.selectedYear, (monthKey + 1), 0);
+
+        // 604800000 = 1 week
+        vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
+
+        $('#filter-modal').modal('hide');
+        loadShiftsByTeam($rootScope.team.id);
+    }
 }
