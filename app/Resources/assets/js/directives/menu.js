@@ -36,7 +36,6 @@ function menu() {
             //
             // Api.shiftType.find().then(function (response) {
             //     vm.shiftTypes = response.data;
-            //     console.log(vm.shiftTypes);
             // });
 
             function setTeam() {
@@ -63,7 +62,6 @@ function menu() {
             function logout() {
                 delete $localStorage.token;
                 delete $localStorage.loggedInUser;
-                console.log('Trying to log out.');
             }
 
             function toggleTeamSelectMenu() {

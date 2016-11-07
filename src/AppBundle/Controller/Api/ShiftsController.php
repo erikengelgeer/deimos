@@ -85,15 +85,15 @@ class ShiftsController extends Controller
      */
     function addAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
 
-        foreach ($data->selectedDates as $date) {
+        foreach ($content->selectedDates as $date) {
 
 
 
-            foreach ($data->shifts as $item) {
+            foreach ($content->shifts as $item) {
                 $user = $em->getRepository('AppBundle:User')->find($item->userId);
                 $shiftType = $em->getRepository('AppBundle:ShiftType')->find($item->shiftId);
 

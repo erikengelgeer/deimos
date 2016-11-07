@@ -15,8 +15,6 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
 
         promises.push(Api.users.findLoggedIn().then(function (response) {
             $rootScope.user = response.data;
-
-            console.log($rootScope.user);
         }));
 
         promises.push(Api.teams.find().then(function (response) {
@@ -55,7 +53,6 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
     }
 
     $rootScope.$on('$stateChangeStart', function (e, toState) {
-        console.log('state changed');
         if (!$localStorage.token && toState.name != 'login' && toState.name != 'reset-password' && toState.name != 'change-password') {
             e.preventDefault();
             $state.go('login');

@@ -20,9 +20,7 @@ function TaskController($rootScope, Api, $state) {
 
     Api.taskTypes.find().then(function (response) {
         vm.taskTypes = response.data;
-        console.log(response.data);
     },function errorCallBack(response) {
-        console.log(response);
     }).finally(function () {
         $rootScope.loading = false;
         vm.dataLoading = false;

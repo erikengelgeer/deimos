@@ -228,7 +228,6 @@ function HomeController($rootScope, Api, $timeout) {
 
                 if (currentScrollTop > lastScrollTop) {
                     // DOWN
-                    // console.log('scroll', $(this).scrollTop(), 'nextItem', (nextItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((nextItem.offset().top - ScheduleContainer.offset().top) <= 0 && current != schedules.length) {
                         current++;
@@ -240,7 +239,6 @@ function HomeController($rootScope, Api, $timeout) {
 
                 } else {
                     // UP
-                    // console.log('scroll', $(this).scrollTop(), 'previousItem', (previousItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((previousItem.offset().top - ScheduleContainer.offset().top) >= (0 - (item.height() + item.find('.heading').height())) && current != 1) {
                         current--;
@@ -261,7 +259,6 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function redirect(taskUrl) {
-        console.log(taskUrl);
         if (taskUrl != null && taskUrl != '') {
             window.open(taskUrl, '_blank');
         }
@@ -338,9 +335,6 @@ function HomeController($rootScope, Api, $timeout) {
         var endTimeHours = (endTime.getHours() <= 9) ? "0" + endTime.getHours() : endTime.getHours();
         var endTimeMinutes = (endTime.getMinutes() <= 9) ? "0" + endTime.getMinutes() : endTime.getMinutes();
         vm.selectedShift.shift.newEndTime = endTimeHours + ":" + endTimeMinutes;
-
-
-        console.log(vm.selectedShift)
     }
 
     function updateShift() {
@@ -389,8 +383,6 @@ function HomeController($rootScope, Api, $timeout) {
                     
                     vm.selectedShift.shift.startTime = startDate;
                     vm.selectedShift.shift.endTime = endDate;
-
-                    console.log(startDate, endDate);
                     vm.dataLoading = false;
                 })
             }

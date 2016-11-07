@@ -44,14 +44,14 @@ class TeamsController extends Controller
      */
     public function addAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
         $team = new Team();
-        $team->setName($data->name);
-        $team->setShort($data->short);
-        $team->setLocation($data->location);
-        $team->setTimezone($data->timezone);
+        $team->setName($content->name);
+        $team->setShort($content->short);
+        $team->setLocation($content->location);
+        $team->setTimezone($content->timezone);
 
         if (count($em->getRepository('AppBundle:Team')->findOneBy(array("name" => $team->getName()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');
@@ -61,8 +61,8 @@ class TeamsController extends Controller
         $em->persist($team);
         $em->flush();
 
-        $response = $this->get('serializer')->serialize(array("result" => true), 'json');
-        return new Response($response, 200, ['Content-type' => 'application/json']);
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
