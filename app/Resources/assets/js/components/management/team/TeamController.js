@@ -17,9 +17,7 @@ function TeamController($rootScope, Api, $state) {
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
-        console.log(response);
     }, function errorCallback(response) {
-        console.log(response);
     }).finally(function () {
         $rootScope.loading = false;
         vm.dataLoading = false;
