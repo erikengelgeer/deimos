@@ -102,7 +102,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 var formattedDate = year + "-" + month + "-" + day;
 
                 for (var i = 0; i < vm.activeDates.length; i++) {
-                    console.log();
                     var activeDate = new Date(vm.activeDates[i].date);
                     var date = activeDate.getFullYear() + "-" + (activeDate.getMonth() + 1) + "-" + activeDate.getDate();
 
@@ -183,7 +182,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     }
                 } else {
                     task.shift = vm.selectedShift;
-                    console.log(task);
                     vm.dataLoading = true;
                     Api.tasks.add(task).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);
@@ -224,7 +222,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
             if(startHour < 10)
             {
-                // console.log(hour = "0"+hour);
                 startHour = "0" + startHour;
             }
 
@@ -237,7 +234,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
             if(endHour < 10)
             {
-                // console.log(hour = "0"+hour);
                 endHour = "0" + endHour;
             }
 

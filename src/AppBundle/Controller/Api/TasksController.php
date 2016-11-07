@@ -41,23 +41,23 @@ class TasksController extends Controller
     public function addAction(Request $request)
     {
 
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-        $taskType = $em->getRepository('AppBundle:TaskType')->find($data->taskType->id);
-        $shift = $em->getRepository('AppBundle:Shift')->find($data->shift->id);
+        $taskType = $em->getRepository('AppBundle:TaskType')->find($content->taskType->id);
+        $shift = $em->getRepository('AppBundle:Shift')->find($content->shift->id);
 
         $task = new Task();
-        $task->setStartTime(new \DateTime($data->startTime));
-        $task->setEndTime(new \DateTime($data->endTime));
-        $task->setDescription($data->taskType->description);
+        $task->setStartTime(new \DateTime($content->startTime));
+        $task->setEndTime(new \DateTime($content->endTime));
+        $task->setDescription($content->taskType->description);
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
-        (isset($data->description)) ? $task->setDescription($data->taskType->description . " - " . $data->description) : $task->setDescription($data->taskType->description);
+        (isset($content->description)) ? $task->setDescription($content->taskType->description . " - " . $content->description) : $task->setDescription($content->taskType->description);
 
-        if(isset($data->url)){
-            $task->setUrl($data->url);
+        if(isset($content->url)){
+            $task->setUrl($content->url);
         }
 
         $em->persist($task);

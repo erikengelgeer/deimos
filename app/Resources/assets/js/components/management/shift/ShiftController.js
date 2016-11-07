@@ -19,11 +19,8 @@ function ShiftController($rootScope, Api, $q, $state) {
         $state.go('index');
     }
 
-    console.log($rootScope.user.role_fk.role);
-
     promises.push(Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
         vm.shifts = response.data;
-        console.log(response);
     }));
 
     // watches for changes in team.id
@@ -43,7 +40,6 @@ function ShiftController($rootScope, Api, $q, $state) {
     }));
 
     $q.all(promises).then(function () {
-        console.log("done", vm.shifts, vm.teams);
     }).finally(function () {
         $rootScope.loading = false;
         vm.dataLoading = false;

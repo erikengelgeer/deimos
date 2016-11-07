@@ -24,7 +24,7 @@ class ShiftTypesController extends Controller
      * @Route("/")
      * @Method("GET")
      *
-     * Get all the shiftTypes
+     * Get all the shdata
      */
     public function findAllAction()
     {
@@ -111,15 +111,15 @@ class ShiftTypesController extends Controller
         }
 
         if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-            $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-            return new Response($response, 200, ['Content-type' => 'application/json']);
+            $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+            return new Response($data, 200, ['Content-type' => 'application/json']);
         }
 
         $em->persist($shiftType);
         $em->flush();
 
-        $response = $this->get('serializer')->serialize(array("result" => true), 'json');
-        return new Response($response, 200, ['Content-type' => 'application/json']);
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
@@ -161,8 +161,8 @@ class ShiftTypesController extends Controller
 
             if ($content->short != $shiftType->getShort()) {
                 if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-                    $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-                    return new Response($response, 200, ['Content-type' => 'application/json']);
+                    $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+                    return new Response($data, 200, ['Content-type' => 'application/json']);
                 }
             }
         }
