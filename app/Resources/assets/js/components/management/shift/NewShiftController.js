@@ -22,6 +22,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
 
     vm.add = add;
     vm.selectColor = selectColor;
+    vm.toggleWholeDay = toggleWholeDay;
 
     if ($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index');
@@ -69,7 +70,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
             vm.shift.default_start_time = vm.shift.start_time[0] + ":" + vm.shift.start_time[1];
             vm.shift.default_end_time = vm.shift.end_time[0] + ":" + vm.shift.end_time[1];
 
-            if (Date.parse('01/01/1970 ' + vm.shift.default_start_time) > Date.parse('01/01/1970 ' + vm.shift.default_end_time)) {
+            if (Date.parse('01/01/1970 ' + vm.shift.default_start_time) > Date.parse('01/01/1970 ' + vm.shift.default_end_time) && !vm.shift.wholeDay) {
                 vm.message = {
                     'title': 'Invalid time',
                     'content': 'The end time may not be lower than the start time. Please try again.',
@@ -127,4 +128,9 @@ function NewShiftController($rootScope, Api, $state, $q) {
     function selectColor(color) {
         vm.selectedColor = color;
     }
+
+    function toggleWholeDay(shift){
+        shift.wholeDay = !shift.wholeDay;
+    }
+
 }

@@ -27,6 +27,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
     vm.update = update;
     vm.selectColor = selectColor;
+    vm.toggleWholeDay = toggleWholeDay;
 
     if ($rootScope.user.role_fk.role.toLowerCase() != 'administrator' && $rootScope.user.role_fk.role.toLowerCase() != 'manager') {
         $state.go('index')
@@ -46,6 +47,13 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
         vm.shift.end_time = vm.shift.default_end_time.split(":");
         vm.shift.end_time[0] = vm.shift.end_time[0].substr(11, 2);
+
+        if (vm.shift.end_time[0] === "23"  && vm.shift.end_time[1] === "59") {
+            vm.shift.end_time[0] = '00';
+            vm.shift.end_time[1] = '00';
+
+            vm.shift.wholeDay = !vm.shift.wholeDay;
+        }
 
         vm.selectedColor = vm.shift.color;
     }));
@@ -93,7 +101,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
             vm.shift.default_start_time = vm.shift.start_time[0] + ":" + vm.shift.start_time[1];
             vm.shift.default_end_time = vm.shift.end_time[0] + ":" + vm.shift.end_time[1];
 
-            if (Date.parse('01/01/1970 ' + vm.shift.default_start_time) > Date.parse('01/01/1970 ' + vm.shift.default_end_time)) {
+            if (Date.parse('01/01/1970 ' + vm.shift.default_start_time) > Date.parse('01/01/1970 ' + vm.shift.default_end_time) && !vm.shift.wholeDay) {
                 vm.message = {
                     'title': 'Invalid time',
                     'content': 'The end time may not be lower than the start time. Please try again.',
@@ -148,5 +156,9 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
 
     function selectColor(color) {
         vm.selectedColor = color;
+    }
+
+    function toggleWholeDay(shift){
+        shift.wholeDay = !shift.wholeDay;
     }
 }

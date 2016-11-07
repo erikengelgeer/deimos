@@ -88,17 +88,27 @@ class ShiftTypesController extends Controller
         $shiftType->setColor($content->color);
         $shiftType->setTeamFk($team);
 
-        if (isset($content->default_start_time) && isset($content->default_end_time)) {
-            $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
-            $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
+        if ($content->wholeDay) {
+            $shiftType->setDefaultStartTime(new \DateTime("1970-01-01 00:00:00"));
+            $shiftType->setDefaultEndTime(new \DateTime("1970-01-01 23:59:59"));
+
+            $shiftType->setBreakDuration(00);
+            $shiftType->setShiftDuration(00);
+            $shiftType->setWorkhoursDurationH(00);
+
+        } else {
+
+            if (isset($content->default_start_time) && isset($content->default_end_time)) {
+                $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
+                $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
+            }
+
+            $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
+
+            $shiftType->setBreakDuration($content->break_duration / 60);
+            $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
+            $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
         }
-
-        $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
-
-        $shiftType->setBreakDuration($content->break_duration / 60);
-        $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
-        $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
-        
 
         if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
             $response = $this->get('serializer')->serialize(array("result" => false), 'json');
@@ -130,19 +140,30 @@ class ShiftTypesController extends Controller
         $shiftType->setTeamFk($team);
         $shiftType->setColor($content->color);
 
-        if(isset($content->default_start_time) && isset($content->default_end_time)) {
-            $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
-            $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
-        }
-        $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
-        $shiftType->setBreakDuration($content->break_duration);
-        $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
-        $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
+        if ($content->wholeDay) {
+            $shiftType->setDefaultStartTime(new \DateTime("1970-01-01 00:00:00"));
+            $shiftType->setDefaultEndTime(new \DateTime("1970-01-01 23:59:59"));
 
-        if($content->short != $shiftType->getShort()) {
-            if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-                $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-                return new Response($response, 200, ['Content-type' => 'application/json']);
+            $shiftType->setBreakDuration(00);
+            $shiftType->setShiftDuration(00);
+            $shiftType->setWorkhoursDurationH(00);
+
+        } else {
+
+            if (isset($content->default_start_time) && isset($content->default_end_time)) {
+                $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
+                $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
+            }
+            $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
+            $shiftType->setBreakDuration($content->break_duration);
+            $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
+            $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
+
+            if ($content->short != $shiftType->getShort()) {
+                if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
+                    $response = $this->get('serializer')->serialize(array("result" => false), 'json');
+                    return new Response($response, 200, ['Content-type' => 'application/json']);
+                }
             }
         }
 

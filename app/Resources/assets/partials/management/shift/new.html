@@ -53,26 +53,32 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-2 ">
+                <label>Whole Day:</label>
+                <br>
+                <button class="btn" ng-class="{'btn-gray': !vm.shift.wholeDay, 'btn-success': vm.shift.wholeDay }" ng-click="vm.toggleWholeDay(vm.shift)"><i class="fa fa-check"></i></button>
+            </div>
+
             <div class="col-md-2">
                 <label>Start Time:</label>
                 <div class="select-time">
-                    <select class="form-control" ng-model="vm.shift.start_time[0]" ng-options="hour for hour in vm.hours"></select>
+                    <select class="form-control" ng-model="vm.shift.start_time[0]" ng-options="hour for hour in vm.hours" ng-disabled="vm.shift.wholeDay"></select>
                     <span>:</span>
-                    <select class="form-control" ng-model="vm.shift.start_time[1]" ng-options="minute for minute in vm.minutes"></select>
+                    <select class="form-control" ng-model="vm.shift.start_time[1]" ng-options="minute for minute in vm.minutes" ng-disabled="vm.shift.wholeDay"></select>
                 </div>
             </div>
             <div class="col-md-2">
                 <label>End Time:</label>
                 <div class="select-time">
-                    <select class="form-control" ng-model="vm.shift.end_time[0]" ng-options="hour for hour in vm.hours"></select>
+                    <select class="form-control disabled" ng-model="vm.shift.end_time[0]" ng-options="hour for hour in vm.hours" ng-disabled="vm.shift.wholeDay" ></select>
                     <span>:</span>
-                    <select class="form-control" ng-model="vm.shift.end_time[1]" ng-options="minute for minute in vm.minutes"></select>
+                    <select class="form-control" ng-model="vm.shift.end_time[1]" ng-options="minute for minute in vm.minutes" ng-disabled="vm.shift.wholeDay"></select>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <label for="breakDuration">Break Duration:</label>
-                <select class="form-control" id="breakDuration" ng-model="vm.shift.break_duration" ng-options="minute for minute in vm.breakMinutes"></select>
+                <select class="form-control" id="breakDuration" ng-model="vm.shift.break_duration" ng-options="minute for minute in vm.breakMinutes" ng-disabled="vm.shift.wholeDay"></select>
             </div>
 
             <div class="col-md-4">
