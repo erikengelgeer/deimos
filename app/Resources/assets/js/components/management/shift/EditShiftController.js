@@ -7,6 +7,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     var vm = this;
     var shiftId = $stateParams.shiftTypeId;
 
+
     vm.teams = null;
     vm.shift = null;
     vm.colors = ['#b7d66e', '#FFEB3B', '#FFC107', '#EE4A25', '#00B050', '#06AECE', '#999999'];
@@ -39,6 +40,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
     // Fetch the team with the given team id.
     promises.push(Api.shiftType.findOne(shiftId).then(function (response) {
         vm.shift = response.data;
+        vm.shift.wholeDay = false;
         // vm.shift.default_end_time = new Date(vm.shift.default_end_time);
         // vm.shift.default_start_time = new Date(vm.shift.default_start_time);
 

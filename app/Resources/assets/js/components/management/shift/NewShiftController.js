@@ -5,6 +5,7 @@ function NewShiftController($rootScope, Api, $state, $q) {
     var promises = [];
 
     vm.shift = {};
+    vm.shift.wholeDay = false;
     vm.team = {};
     vm.colors = ['#b7d66e', '#ffeb3b', '#ffc107', '#EE4A25', '#00b050', '#06AECE', '#999999'];
     vm.hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
