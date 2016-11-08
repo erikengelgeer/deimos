@@ -73,7 +73,7 @@ class ShiftTypesController extends Controller
      * @param Request $request
      * @return Response
      *
-     * Adds a new shiftType
+     * Add a new shiftType
      */
     public function addAction(Request $request)
     {
@@ -111,20 +111,22 @@ class ShiftTypesController extends Controller
         }
 
         if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-            $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-            return new Response($response, 200, ['Content-type' => 'application/json']);
+            $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+            return new Response($data, 200, ['Content-type' => 'application/json']);
         }
 
         $em->persist($shiftType);
         $em->flush();
 
-        $response = $this->get('serializer')->serialize(array("result" => true), 'json');
-        return new Response($response, 200, ['Content-type' => 'application/json']);
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
     /**
      * @Route("/{id}")
      * @Method("PUT")
+     *
+     * Update a single shiftType
      */
     public function updateAction(ShiftType $shiftType, Request $request)
     {
@@ -161,8 +163,8 @@ class ShiftTypesController extends Controller
 
             if ($content->short != $shiftType->getShort()) {
                 if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-                    $response = $this->get('serializer')->serialize(array("result" => false), 'json');
-                    return new Response($response, 200, ['Content-type' => 'application/json']);
+                    $data = $this->get('serializer')->serialize(array("result" => false), 'json');
+                    return new Response($data, 200, ['Content-type' => 'application/json']);
                 }
             }
         }
@@ -176,6 +178,8 @@ class ShiftTypesController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disable a shiftType
      */
     public function disableAction(ShiftType $shiftType)
     {

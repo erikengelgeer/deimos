@@ -233,7 +233,6 @@ function HomeController($rootScope, Api, $timeout) {
 
                 if (currentScrollTop > lastScrollTop) {
                     // DOWN
-                    // console.log('scroll', $(this).scrollTop(), 'nextItem', (nextItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((nextItem.offset().top - ScheduleContainer.offset().top) <= 0 && current != schedules.length) {
                         current++;
@@ -245,7 +244,6 @@ function HomeController($rootScope, Api, $timeout) {
 
                 } else {
                     // UP
-                    // console.log('scroll', $(this).scrollTop(), 'previousItem', (previousItem.offset().top - ScheduleContainer.offset().top));
 
                     if ((previousItem.offset().top - ScheduleContainer.offset().top) >= (0 - (item.height() + item.find('.heading').height())) && current != 1) {
                         current--;
@@ -266,7 +264,6 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function redirect(taskUrl) {
-        console.log(taskUrl);
         if (taskUrl != null && taskUrl != '') {
             window.open(taskUrl, '_blank');
         }

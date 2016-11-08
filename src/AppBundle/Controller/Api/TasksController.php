@@ -37,27 +37,29 @@ class TasksController extends Controller
      * @Route("/")
      * @Method("POST")
      * @return Response
+     *
+     * Add a new task
      */
     public function addAction(Request $request)
     {
 
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-        $taskType = $em->getRepository('AppBundle:TaskType')->find($data->taskType->id);
-        $shift = $em->getRepository('AppBundle:Shift')->find($data->shift->id);
+        $taskType = $em->getRepository('AppBundle:TaskType')->find($content->taskType->id);
+        $shift = $em->getRepository('AppBundle:Shift')->find($content->shift->id);
 
         $task = new Task();
-        $task->setStartTime(new \DateTime($data->startTime));
-        $task->setEndTime(new \DateTime($data->endTime));
-        $task->setDescription($data->taskType->description);
+        $task->setStartTime(new \DateTime($content->startTime));
+        $task->setEndTime(new \DateTime($content->endTime));
+        $task->setDescription($content->taskType->description);
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
-        (isset($data->description)) ? $task->setDescription($data->taskType->description . " - " . $data->description) : $task->setDescription($data->taskType->description);
+        (isset($content->description)) ? $task->setDescription($content->taskType->description . " - " . $content->description) : $task->setDescription($content->taskType->description);
 
-        if(isset($data->url)){
-            $task->setUrl($data->url);
+        if(isset($content->url)){
+            $task->setUrl($content->url);
         }
 
         $em->persist($task);
@@ -70,6 +72,8 @@ class TasksController extends Controller
     /**
      * @Route("/{id}")
      * @Method("PUT")
+     *
+     * Update a single task
      */
     public function updateAction(Task $task, Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -97,6 +101,8 @@ class TasksController extends Controller
      * @Method("DELETE")
      * @param Task $task
      * @return Response
+     *
+     * Delete a single task
      */
     public function deleteAction(Task $task)
     {

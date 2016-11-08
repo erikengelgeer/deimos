@@ -40,7 +40,7 @@ class UsersController extends Controller
      * @Route("/user")
      * @Method("GET")
      *
-     * Gets the logged in user.
+     * Get the logged in user.
      */
     public function findLoggedInUser()
     {
@@ -65,14 +65,14 @@ class UsersController extends Controller
      * @Route("/update/password")
      * @Method("POST")
      *
-     * Updates a users password
+     * Update a users password
      */
     public function updatePasswordAction(Request $request)
     {
-        $data = $request->getContent();
+        $content = $request->getContent();
         $user = $this->getUser();
 
-        $user->setPlainPassword($data);
+        $user->setPlainPassword($content);
         $this->get('fos_user.user_manager')->updateUser($user);
 
         $data = $this->get('serializer')->serialize(array("result" => true), 'json');
@@ -88,11 +88,11 @@ class UsersController extends Controller
      */
     public function requestPasswordAction(Request $request)
     {
-        $email = $request->getContent();
+        $content = $request->getContent();
 
         $manager = $this->get('fos_user.user_manager');
         /** @var \AppBundle\Entity\User $user */
-        $user = $manager->findUserByEmail($email);
+        $user = $manager->findUserByEmail($content);
 
         $tokenGenerator = $this->get('fos_user.util.token_generator');
         $token = $tokenGenerator->generateToken();
@@ -126,14 +126,14 @@ class UsersController extends Controller
      */
     public function resetPasswordAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
 
         $manager = $this->get('fos_user.user_manager');
-        $user = $manager->findUserByConfirmationToken($data->confirmation_token);
+        $user = $manager->findUserByConfirmationToken($content->confirmation_token);
 
         $user->setConfirmationToken(null);
         $user->setCredentialsExpired(false);
-        $user->setPlainPassword($data->newPassword);
+        $user->setPlainPassword($content->newPassword);
 
         $manager->updateUser($user);
 
@@ -149,12 +149,12 @@ class UsersController extends Controller
      */
     public function checkRoleAction(Request $request)
     {
-        $username = $request->getContent();
+        $content = $request->getContent();
 
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $user = $repository->findOneBy(array("username" => $username));
+        $user = $repository->findOneBy(array("username" => $content));
 
         if ($user != null) {
 
@@ -184,26 +184,28 @@ class UsersController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $user = $this->getUser();
 
-        $user->setPlainPassword($data->password);
+        $user->setPlainPassword($content->password);
         $this->get('fos_user.user_manager')->updateUser($user);
     }
 
-    /**
+    /**$content
      * @Route("/token")
      * @Method("POST")
      * @param Request $request
      * @return Response
+     *
+     * Get a single user a token
      */
     public function getUserByTokenAction(Request $request)
     {
-        $token = $request->getContent();
+        $content = $request->getContent();
         $manager = $this->get('fos_user.user_manager');
 
         /** @var \AppBundle\Entity\User $user */
-        $user = $manager->findUserByConfirmationToken($token);
+        $user = $manager->findUserByConfirmationToken($content);
 
         if ($user == null) {
             $data = $this->get('serializer')->serialize(null, 'json');
@@ -222,17 +224,17 @@ class UsersController extends Controller
      */
     public function addUserAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
         $tokenGenerator = $this->get('fos_user.util.token_generator');
         $token = $tokenGenerator->generateToken();
 
         $user = new User();
-        $user->setUsername($data->username);
-        $user->setRealName($data->real_name);
-        $user->setCwid($data->cwid);
-        $user->setEmail($data->email . '@agfa.com');
+        $user->setUsername($content->username);
+        $user->setRealName($content->real_name);
+        $user->setCwid($content->cwid);
+        $user->setEmail($content->email . '@agfa.com');
         $user->setEnabled(true);
 
 //        Logic for password? maybe use token?
@@ -249,8 +251,8 @@ class UsersController extends Controller
             return new Response($data, 200, ['Content-type' => 'application/json']);
         }
 
-        $team = $em->getRepository('AppBundle:Team')->find($data->team->id);
-        $role = $em->getRepository('AppBundle:Role')->find($data->role->id);
+        $team = $em->getRepository('AppBundle:Team')->find($content->team->id);
+        $role = $em->getRepository('AppBundle:Role')->find($content->role->id);
 
         $user->setTeamFk($team);
         $user->setRoleFk($role);
@@ -280,18 +282,18 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($data->id);
+        $user = $em->getRepository('AppBundle:User')->find($content->id);
 
-        $user->setUsername($data->username);
-        $user->setRealName($data->real_name);
-        $user->setCwid($data->cwid);
-        $user->setEmail($data->email  . "@agfa.com");
+        $user->setUsername($content->username);
+        $user->setRealName($content->real_name);
+        $user->setCwid($content->cwid);
+        $user->setEmail($content->email  . "@agfa.com");
 //        dump($user);
         
 
-        if ($data->username != $user->getUsername()) {
+        if ($content->username != $user->getUsername()) {
             $countByUsername = count($em->getRepository('AppBundle:User')->findBy(array("username" => $user->getUsername())));
 
             if ($countByUsername > 0) {
@@ -300,7 +302,7 @@ class UsersController extends Controller
             }
         }
 
-        if ($data->email."@agfa.com" != $user->getEmail()) {
+        if ($content->email."@agfa.com" != $user->getEmail()) {
             $countByEmail = count($em->getRepository('AppBundle:User')->findBy(array("email" => $user->getEmail())));
 
             if ($countByEmail > 0) {
@@ -310,15 +312,15 @@ class UsersController extends Controller
         }
 
         // check if role is altered
-        if ($data->newRole != $user->getRoleFk()->getId()) {
-            $role = $em->getRepository('AppBundle:Role')->find($data->newRole);
+        if ($content->newRole != $user->getRoleFk()->getId()) {
+            $role = $em->getRepository('AppBundle:Role')->find($content->newRole);
 
             $user->setRoleFk($role);
         }
 
         // check if team is altered
-        if ($data->newTeam != $user->getTeamFk()->getId()) {
-            $team = $em->getRepository('AppBundle:Team')->find($data->newTeam);
+        if ($content->newTeam != $user->getTeamFk()->getId()) {
+            $team = $em->getRepository('AppBundle:Team')->find($content->newTeam);
 
             $user->setTeamFk($team);
         }
@@ -333,6 +335,8 @@ class UsersController extends Controller
     /**
      * @Route("/update-role/")
      * @Method("PUT")
+     *
+     * Updates a role
      */
     public function updateRoleAction(Request $request)
     {
@@ -355,6 +359,8 @@ class UsersController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disables a user
      */
     public function disableAction(User $user) {
         $em = $this->getDoctrine()->getManager();
@@ -373,12 +379,17 @@ class UsersController extends Controller
      *
      * Get users by team
      */
-    public function findUserByTeamAction(Team $team)
+    public function findUserByTeamAction(Team $team, Request $request)
     {
+        $content = $request->getQueryString();
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true, "plannable" => true));
+        if($content != null) {
+            $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true));
+        } else {
+            $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true, "plannable" => true));
+        }
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

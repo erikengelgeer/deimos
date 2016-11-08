@@ -30,8 +30,16 @@ function Api($http) {
             findOne: function (id) {
                 return $http.get('api/users/' + id);
             },
-            findByTeam: function (teamId) {
-                return $http.get('api/users/team/' + teamId);
+            findByTeam: function (teamId, management) {
+                // return $http.get('api/users/team/' + teamId);
+
+                return $http({
+                    url: 'api/users/team/' + teamId,
+                    method:"GET",
+                    params: {
+                        management: management
+                    }
+                })
             },
             findLoggedIn: function () {
                 return $http.get('api/users/user');

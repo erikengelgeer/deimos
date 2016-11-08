@@ -18,11 +18,8 @@ function ProfileController($rootScope, Api) {
     var strengths = ["Very Weak", "Weak", "Better", "Strong", "Very Strong"];
 
     function measurePassword() {
-        console.log(vm.password);
-
         var result = zxcvbn(vm.password);
         strength = 20 * (result.score + 1);
-        console.log(result);
 
         if (vm.password == '') {
             strength = 0;

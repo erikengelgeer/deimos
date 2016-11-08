@@ -18,6 +18,8 @@ class PlanningsController extends Controller
     /**
      * @Route("/")
      * @Method("GET")
+     *
+     * Get the planning
      */
     public function findAction()
     {

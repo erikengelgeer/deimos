@@ -68,7 +68,6 @@ function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
             vm.dataLoading = true;
             // Send a request to the API to update a team.
             Api.teams.update(vm.team).then(function (response) {
-                console.log(response.data);
                 var result = response.data.result;
 
                 if (!result) {

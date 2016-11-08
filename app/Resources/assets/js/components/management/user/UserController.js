@@ -22,9 +22,8 @@ function UserController($rootScope, Api, $q, $state) {
     }
 
     // finds all users
-    promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+    promises.push(Api.users.findByTeam($rootScope.team.id, true).then(function (response) {
         vm.users = response.data;
-        // console.log(response);
     }));
 
     // watches for a change in the team.id
@@ -32,7 +31,7 @@ function UserController($rootScope, Api, $q, $state) {
         vm.dataLoading = true;
 
         // when there is a change it reloads the shown data
-        Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        Api.users.findByTeam($rootScope.team.id, true).then(function (response) {
             vm.users = response.data;
         }).finally(function () {
             vm.dataLoading = false;
@@ -44,7 +43,6 @@ function UserController($rootScope, Api, $q, $state) {
     }));
 
     $q.all(promises).then(function () {
-        console.log("done", vm.users, vm.roles);
     }).finally(function () {
         $rootScope.loading = false;
         vm.dataLoading = false;
@@ -70,7 +68,6 @@ function UserController($rootScope, Api, $q, $state) {
     }
 
     function showDisableModal(user) {
-        console.log(user);
         vm.selectedUser = user;
         $('#disable-user-modal').modal('show');
     }
