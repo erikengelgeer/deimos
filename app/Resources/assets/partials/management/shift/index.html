@@ -36,7 +36,8 @@
                     <tr>
                         <td>{{ shift.short }}</td>
                         <td>
-                            <span ng-if="(shift.default_start_time | date: 'HH:mm') != '00:00' && (shift.default_start_time | date: 'HH:mm') != '23:59'">{{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</span>
+                            <span ng-if="(shift.default_start_time | date: 'HH:mm') != '00:00' && (shift.default_start_time | date: 'HH:mm') != '23:59'">
+                                {{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</span>
                             <span ng-if="!((shift.default_start_time | date: 'HH:mm') != '00:00' && (shift.default_start_time | date: 'HH:mm') != '23:59')">Whole Day</span>
                         </td>
                         <td>{{ shift.break_duration * 60}} Minutes</td>

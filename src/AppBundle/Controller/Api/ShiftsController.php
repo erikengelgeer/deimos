@@ -31,11 +31,11 @@ class ShiftsController extends Controller
         $weeks = $params->get('weeks');
 
         // mktime (0,0,0, M, D, Y)
-        $timestamp = strtotime('monday this week', mktime(0,0,0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
+        $timestamp = strtotime('monday this week', mktime(0, 0, 0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
         $mondayThisWeek = date_timestamp_set(new \DateTime(), $timestamp);
 
         $strDate = 'sunday this week +' . ($weeks - 1) . ' weeks';
-        $timestamp2 = strtotime($strDate, mktime(0,0,0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
+        $timestamp2 = strtotime($strDate, mktime(0, 0, 0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
         $fourWeeksLater = date_timestamp_set(new \DateTime(), $timestamp2);
 
         $shifts = $repository->findPlanning($mondayThisWeek, $fourWeeksLater, $team);
@@ -90,7 +90,6 @@ class ShiftsController extends Controller
 
 
         foreach ($data->selectedDates as $date) {
-
 
 
             foreach ($data->shifts as $item) {
@@ -184,8 +183,15 @@ class ShiftsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-        $shift->setStartTime(new \DateTime(date('Y-m-d H:i', ($content->setStartTime/1000))));
-        $shift->setEndTime(new \DateTime(date('Y-m-d H:i', ($content->setEndTime/1000))));
+        if ($content->wholeDay) {
+            $shift->setStartTime(new \DateTime("1970-01-01 00:00:00"));
+            $shift->setEndTime(new \DateTime("1970-01-01 23:59:59"));
+
+        } else {
+            $shift->setStartTime(new \DateTime(date('Y-m-d H:i', ($content->setStartTime / 1000))));
+            $shift->setEndTime(new \DateTime(date('Y-m-d H:i', ($content->setEndTime / 1000))));
+        }
+
         $shift->setHome($content->home);
 
         $em->flush();

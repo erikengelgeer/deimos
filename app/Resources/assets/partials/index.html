@@ -111,6 +111,7 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>Whole Day</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Options</th>
@@ -118,10 +119,13 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td>
+                                    <button class="btn" ng-class="{'btn-gray': !vm.selectedShift.shift.wholeDay, 'btn-success': vm.selectedShift.shift.wholeDay }" ng-click="vm.toggleWholeDay(vm.selectedShift.shift)"><i class="fa fa-check"></i></button>
+                                </td>
                                 <td><input type="text" ng-model="vm.selectedShift.shift.newStartTime"
-                                           class="form-control"></td>
+                                           class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay"></td>
                                 <td><input type="text" ng-model="vm.selectedShift.shift.newEndTime"
-                                           class="form-control"></td>
+                                           class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay"></td>
                                 <td>
                                     <button class="btn"
                                             ng-class="{'btn-gray': !vm.selectedShift.shift.home, 'btn-success': vm.selectedShift.shift.home }"
@@ -150,13 +154,13 @@
             </div>
             <div class="modal-body">
                 <div class="row filter-modal">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h4>Month</h4>
                         <div class="filter" ng-repeat="(key, month) in vm.months" ng-class="{'active': month == vm.selectedMonthTemp }" ng-click="vm.filterMonth(key)">
                             {{ month }}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h4>Year</h4>
                         <div class="filter" ng-repeat="(key, year) in vm.years" ng-class="{'active': year == vm.selectedYearTemp }" ng-click="vm.filterYear(year)">
                             {{ year }}

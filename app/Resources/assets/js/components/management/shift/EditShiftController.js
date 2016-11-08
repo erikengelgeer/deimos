@@ -160,6 +160,7 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         vm.selectedColor = color;
     }
 
+    // toggle for wholeDay
     function toggleWholeDay(shift){
         shift.wholeDay = !shift.wholeDay;
     }

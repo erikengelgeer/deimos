@@ -12,6 +12,10 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedShift = null;
     vm.message = null;
 
+    // saves the start and endTime from the editShift function for the toggleWholeDay function
+    var saveStartTime;
+    var saveEndTime;
+
     // ---
     vm.currentYear = new Date().getFullYear();
     vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
@@ -45,6 +49,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.editShift = editShift;
     vm.updateShift = updateShift;
     vm.toggleHome = toggleHome;
+    vm.toggleWholeDay = toggleWholeDay;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -328,16 +333,28 @@ function HomeController($rootScope, Api, $timeout) {
         vm.message = null;
         $('#edit-shift-modal').modal();
         vm.selectedShift = shift;
+        vm.selectedShift.shift.wholeDay = false;
 
         var startTime = new Date(vm.selectedShift.shift.startTime);
         var startTimeHours = (startTime.getHours() <= 9) ? "0" + startTime.getHours() : startTime.getHours();
         var startTimeMinutes = (startTime.getMinutes() <= 9) ? "0" + startTime.getMinutes() : startTime.getMinutes();
         vm.selectedShift.shift.newStartTime = startTimeHours + ":" + startTimeMinutes;
+        // saves the time in a var for when you toggle whole day on and off.
+        saveStartTime = vm.selectedShift.shift.newStartTime;
 
         var endTime = new Date(vm.selectedShift.shift.endTime);
         var endTimeHours = (endTime.getHours() <= 9) ? "0" + endTime.getHours() : endTime.getHours();
         var endTimeMinutes = (endTime.getMinutes() <= 9) ? "0" + endTime.getMinutes() : endTime.getMinutes();
         vm.selectedShift.shift.newEndTime = endTimeHours + ":" + endTimeMinutes;
+        // saves the time in a var for when you toggle whole day on and off.
+        saveEndTime = vm.selectedShift.shift.newEndTime;
+
+        if (vm.selectedShift.shift.newStartTime == '00:00' && vm.selectedShift.shift.newEndTime == '23:59') {
+            vm.selectedShift.shift.newStartTime = '00:00';
+            vm.selectedShift.shift.newEndTime = '00:00';
+
+            vm.selectedShift.shift.wholeDay = !vm.selectedShift.shift.wholeDay;
+        }
 
 
         console.log(vm.selectedShift)
@@ -357,7 +374,7 @@ function HomeController($rootScope, Api, $timeout) {
             var startTime = new Date(startDate);
             var endTime = new Date(endDate);
 
-            if (startTime.getMinutes() % 15 != 0 || startTime.getHours() < 0 || startTime.getHours() > 23 || startTime.getMinutes() > 59 || startTime.getMinutes() < 0) {
+            if ((startTime.getMinutes() % 15 != 0 || startTime.getHours() < 0 || startTime.getHours() > 23 || startTime.getMinutes() > 59 || startTime.getMinutes() < 0) && !vm.selectedShift.shift.wholeDay) {
 
                 vm.message = {
                     'title': 'Start time is invalid',
@@ -366,7 +383,7 @@ function HomeController($rootScope, Api, $timeout) {
                     'type': 'alert-danger'
                 };
                 vm.dataLoading = false;
-            } else if (endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) {
+            } else if ((endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) && !vm.selectedShift.shift.wholeDay) {
 
                 vm.message = {
                     'title': 'End time is invalid',
@@ -378,7 +395,7 @@ function HomeController($rootScope, Api, $timeout) {
             } else {
                 vm.selectedShift.shift.setStartTime = startDate;
                 vm.selectedShift.shift.setEndTime = endDate;
-                
+
                 Api.shifts.update(vm.selectedShift.shift).then(function () {
                     vm.message = {
                         'title': 'Successfully updated',
@@ -386,11 +403,13 @@ function HomeController($rootScope, Api, $timeout) {
                         'icon': 'fa-check',
                         'type': 'alert-success'
                     };
-                    
+
                     vm.selectedShift.shift.startTime = startDate;
                     vm.selectedShift.shift.endTime = endDate;
 
-                    console.log(startDate, endDate);
+                    saveStartTime = vm.selectedShift.shift.newStartTime;
+                    saveEndTime = vm.selectedShift.shift.newEndTime;
+
                     vm.dataLoading = false;
                 })
             }
@@ -409,5 +428,29 @@ function HomeController($rootScope, Api, $timeout) {
     // toggled home for a shift
     function toggleHome(shift) {
         shift.home = !shift.home;
+    }
+
+    // toggle for wholeDay
+    function toggleWholeDay(shift) {
+        shift.wholeDay = !shift.wholeDay;
+
+        // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
+        if (vm.selectedShift.shift.wholeDay == true) {
+            vm.selectedShift.shift.newStartTime = '00:00';
+            vm.selectedShift.shift.newEndTime = '23:59';
+
+            // checks if wholeDay is false and then sets the start time as the saved starTime from when you opened the edit modal.
+        } else if (vm.selectedShift.shift.wholeDay == false) {
+            vm.selectedShift.shift.newStartTime = saveStartTime;
+
+            // if saveEndTime equals 23:59 sets it to 00:00 for editing purposes
+            if (saveEndTime == '23:59') {
+                vm.selectedShift.shift.newEndTime = '00:00';
+
+                // if end time is not 23:59 then set the end time as the saved endTime from when you opened the edit modal
+            } else {
+                vm.selectedShift.shift.newEndTime = saveEndTime;
+            }
+        }
     }
 }
