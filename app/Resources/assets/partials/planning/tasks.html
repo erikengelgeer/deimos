@@ -40,8 +40,13 @@
                     <div class="shift-container col-md-8" ng-show="vm.selectedShift">
                         <div class=" shift">
                             <i class="fa fa-circle" style="color: {{vm.selectedShift.shift_type_fk.color}}"></i>
-                            <span>{{ vm.selectedShift.start_time | date: 'H:mm'}}</span> -
-                            <span>{{ vm.selectedShift.end_time | date: 'H:mm'}}</span>
+                            <span ng-if="(today.selectedShift.start_time | date: 'H:mm') == '0:00' && (today.selectedShift.end_time | date: 'H:mm') == '0:00'
+                            || (today.selectedShift.start_time | date: 'H:mm') == '0:00' && (today.selectedShift.end_time | date: 'H:mm') == '23:59'">
+                                {{ vm.selectedShift.start_time | date: 'H:mm'}} - {{ vm.selectedShift.end_time | date: 'H:mm'}}</span>
+
+                            <span ng-if="!((today.selectedShift.start_time | date: 'H:mm') == '0:00' && (today.end_time.end_time | date: 'H:mm') == '0:00'
+                            || (today.selectedShift.start_time | date: 'H:mm') == '0:00' && (today.selectedShift.endTime | date: 'H:mm') == '23:59')">
+                                Whole day</span>
                         </div>
                         <div class="tasks-container">
                             <div class="alert alert-info" ng-if="vm.selectedShift.tasks.length == 0">
