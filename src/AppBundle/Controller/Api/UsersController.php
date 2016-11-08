@@ -40,7 +40,7 @@ class UsersController extends Controller
      * @Route("/user")
      * @Method("GET")
      *
-     * Gets the logged in user.
+     * Get the logged in user.
      */
     public function findLoggedInUser()
     {
@@ -65,7 +65,7 @@ class UsersController extends Controller
      * @Route("/update/password")
      * @Method("POST")
      *
-     * Updates a users password
+     * Update a users password
      */
     public function updatePasswordAction(Request $request)
     {
@@ -196,6 +196,8 @@ class UsersController extends Controller
      * @Method("POST")
      * @param Request $request
      * @return Response
+     *
+     * Get a single user a token
      */
     public function getUserByTokenAction(Request $request)
     {
@@ -333,6 +335,8 @@ class UsersController extends Controller
     /**
      * @Route("/update-role/")
      * @Method("PUT")
+     *
+     * Updates a role
      */
     public function updateRoleAction(Request $request)
     {
@@ -355,6 +359,8 @@ class UsersController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disables a user
      */
     public function disableAction(User $user) {
         $em = $this->getDoctrine()->getManager();

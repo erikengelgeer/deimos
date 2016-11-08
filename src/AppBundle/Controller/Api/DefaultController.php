@@ -26,6 +26,8 @@ class DefaultController extends Controller
     /**
      * @Route("/timezones")
      * @Method("GET")
+     *
+     * Get all timezones
      */
     public function getTimezones() {
         $timezones = \DateTimeZone::listIdentifiers();

@@ -40,7 +40,7 @@ class TeamsController extends Controller
      * @param Request $request
      * @return Response
      *
-     * Adds a new team.
+     * Add a new team.
      */
     public function addAction(Request $request)
     {
@@ -80,6 +80,8 @@ class TeamsController extends Controller
     /**
      * @Route("/{id}")
      * @Method("PUT")
+     *
+     * Update a single team
      */
     public function updateAction(Team $team, Request $request)
     {
@@ -110,6 +112,8 @@ class TeamsController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disable a single team
      */
     public function disableAction(Team $team)
     {

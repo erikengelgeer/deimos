@@ -34,6 +34,9 @@ class TaskTypesController extends Controller
 
     /**
      * @Route("/")
+     * @Method("POST")
+     *
+     * Add a taskType
      */
     public function addAction(Request $request)
     {
@@ -71,6 +74,8 @@ class TaskTypesController extends Controller
     /**
      * @Route("/update")
      * @Method("PUT")
+     *
+     * Update a single taskType
      */
     public function updateAction(Request $request)
     {
@@ -100,6 +105,8 @@ class TaskTypesController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disable a single taskType
      */
     public function disableAction(TaskType $taskType)
     {

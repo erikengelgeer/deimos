@@ -37,6 +37,8 @@ class TasksController extends Controller
      * @Route("/")
      * @Method("POST")
      * @return Response
+     *
+     * Add a new task
      */
     public function addAction(Request $request)
     {
@@ -70,6 +72,8 @@ class TasksController extends Controller
     /**
      * @Route("/{id}")
      * @Method("PUT")
+     *
+     * Update a single task
      */
     public function updateAction(Task $task, Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -97,6 +101,8 @@ class TasksController extends Controller
      * @Method("DELETE")
      * @param Task $task
      * @return Response
+     *
+     * Delete a single task
      */
     public function deleteAction(Task $task)
     {

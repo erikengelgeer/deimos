@@ -24,7 +24,7 @@ class ShiftTypesController extends Controller
      * @Route("/")
      * @Method("GET")
      *
-     * Get all the shdata
+     * Get all the shiftTypes
      */
     public function findAllAction()
     {
@@ -73,7 +73,7 @@ class ShiftTypesController extends Controller
      * @param Request $request
      * @return Response
      *
-     * Adds a new shiftType
+     * Add a new shiftType
      */
     public function addAction(Request $request)
     {
@@ -125,6 +125,8 @@ class ShiftTypesController extends Controller
     /**
      * @Route("/{id}")
      * @Method("PUT")
+     *
+     * Update a single shiftType
      */
     public function updateAction(ShiftType $shiftType, Request $request)
     {
@@ -176,6 +178,8 @@ class ShiftTypesController extends Controller
     /**
      * @Route("/{id}")
      * @Method("POST")
+     *
+     * Disable a shiftType
      */
     public function disableAction(ShiftType $shiftType)
     {

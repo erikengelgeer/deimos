@@ -82,6 +82,8 @@ class ShiftsController extends Controller
     /**
      * @Route("/")
      * @Method("POST")
+     *
+     * Add a new shift
      */
     function addAction(Request $request)
     {
@@ -143,6 +145,8 @@ class ShiftsController extends Controller
     /**
      * @Route("/user/{id}")
      * @Method("GET")
+     *
+     * Get all shifts by users
      */
     function findAllByUser(User $user)
     {
@@ -161,6 +165,8 @@ class ShiftsController extends Controller
     /**
      * @Route("/user/{id}/{date}")
      * @Method("GET")
+     *
+     * Get all shifts by user and date
      */
     function findByUserAndDate(User $user, $date)
     {
@@ -177,7 +183,7 @@ class ShiftsController extends Controller
      * @Route("/{id}")
      * @Method("PUT")
      *
-     * Get a single shift
+     * Update a single shift
      */
     public function updateAction(Shift $shift, Request $request)
     {

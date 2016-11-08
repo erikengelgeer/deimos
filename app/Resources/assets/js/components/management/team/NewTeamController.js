@@ -57,7 +57,6 @@ function NewTeamController($rootScope, Api, $state) {
             vm.dataLoading = true;
             // Send a request to the insert API to add a team.
             Api.teams.add(vm.team).then(function (response) {
-                console.log(response.data);
                 var result = response.data.result;
 
                 if (!result) {

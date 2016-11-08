@@ -44,9 +44,7 @@ function EditUserController($rootScope, Api, $stateParams, $q, $state) {
     });
 
     function update() {
-        // console.log('triggered');
         vm.message = null;
-
         if (vm.user.username == null || vm.user.real_name == null || vm.user.email == null || vm.user.role_fk == null || vm.user.team_fk == null) {
             // if fields is empty, show error message.
             vm.message = {
