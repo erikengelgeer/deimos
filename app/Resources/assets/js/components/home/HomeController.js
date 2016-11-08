@@ -352,9 +352,7 @@ function HomeController($rootScope, Api, $timeout) {
 
             vm.selectedShift.shift.wholeDay = !vm.selectedShift.shift.wholeDay;
         }
-
-
-        console.log(vm.selectedShift)
+        
     }
 
     function updateShift() {
