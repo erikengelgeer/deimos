@@ -379,12 +379,17 @@ class UsersController extends Controller
      *
      * Get users by team
      */
-    public function findUserByTeamAction(Team $team)
+    public function findUserByTeamAction(Team $team, Request $request)
     {
+        $content = $request->getQueryString();
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:User");
 
-        $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true, "plannable" => true));
+        if($content != null) {
+            $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true));
+        } else {
+            $users = $repository->findBy(array('teamFk' => $team, 'enabled' => true, "plannable" => true));
+        }
 
         $data = $this->get('serializer')->serialize($users, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);

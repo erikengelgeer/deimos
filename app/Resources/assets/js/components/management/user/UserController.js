@@ -22,7 +22,7 @@ function UserController($rootScope, Api, $q, $state) {
     }
 
     // finds all users
-    promises.push(Api.users.findByTeam($rootScope.team.id).then(function (response) {
+    promises.push(Api.users.findByTeam($rootScope.team.id, true).then(function (response) {
         vm.users = response.data;
     }));
 
@@ -31,7 +31,7 @@ function UserController($rootScope, Api, $q, $state) {
         vm.dataLoading = true;
 
         // when there is a change it reloads the shown data
-        Api.users.findByTeam($rootScope.team.id).then(function (response) {
+        Api.users.findByTeam($rootScope.team.id, true).then(function (response) {
             vm.users = response.data;
         }).finally(function () {
             vm.dataLoading = false;
