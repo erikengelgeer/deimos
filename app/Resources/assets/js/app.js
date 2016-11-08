@@ -21,16 +21,16 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
             $rootScope.teams = response.data;
         }));
 
-        // promises.push(Api.shiftType.findByTeam().then(function (response) {
-        //     $rootScope.shiftTypes = response.data;
-        // }));
-
         $q.all(promises).then(function () {
             if ($rootScope.user.team_fk.visible) {
                 $rootScope.team = $rootScope.user.team_fk;
             } else {
                 $rootScope.team = $rootScope.teams[0];
             }
+
+            Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+                $rootScope.shiftTypes = response.data;
+            });
 
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
