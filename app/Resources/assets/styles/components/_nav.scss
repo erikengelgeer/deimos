@@ -12,6 +12,7 @@
     .logo {
         padding: 0 15px;
         height: 64px;
+        width: 148px;
         background-color: $primary-color;
         display: inline-block;
         float: left;
@@ -209,7 +210,7 @@
     }
 
     &:hover {
-        width: 155px;
+        width: 148px;
 
         ul {
             li {
