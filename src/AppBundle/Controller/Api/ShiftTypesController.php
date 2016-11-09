@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\ShiftType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,12 +44,29 @@ class ShiftTypesController extends Controller
      *
      * Get all the shiftTypes by team
      */
-    public function findAllByTeamAction($team)
+    public function findAllByTeamAction($team, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository("AppBundle:ShiftType");
 
         $shiftTypes = $repository->findBy(array("teamFk" => $team, "enabled" => true));
+        $timezone = $request->query->get('timezone');
+
+        foreach ($shiftTypes as $item) {
+            $startTime = new \DateTime($item->getDefaultStartTime()->format('H:i:s'), new \DateTimeZone('UTC'));
+            $item->setDefaultStartTime($startTime->setTimezone(new \DateTimeZone($timezone)));
+
+            $endTime = new \DateTime($item->getDefaultEndTime()->format('H:i:s'), new \DateTimeZone('UTC'));
+            $item->setDefaultEndTime($endTime->setTimezone(new \DateTimeZone($timezone)));
+
+            $item->setTimezoneOffset(strval($item->getDefaultStartTime()->format('Z') / 3600));
+
+            if($item->getDefaultStartTime()->format('Z') / 3600 > 0) {
+                $item->setTimezoneOffset("+".strval($item->getDefaultStartTime()->format('Z') / 3600));
+            } else {
+                $item->setTimezoneOffset(strval($item->getDefaultStartTime()->format('Z') / 3600));
+            }
+        }
 
         $data = $this->get('serializer')->serialize($shiftTypes, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
@@ -82,27 +100,33 @@ class ShiftTypesController extends Controller
 
         $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team->id));
 
+        $timezone = $content->team->timezone;
+
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->default_start_time, new \DateTimeZone($timezone));
+            $endTime = new \DateTime($content->default_end_time, new \DateTimeZone($timezone));
+        }
+
+        $startTimeUTC = $startTime->setTimezone(new \DateTimeZone('UTC'));
+        $endTimeUTC = $endTime->setTimezone(new \DateTimeZone('UTC'));
+
         $shiftType = new ShiftType();
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
         $shiftType->setColor($content->color);
         $shiftType->setTeamFk($team);
+        $shiftType->setDefaultStartTime($startTimeUTC);
+        $shiftType->setDefaultEndTime($endTimeUTC);
 
         if ($content->wholeDay) {
-            $shiftType->setDefaultStartTime(new \DateTime("1970-01-01 00:00:00"));
-            $shiftType->setDefaultEndTime(new \DateTime("1970-01-01 23:59:59"));
-
             $shiftType->setBreakDuration(00);
             $shiftType->setShiftDuration(00);
             $shiftType->setWorkhoursDurationH(00);
 
         } else {
-
-            if (isset($content->default_start_time) && isset($content->default_end_time)) {
-                $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
-                $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
-            }
-
             $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
 
             $shiftType->setBreakDuration($content->break_duration / 60);

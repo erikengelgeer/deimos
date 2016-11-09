@@ -29,6 +29,7 @@ class ShiftsController extends Controller
         $params = $request->query;
         $startDate = new \DateTime($params->get('startDate'));
         $weeks = $params->get('weeks');
+        $timezone = $params->get('timezone');
 
         // mktime (0,0,0, M, D, Y)
         $timestamp = strtotime('monday this week', mktime(0, 0, 0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
@@ -48,6 +49,19 @@ class ShiftsController extends Controller
             if ($previousId == $shift['id']) continue;
 
             $previousId = $shift['id'];
+
+            $startTime = new \DateTime($shift['startTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+            $shift['startTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($shift['endTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+            $shift['endTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
+
+            if($shift['startTime']->format('Z') / 3600 > 0) {
+                $shift['timezoneOffset'] = "+" . strval($shift['startTime']->format('Z') / 3600);
+            } else {
+                $shift['timezoneOffset'] = strval($shift['startTime']->format('Z') / 3600);
+            }
+
 
             foreach ($shifts as $otherShift) {
                 if ($shift['id'] == $otherShift['id']) {
@@ -90,10 +104,9 @@ class ShiftsController extends Controller
         $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-
         foreach ($content->selectedDates as $date) {
 
-            
+
             foreach ($content->shifts as $item) {
                 $user = $em->getRepository('AppBundle:User')->find($item->userId);
                 $shiftType = $em->getRepository('AppBundle:ShiftType')->find($item->shiftId);

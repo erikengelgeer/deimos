@@ -81,6 +81,9 @@ function NewShiftController($rootScope, Api, $state, $q) {
             } else {
                 // Enables showing a loading indicator.
                 vm.dataLoading = true;
+                console.log(vm.shift, vm.shift.team.timezone);
+                // return;
+
                 // Send a request to the insert API to add a shiftType.
                 Api.shiftType.add(vm.shift).then(function (response) {
                     var result = response.data.result;

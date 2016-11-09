@@ -72,6 +72,8 @@ class ShiftType
      */
     private $color;
 
+    private $timezoneOffset;
+
     /**
      * Get id
      *
@@ -344,5 +346,24 @@ class ShiftType
     public function getBreakDuration()
     {
         return $this->breakDuration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimezoneOffset()
+    {
+        return $this->timezoneOffset;
+    }
+
+    /**
+     * @param mixed $timezoneOffset
+     * @return $this
+     */
+    public function setTimezoneOffset($timezoneOffset)
+    {
+        $this->timezoneOffset = $timezoneOffset;
+
+        return $this;
     }
 }

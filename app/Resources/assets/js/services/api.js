@@ -99,8 +99,14 @@ function Api($http) {
             disable: function (id) {
                 return $http.post('api/shift-types/' + id);
             },
-            findByTeam: function (team) {
-                return $http.get('api/shift-types/'+ team);
+            findByTeam: function (team, timezone) {
+                return $http({
+                    url: 'api/shift-types/'+ team,
+                    method:"GET",
+                    params: {
+                        timezone: timezone
+                    }
+                })
             }
         },
         teams: {
@@ -152,8 +158,8 @@ function Api($http) {
             findByUserAndDate: function (userId, date) {
                 return $http.get('api/shifts/user/' + userId + '/' + date);
             },
-            findByTeam: function (team, startDate, weeks) {
-                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks);
+            findByTeam: function (team, startDate, weeks, timezone) {
+                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks + '&timezone=' + timezone);
             },
             add: function (data) {
                 return $http.post('api/shifts/', data);

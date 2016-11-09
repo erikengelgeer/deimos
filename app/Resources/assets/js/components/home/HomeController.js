@@ -83,7 +83,7 @@ function HomeController($rootScope, Api, $timeout) {
         $rootScope.loading = true;
 
         var startDate = vm.startDate.getFullYear() + "-" + (vm.startDate.getMonth() + 1) + "-" + vm.startDate.getDate();
-        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks).then(function (response) {
+        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks, $rootScope.team.timezone).then(function (response) {
             vm.shifts = response.data;
 
             buildSchedule(teamId);

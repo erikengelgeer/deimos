@@ -19,7 +19,7 @@ function ShiftController($rootScope, Api, $q, $state) {
         $state.go('index');
     }
 
-    promises.push(Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+    promises.push(Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
         vm.shifts = response.data;
     }));
 
@@ -28,7 +28,7 @@ function ShiftController($rootScope, Api, $q, $state) {
         vm.dataLoading = true;
 
         // reloads the shiftTypes to show
-        Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+        Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
             vm.shifts = response.data;
         }).finally(function () {
             vm.dataLoading = false;

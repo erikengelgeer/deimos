@@ -30,8 +30,10 @@
 
                     <div class="shift" ng-if="key > 0">
 
-                        <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00' || (today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '23:59'">Whole day</span>
-                        <span ng-if="!((today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00' || (today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '23:59')">{{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }} </span>
+                        <span ng-if="(today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59'">Whole day</span>
+                        <span ng-if="!((today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59')">
+                            {{ today.shift.startTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ today.shift.endTime | date: 'H:mm' : today.shift.timezoneOffset }}
+                        </span>
 
                         <i class="fa index-info fa-pencil" ng-if="today.shift.date && $root.user.role_fk.role != 'Agent'" ng-click="vm.editShift(today)" ></i>
                         <i class="fa fa-info index-info" ng-if="today.shift.date"
@@ -69,8 +71,8 @@
             <div class="modal-body">
                 <strong>Date:</strong> {{ vm.info.date | date: 'yyyy/M/d'}}<br>
                 <strong>Agent:</strong> {{ vm.info.realName }}<br>
-                <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' }}<br>
-                <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' }}<br>
+                <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
+                <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
                 <strong>Description:</strong> {{ vm.info.description }}<br>
             </div>
             <div class="modal-footer">

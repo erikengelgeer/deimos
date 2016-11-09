@@ -36,12 +36,12 @@
                     <tr>
                         <td>{{ shift.short }}</td>
                         <td>
-                            <span ng-if="(shift.default_start_time | date: 'HH:mm') != '00:00' && (shift.default_start_time | date: 'HH:mm') != '23:59'">
-                                {{ shift.default_start_time | date: 'HH:mm'}} - {{ shift.default_end_time | date: 'HH:mm'}}</span>
-                            <span ng-if="!((shift.default_start_time | date: 'HH:mm') != '00:00' && (shift.default_start_time | date: 'HH:mm') != '23:59')">Whole Day</span>
+                            <span ng-if="(shift.default_start_time | date: 'HH:mm' : shift.timezone_offset ) != '00:00' && (shift.default_start_time | date: 'HH:mm' : shift.timezone_offset) != '23:59'">
+                                {{ shift.default_start_time | date: 'HH:mm' : shift.timezone_offset }} - {{ shift.default_end_time | date: 'HH:mm' :  shift.timezone_offset }}</span>
+                            <span ng-if="!((shift.default_start_time | date: 'HH:mm' : shift.timezone_offset) != '00:00' && (shift.default_start_time | date: 'HH:mm' : shift.timezone_offset) != '23:59')">Whole Day</span>
                         </td>
                         <td>{{ shift.break_duration * 60}} Minutes</td>
-                        <td>{{ shift.team_fk.location }}</td>
+                        <td>{{ shift.team_fk.name }}</td>
                         <td><div class="badge" style="background-color: {{shift.color}}">{{shift.color | uppercase}}</div></td>
                         <td>
                             <button class="btn btn-gray" ui-sref="manage-shifts-edit({shiftTypeId: shift.id})"><i class="fa fa-pencil"></i></button>
