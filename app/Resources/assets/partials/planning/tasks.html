@@ -85,7 +85,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="input-group">
+                                <div class="input-group" ng-if="vm.task.taskType.description == 'Other' || vm.task.taskType.description == 'SuperService'">
                                     <span class="input-group-addon task-link">
                                         <i class="fa fa-link"></i>
                                         <input type="checkbox" ng-model="link">
