@@ -6,19 +6,21 @@
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
         <div class="heading">
             <div class="item" ng-repeat="(key, heading) in planning">
-               <span ng-if="key > 0">
-                    {{ heading | date:'EEEE' }} <br>
-                    {{ heading | date:'d MMM' }}
+                <!--DIRTY FIX so the week starts always on monday, FIND ANOTHER WAY-->
+                <span ng-if="key > 0">
+                    {{ heading | date:'EEEE' : '+1'}} <br>
+                    {{ heading | date:'d MMM' : '+1' }}
                </span>
                 <span ng-if="key == 0">
-                    Week {{ heading | date:'ww' }}
+                    Week {{ heading | date:'ww' : '+1' }}
                 </span>
             </div>
         </div>
 
         <!-- loop through the users -->
         <div class="body">
-            <div class="body-row" ng-repeat="user in vm.planningUsers[key]" ng-class="{'active': $root.user.id == user[0].user.id } ">
+            <div class="body-row" ng-repeat="user in vm.planningUsers[key]"
+                 ng-class="{'active': $root.user.id == user[0].user.id } ">
                 <div class="item" ng-repeat="(key, day) in user"
                      ng-init="today = vm.getPlanningContent(day, key, planningKey)">
                     <span ng-if="key == 0">
@@ -35,7 +37,9 @@
                             {{ today.shift.startTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ today.shift.endTime | date: 'H:mm' : today.shift.timezoneOffset }}
                         </span>
 
-                        <i class="fa index-info fa-pencil" ng-if="today.shift.date && $root.user.role_fk.role != 'Agent'" ng-click="vm.editShift(today)" ></i>
+                        <i class="fa index-info fa-pencil"
+                           ng-if="today.shift.date && $root.user.role_fk.role != 'Agent'"
+                           ng-click="vm.editShift(today)"></i>
                         <i class="fa fa-info index-info" ng-if="today.shift.date"
                            ng-click="vm.showModal(today.shift)"></i>
                         <i class="fa fa-home working-home" ng-if="today.shift.home"></i>
@@ -69,7 +73,8 @@
                 <h4 class="modal-title">Shift information</h4>
             </div>
             <div class="modal-body">
-                <strong>Date:</strong> {{ vm.info.date | date: 'yyyy/M/d'}}<br>
+                <!--DIRTY FIX, FIND ANOTHER WAY ({{ vm.info.date | date: 'd MMM yyyy' : '+1' }})-->
+                <strong>Date:</strong> {{ vm.info.date | date: 'd MMM yyyy' : '+1' }}<br>
                 <strong>Agent:</strong> {{ vm.info.realName }}<br>
                 <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
                 <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
@@ -122,7 +127,10 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <button class="btn" ng-class="{'btn-gray': !vm.selectedShift.shift.wholeDay, 'btn-success': vm.selectedShift.shift.wholeDay }" ng-click="vm.toggleWholeDay(vm.selectedShift.shift)"><i class="fa fa-check"></i></button>
+                                    <button class="btn"
+                                            ng-class="{'btn-gray': !vm.selectedShift.shift.wholeDay, 'btn-success': vm.selectedShift.shift.wholeDay }"
+                                            ng-click="vm.toggleWholeDay(vm.selectedShift.shift)"><i
+                                            class="fa fa-check"></i></button>
                                 </td>
                                 <td><input type="text" ng-model="vm.selectedShift.shift.newStartTime"
                                            class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay"></td>
@@ -158,13 +166,15 @@
                 <div class="row filter-modal">
                     <div class="col-md-6">
                         <h4>Month</h4>
-                        <div class="filter" ng-repeat="(key, month) in vm.months" ng-class="{'active': month == vm.selectedMonthTemp }" ng-click="vm.filterMonth(key)">
+                        <div class="filter" ng-repeat="(key, month) in vm.months"
+                             ng-class="{'active': month == vm.selectedMonthTemp }" ng-click="vm.filterMonth(key)">
                             {{ month }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <h4>Year</h4>
-                        <div class="filter" ng-repeat="(key, year) in vm.years" ng-class="{'active': year == vm.selectedYearTemp }" ng-click="vm.filterYear(year)">
+                        <div class="filter" ng-repeat="(key, year) in vm.years"
+                             ng-class="{'active': year == vm.selectedYearTemp }" ng-click="vm.filterYear(year)">
                             {{ year }}
                         </div>
                     </div>
