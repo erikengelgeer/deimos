@@ -202,17 +202,21 @@ class ShiftsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-        if ($content->wholeDay) {
-            $shift->setStartTime(new \DateTime("1970-01-01 00:00:00"));
-            $shift->setEndTime(new \DateTime("1970-01-01 23:59:59"));
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
+        if ($content->wholeDay) {
+            $shift->setStartTime(new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone)));
+            $shift->setEndTime(new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone)));
         } else {
-            $shift->setStartTime(new \DateTime(date('Y-m-d H:i', ($content->setStartTime / 1000))));
-            $shift->setEndTime(new \DateTime(date('Y-m-d H:i', ($content->setEndTime / 1000))));
+            $shift->setStartTime(new \DateTime("1970-01-01 " . $content->startTime, new \DateTimeZone($timezone)));
+            $shift->setEndTime(new \DateTime("1970-01-01 " . $content->endTime, new \DateTimeZone($timezone)));
         }
 
-        $shift->setHome($content->home);
+        $shift->setStartTime($shift->getStartTime()->setTimezone(new \DateTimeZone('UTC')));
+        $shift->setEndTime($shift->getEndTime()->setTimezone(new \DateTimeZone('UTC')));
 
+        $shift->setHome($content->home);
         $em->flush();
 
         $data = $this->get('serializer')->serialize($shift, 'json');
