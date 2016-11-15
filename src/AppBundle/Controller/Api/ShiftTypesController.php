@@ -165,47 +165,45 @@ class ShiftTypesController extends Controller
     public function updateAction(ShiftType $shiftType, Request $request)
     {
         $content = json_decode($request->getContent());
-
         $em = $this->getDoctrine()->getManager();
 
-        $team = $em->getRepository('AppBundle:Team')->findOneBy(array('id' => $content->team_fk->id));
+        $shiftType = $em->getRepository('AppBundle:ShiftType')->findOneBy(array('id' => $content->id));
 
+        $timezone = $content->team_fk->timezone;
+
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->default_start_time, new \DateTimeZone($timezone));
+            $endTime = new \DateTime($content->default_end_time, new \DateTimeZone($timezone));
+        }
+
+        $startTimeUTC = $startTime->setTimezone(new \DateTimeZone('UTC'));
+        $endTimeUTC = $endTime->setTimezone(new \DateTimeZone('UTC'));
 
         $shiftType->setDescription($content->description);
         $shiftType->setShort($content->short);
-        $shiftType->setTeamFk($team);
         $shiftType->setColor($content->color);
+        $shiftType->setDefaultStartTime($startTimeUTC);
+        $shiftType->setDefaultEndTime($endTimeUTC);
 
         if ($content->wholeDay) {
-            $shiftType->setDefaultStartTime(new \DateTime("1970-01-01 00:00:00"));
-            $shiftType->setDefaultEndTime(new \DateTime("1970-01-01 23:59:59"));
-
             $shiftType->setBreakDuration(00);
             $shiftType->setShiftDuration(00);
             $shiftType->setWorkhoursDurationH(00);
 
         } else {
-
-            if (isset($content->default_start_time) && isset($content->default_end_time)) {
-                $shiftType->setDefaultStartTime(new \DateTime($content->default_start_time));
-                $shiftType->setDefaultEndTime(new \DateTime($content->default_end_time));
-            }
             $diff = $shiftType->getDefaultStartTime()->diff($shiftType->getDefaultEndTime());
+
             $shiftType->setBreakDuration($content->break_duration);
             $shiftType->setShiftDuration($diff->h + ($diff->i / 60));
             $shiftType->setWorkhoursDurationH($shiftType->getShiftDuration() - $shiftType->getBreakDuration());
-
-            if ($content->short != $shiftType->getShort()) {
-                if (count($em->getRepository('AppBundle:ShiftType')->findOneBy(array("short" => $shiftType->getShort(), "teamFk" => $team->getId()))) > 0) {
-                    $data = $this->get('serializer')->serialize(array("result" => false), 'json');
-                    return new Response($data, 200, ['Content-type' => 'application/json']);
-                }
-            }
         }
 
         $em->flush();
 
-        $data = $this->get('serializer')->serialize(["result" => true], 'json');
+        $data = $this->get('serializer')->serialize(array("result" => true), 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
