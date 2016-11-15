@@ -69,6 +69,16 @@ class ShiftsController extends Controller
 
                     $newShift = [];
 
+                    if($otherShift['taskStartTime'] != null) {
+                        $startTime = new \DateTime($otherShift['taskStartTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+                        $otherShift['taskStartTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
+                    }
+
+                    if($otherShift['taskEndTime'] != null) {
+                        $endTime = new \DateTime($otherShift['taskEndTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+                        $otherShift['taskEndTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
+                    }
+
                     $newShift['taskId'] = $otherShift['taskId'];
                     $newShift['taskDescription'] = $otherShift['taskDescription'];
                     $newShift['taskStartTime'] = $otherShift['taskStartTime'];
@@ -203,23 +213,6 @@ class ShiftsController extends Controller
         $params = $request->query;
         $timezone = $params->get('timezone');
 
-//        dump($timezone);
-
-        /*
-    *   "start_time": "1970-01-01T05:00:00+0100",
-"end_time": "1970-01-01T04:59:59+0100",
-    * $startTime = new \DateTime($shift['startTime']->format('H:i:s'), new \DateTimeZone('UTC'));
-   $shift['startTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
-
-   $endTime = new \DateTime($shift['endTime']->format('H:i:s'), new \DateTimeZone('UTC'));
-   $shift['endTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
-
-   if($shift['startTime']->format('Z') / 3600 > 0) {
-       $shift['timezoneOffset'] = "+" . strval($shift['startTime']->format('Z') / 3600);
-   } else {
-       $shift['timezoneOffset'] = strval($shift['startTime']->format('Z') / 3600);
-   }*/
-
         $shift = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
 
         $startTime = new \DateTime($shift->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
@@ -236,6 +229,22 @@ class ShiftsController extends Controller
         } else {
             $shift->setTimezoneOffset(strval($startTime->format('Z') / 3600));
         }
+
+        foreach ($shift->getTasks() as $task) {
+            $shift->removeTask($task);
+
+            $startTime = new \DateTime($task->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+            $endTime = new \DateTime($task->getEndTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+
+            $startTime->setTimezone(new \DateTimeZone($timezone));
+            $endTime->setTimezone(new \DateTimeZone($timezone));
+
+            $task->setStartTime($startTime);
+            $task->setEndTime($endTime);
+
+            $shift->addTask($task);
+        }
+
 
 //        dump($startTime);
 //        dump($shift);

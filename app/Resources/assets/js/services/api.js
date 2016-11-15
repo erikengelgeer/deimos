@@ -172,8 +172,8 @@ function Api($http) {
             find: function () {
                 return $http.get('api/tasks/');
             },
-            add: function (data) {
-                return $http.post('api/tasks/', data);
+            add: function (data, timezone) {
+                return $http.post('api/tasks/' + '?timezone=' + timezone, data);
             },
             delete: function (taskId) {
                 return $http.delete('api/tasks/' + taskId);

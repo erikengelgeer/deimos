@@ -146,11 +146,15 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'type': 'alert-danger'
             }
         } else {
-            var shiftStartTime = new Date(vm.selectedShift.start_time);
-            var shiftEndTime = new Date(vm.selectedShift.end_time);
+            // DIRTY FIX YO
+            if (vm.selectedShift.start_time.length > 5) {
+                var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
+            }
 
-            shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
-            shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
+            // DIRTY FIX YO
+            if (vm.selectedShift.end_time.length > 5) {
+                var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
+            }
 
             if (Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
                 Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
@@ -185,7 +189,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 } else {
                     task.shift = vm.selectedShift;
                     vm.dataLoading = true;
-                    Api.tasks.add(task).then(function (response) {
+
+                    Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);
                         vm.task = null;
 

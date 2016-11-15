@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/api/tasks")
@@ -46,6 +47,8 @@ class TasksController extends Controller
         $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
+        $timezone = $request->query->get('timezone');
+
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->taskType->id);
         $shift = $em->getRepository('AppBundle:Shift')->find($content->shift->id);
 
@@ -61,6 +64,15 @@ class TasksController extends Controller
         if(isset($content->url)){
             $task->setUrl($content->url);
         }
+
+        $startTime = new \DateTime($task->getStartTime()->format('H:i:s'), new \DateTimeZone($timezone));
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $endTime = new \DateTime($task->getEndTime()->format('H:i:s'), new \DateTimeZone($timezone));
+        $endTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $task->setStartTime($startTime);
+        $task->setEndTime($endTime);
 
         $em->persist($task);
         $em->flush();
