@@ -152,11 +152,11 @@ function Api($http) {
             find: function () {
                 return $http.get('api/shifts/');
             },
-            findByUser: function (userId) {
-                return $http.get('api/shifts/user/' + userId)
+            findByUser: function (userId, timezone) {
+                return $http.get('api/shifts/user/' + userId + '?timezone=' + timezone)
             },
-            findByUserAndDate: function (userId, date) {
-                return $http.get('api/shifts/user/' + userId + '/' + date);
+            findByUserAndDate: function (userId, date, timezone) {
+                return $http.get('api/shifts/user/' + userId + '/' + date + '?timezone=' + timezone);
             },
             findByTeam: function (team, startDate, weeks, timezone) {
                 return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks + '&timezone=' + timezone);

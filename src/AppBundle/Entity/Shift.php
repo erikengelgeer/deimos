@@ -71,6 +71,8 @@ class Shift
      */
     private $home;
 
+    private $timezoneOffset;
+
     /**
      * Get id
      *
@@ -289,4 +291,25 @@ class Shift
     {
         return $this->home;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTimezoneOffset()
+    {
+        return $this->timezoneOffset;
+    }
+
+    /**
+     * @param mixed $timezoneOffset
+     * @return $this
+     */
+    public function setTimezoneOffset($timezoneOffset)
+    {
+        $this->timezoneOffset = $timezoneOffset;
+
+        return $this;
+    }
+
+
 }

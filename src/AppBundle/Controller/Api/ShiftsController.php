@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("api/shifts")
@@ -56,7 +57,7 @@ class ShiftsController extends Controller
             $endTime = new \DateTime($shift['endTime']->format('H:i:s'), new \DateTimeZone('UTC'));
             $shift['endTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
 
-            if($shift['startTime']->format('Z') / 3600 > 0) {
+            if ($shift['startTime']->format('Z') / 3600 > 0) {
                 $shift['timezoneOffset'] = "+" . strval($shift['startTime']->format('Z') / 3600);
             } else {
                 $shift['timezoneOffset'] = strval($shift['startTime']->format('Z') / 3600);
@@ -160,15 +161,29 @@ class ShiftsController extends Controller
      *
      * Get all shifts by users
      */
-    function findAllByUser(User $user)
+    function findAllByUser(User $user, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
+
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
         $today = new \DateTime();
         $aMonthAgo = ($today->format('Y') - 1) . "-" . ($today->format('m')) . "-1";
 
         $shifts = $repository->findShiftsByUser($user->getId(), new \DateTime($aMonthAgo));
+
+        $newShifts = [];
+
+        foreach ($shifts as $shift) {
+            $date = new \DateTime($shift['date']->format('Y-m-d H:i:s'), new \DateTimeZone($timezone));
+            $shift['date'] = $date;
+
+            array_push($newShifts, $shift);
+        }
+
+        $shifts = $newShifts;
 
         $data = $this->get('serializer')->serialize($shifts, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
@@ -180,14 +195,52 @@ class ShiftsController extends Controller
      *
      * Get all shifts by user and date
      */
-    function findByUserAndDate(User $user, $date)
+    function findByUserAndDate(User $user, $date, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
 
-        $shifts = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
-        $data = $this->get('serializer')->serialize($shifts, 'json');
+//        dump($timezone);
+
+        /*
+    *   "start_time": "1970-01-01T05:00:00+0100",
+"end_time": "1970-01-01T04:59:59+0100",
+    * $startTime = new \DateTime($shift['startTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+   $shift['startTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
+
+   $endTime = new \DateTime($shift['endTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+   $shift['endTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
+
+   if($shift['startTime']->format('Z') / 3600 > 0) {
+       $shift['timezoneOffset'] = "+" . strval($shift['startTime']->format('Z') / 3600);
+   } else {
+       $shift['timezoneOffset'] = strval($shift['startTime']->format('Z') / 3600);
+   }*/
+
+        $shift = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
+
+        $startTime = new \DateTime($shift->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+        $endTime = new \DateTime($shift->getEndTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+
+        $startTime->setTimezone(new \DateTimeZone($timezone));
+        $endTime->setTimezone(new \DateTimeZone($timezone));
+
+        $shift->setStartTime($startTime);
+        $shift->setEndTime($endTime);
+
+        if ($startTime->format('Z') / 3600 > 0) {
+            $shift->setTimezoneOffset("+" . strval($startTime->format('Z') / 3600));
+        } else {
+            $shift->setTimezoneOffset(strval($startTime->format('Z') / 3600));
+        }
+
+//        dump($startTime);
+//        dump($shift);
+
+        $data = $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 

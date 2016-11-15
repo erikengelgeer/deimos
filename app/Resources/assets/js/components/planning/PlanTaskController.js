@@ -70,8 +70,10 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             datepicker.datepicker('destroy');
         }
 
-        Api.shifts.findByUser(vm.selectedUser).then(function (response) {
+        Api.shifts.findByUser(vm.selectedUser, $rootScope.team.timezone).then(function (response) {
             vm.activeDates = response.data;
+
+            console.log(vm.activeDates);
             if (vm.activeDates.length > 0) {
                 buildDatepicker();
             } else {
@@ -341,7 +343,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
         vm.dataLoading = true;
 
-        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
+        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
             vm.selectedShift = response.data;
             vm.dataLoading = false;
         })
