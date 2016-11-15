@@ -81,7 +81,17 @@ class ShiftTypesController extends Controller
      */
     public function findOneByAction(ShiftType $shiftType)
     {
-        $data = $this->get('serializer')->serialize($shiftType, 'json');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:ShiftType");
+
+        $shiftTypes = $repository->findOneBy(array("id" => $shiftType->getId()));
+        $startTime = new \DateTime($shiftTypes->getDefaultStartTime()->format('H:i:s'), new \DateTimeZone('UTC'));
+        $shiftTypes->setDefaultStartTime($startTime->setTimezone(new \DateTimeZone($shiftType->getTeamFk()->getTimezone())));
+
+        $endTime = new \DateTime($shiftTypes->getDefaultEndTime()->format('H:i:s'), new \DateTimeZone('UTC'));
+        $shiftTypes->setDefaultEndTime($endTime->setTimezone(new \DateTimeZone($shiftType->getTeamFk()->getTimezone())));
+
+        $data = $this->get('serializer')->serialize($shiftTypes, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
