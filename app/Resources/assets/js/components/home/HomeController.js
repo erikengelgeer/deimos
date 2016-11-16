@@ -402,6 +402,7 @@ function HomeController($rootScope, Api, $timeout) {
                         if (vm.shifts[i][0].id == vm.selectedShift.shift.id) {
                             vm.shifts[i][0].startTime = vm.selectedShift.shift.startTime;
                             vm.shifts[i][0].endTime = vm.selectedShift.shift.endTime;
+                            vm.shifts[i][0].home = vm.selectedShift.shift.home;
                             break;
                         }
                     }
