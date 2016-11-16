@@ -215,6 +215,11 @@ class ShiftsController extends Controller
 
         $shift = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
 
+        if($shift == null) {
+            $data = $this->get('serializer')->serialize([], 'json');
+            return new Response($data, 200, ['Content-Type' => 'application/json']);
+        }
+
         $startTime = new \DateTime($shift->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
         $endTime = new \DateTime($shift->getEndTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
 

@@ -72,12 +72,11 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
                             $rootScope.shiftTypes = response.data;
                         }));
 
-                        promises.push(Api.shifts.findByUserAndDate($rootScope.user.id, date).then(function (response) {
-                            $rootScope.dailyShift = response.data;
-                        }));
-
                         $q.all(promises).then(function () {
-                            $state.go('index');
+                            Api.shifts.findByUserAndDate($rootScope.user.id, date, $rootScope.team.timezone).then(function (response) {
+                                $rootScope.dailyShift = response.data;
+                                $state.go('index');
+                            })
                         });
                     }
                 });
