@@ -245,10 +245,6 @@ class ShiftsController extends Controller
             $shift->addTask($task);
         }
 
-
-//        dump($startTime);
-//        dump($shift);
-
         $data = $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }

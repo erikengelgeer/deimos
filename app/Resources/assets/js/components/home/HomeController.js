@@ -65,7 +65,6 @@ function HomeController($rootScope, Api, $timeout) {
     function showModal(shift) {
         vm.info = shift;
 
-        console.log(shift);
         $('#index-modal').modal('show');
     }
 
@@ -103,12 +102,10 @@ function HomeController($rootScope, Api, $timeout) {
         var date = today.getTime();
         var week = [];
 
-        console.log(vm.startDate, vm.startDate.getDate() - vm.startDate.getDay());
 
         for (var i = 0; i <= (vm.totalWeeks - 1); i++) {
 
             for (var j = 0; j <= 7; j++) {
-                // console.log(i, date, new Date(date));
                 week.push(new Date(date));
                 if (j > 0) {
                     date += 86400 * 1000;
@@ -409,7 +406,7 @@ function HomeController($rootScope, Api, $timeout) {
                         }
                     }
 
-                    $('#edit-shift-modal').modal('hide');
+                    $('#edit-shift-modal').modal('hide')
 
                     vm.dataLoading = false;
                 }).finally(function () {

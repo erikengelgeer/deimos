@@ -28,7 +28,6 @@ class TasksController extends Controller
 
         $tasks = $repository->findAll();
 
-//        dump($tasks);
         $data = $this->get('serializer')->serialize($tasks, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
@@ -91,10 +90,22 @@ class TasksController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
+        $timezone = $request->query->get('timezone');
+
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
 
-        $task->setStartTime(new \DateTime($content->start_time));
-        $task->setEndTime(new \DateTime($content->end_time));
+        $startTime = new \DateTime($content->start_time);
+        $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
+
+
+        $endTime = new \DateTime($content->end_time);
+        $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
+        $endTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $task->setStartTime($startTime);
+        $task->setEndTime($endTime);
+
         $task->setTaskTypeFk($taskType);
         $task->setDescription($taskType->getDescription());
 

@@ -134,10 +134,10 @@
                                     <span class="input-group-addon" id="sizing-addon4"><i
                                             class="fa fa-clock-o"></i></span>
                             <input type="text" class="form-control" placeholder="Start"
-                                   aria-describedby="sizing-addon1" ng-model="vm.editTask.start_time">
+                                   aria-describedby="sizing-addon1" ng-model="vm.selectedTask.start_time">
                             <span class="input-group-addon mid" id="sizing-addon5">-</span>
                             <input type="text" class="form-control" placeholder="End"
-                                   aria-describedby="sizing-addon2" ng-model="vm.editTask.end_time">
+                                   aria-describedby="sizing-addon2" ng-model="vm.selectedTask.end_time">
                         </div>
                     </div>
                 </div>
@@ -147,9 +147,9 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="sizing-addon6"><i
                                     class="fa fa-tasks"></i></span>
-                            <select class="form-control" ng-model="vm.editTask.task_type_fk.id"
+                            <select class="form-control" ng-model="vm.selectedTask.task_type_fk.id"
                                     ng-options="taskType.id as taskType.description for taskType in vm.taskTypes">
-                                <option value="" ng-disabled="!!vm.editTask.task_type_fk">Select a task</option>
+                                <option value="" ng-disabled="!!vm.selectedTask.task_type_fk">Select a task</option>
                             </select>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                         <input type="checkbox" ng-model="link" class="pull-right">
                     </div>
                     <div class="col-md-7">
-                        <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.editTask.url">
+                        <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.selectedTask.url">
                     </div>
                 </div>
             </div>

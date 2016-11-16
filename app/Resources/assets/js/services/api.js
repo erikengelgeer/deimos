@@ -178,8 +178,8 @@ function Api($http) {
             delete: function (taskId) {
                 return $http.delete('api/tasks/' + taskId);
             },
-            update: function (data) {
-                return $http.put('api/tasks/' + data.id, data);
+            update: function (data, timezone) {
+                return $http.put('api/tasks/' + data.id + '?timezone=' + timezone, data);
             }
         }
     }
