@@ -99,8 +99,14 @@ function Api($http) {
             disable: function (id) {
                 return $http.post('api/shift-types/' + id);
             },
-            findByTeam: function (team) {
-                return $http.get('api/shift-types/'+ team);
+            findByTeam: function (team, timezone) {
+                return $http({
+                    url: 'api/shift-types/'+ team,
+                    method:"GET",
+                    params: {
+                        timezone: timezone
+                    }
+                })
             }
         },
         teams: {
@@ -146,34 +152,34 @@ function Api($http) {
             find: function () {
                 return $http.get('api/shifts/');
             },
-            findByUser: function (userId) {
-                return $http.get('api/shifts/user/' + userId)
+            findByUser: function (userId, timezone) {
+                return $http.get('api/shifts/user/' + userId + '?timezone=' + timezone)
             },
-            findByUserAndDate: function (userId, date) {
-                return $http.get('api/shifts/user/' + userId + '/' + date);
+            findByUserAndDate: function (userId, date, timezone) {
+                return $http.get('api/shifts/user/' + userId + '/' + date + '?timezone=' + timezone);
             },
-            findByTeam: function (team, startDate, weeks) {
-                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks);
+            findByTeam: function (team, startDate, weeks, timezone) {
+                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks + '&timezone=' + timezone);
             },
             add: function (data) {
                 return $http.post('api/shifts/', data);
             },
-            update: function (data) {
-                return $http.put('api/shifts/' + data.id, data);
+            update: function (data, timezone) {
+                return $http.put('api/shifts/' + data.id + '?timezone=' + timezone, data);
             }
         },
         tasks: {
             find: function () {
                 return $http.get('api/tasks/');
             },
-            add: function (data) {
-                return $http.post('api/tasks/', data);
+            add: function (data, timezone) {
+                return $http.post('api/tasks/' + '?timezone=' + timezone, data);
             },
             delete: function (taskId) {
                 return $http.delete('api/tasks/' + taskId);
             },
-            update: function (data) {
-                return $http.put('api/tasks/' + data.id, data);
+            update: function (data, timezone) {
+                return $http.put('api/tasks/' + data.id + '?timezone=' + timezone, data);
             }
         }
     }

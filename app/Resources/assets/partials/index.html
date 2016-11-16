@@ -6,12 +6,13 @@
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
         <div class="heading">
             <div class="item" ng-repeat="(key, heading) in planning">
-               <span ng-if="key > 0">
-                    {{ heading | date:'EEEE' }} <br>
-                    {{ heading | date:'d MMM' }}
+                <!--DIRTY FIX so the week starts always on monday, FIND ANOTHER WAY-->
+                <span ng-if="key > 0">
+                    {{ heading | date:'EEEE' : '+1'}} <br>
+                    {{ heading | date:'d MMM' : '+1' }}
                </span>
                 <span ng-if="key == 0">
-                    Week {{ heading | date:'ww' }}
+                    Week {{ heading | date:'ww' : '+1' }}
                 </span>
             </div>
         </div>
@@ -31,14 +32,9 @@
 
                     <div class="shift" ng-if="key > 0">
 
-                        <span ng-if="(today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'
-                        || (today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '23:59'">
-                            Whole day  <i>{{today.shift.description | limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i>
-                        </span>
-                        <span ng-if="!((today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '0:00'
-                        || (today.shift.startTime | date: 'H:mm') == '0:00' && (today.shift.endTime | date: 'H:mm') == '23:59')">
-                            {{ today.shift.startTime | date: 'H:mm' }} - {{ today.shift.endTime | date: 'H:mm' }}
-                            <i>{{today.shift.description | limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i>
+                        <span ng-if="(today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59'">Whole day <i>{{today.shift.description | limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i></span>
+                        <span ng-if="!((today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59')">
+                            {{ today.shift.startTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ today.shift.endTime | date: 'H:mm' : today.shift.timezoneOffset }} <i>{{today.shift.description | limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i>
                         </span>
 
                         <i class="fa index-info fa-pencil"
@@ -55,7 +51,7 @@
                              ng-class="{'clickable': task.taskUrl != null && task.taskUrl != ''}">
                         <span ng-if="(task.taskStartTime | date: 'H:mm') != '0:00' && (task.taskEndTime | date: 'H:mm') != '0:00'">
                             <i ng-if="task.taskUrl != null && task.taskUrl != ''" class="fa fa-link link-icon"></i>
-                            {{ task.taskStartTime | date: 'H:mm' }} - {{ task.taskEndTime | date: 'H:mm' }}
+                            {{ task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset }}
 
                         </span> {{ task.taskDescription }}
 
@@ -77,10 +73,11 @@
                 <h4 class="modal-title">Shift information</h4>
             </div>
             <div class="modal-body">
-                <strong>Date:</strong> {{ vm.info.date | date: 'yyyy/M/d'}}<br>
+                <!--DIRTY FIX, FIND ANOTHER WAY ({{ vm.info.date | date: 'd MMM yyyy' : '+1' }})-->
+                <strong>Date:</strong> {{ vm.info.date | date: 'd MMM yyyy' : '+1' }}<br>
                 <strong>Agent:</strong> {{ vm.info.realName }}<br>
-                <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' }}<br>
-                <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' }}<br>
+                <strong>Start time:</strong> {{ vm.info.startTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
+                <strong>End time:</strong> {{ vm.info.endTime | date: 'H:mm' : vm.info.timezoneOffset }}<br>
                 <strong>Description:</strong> {{ vm.info.description }}<br>
             </div>
             <div class="modal-footer">
@@ -110,7 +107,7 @@
                     <div class="col-md-12">
                         <p>
                             Edit shift for <strong>{{ vm.selectedShift.shift.realName }}</strong> on
-                            <em>{{ vm.selectedShift.shift.date | date:'d MMM' }}</em>
+                            <em>{{ vm.selectedShift.shift.date | date:'d MMM' : '+1' }}</em>
                         </p>
                         <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
                             <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
@@ -135,10 +132,12 @@
                                             ng-click="vm.toggleWholeDay(vm.selectedShift.shift)"><i
                                             class="fa fa-check"></i></button>
                                 </td>
-                                <td><input type="text" ng-model="vm.selectedShift.shift.newStartTime"
-                                           class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay"></td>
-                                <td><input type="text" ng-model="vm.selectedShift.shift.newEndTime"
-                                           class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay"></td>
+                                <td>
+                                    <input type="text" ng-model=" vm.selectedShift.shift.startTime" class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay">
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="vm.selectedShift.shift.endTime" class="form-control" ng-disabled="vm.selectedShift.shift.wholeDay">
+                                </td>
                                 <td>
                                     <button class="btn"
                                             ng-class="{'btn-gray': !vm.selectedShift.shift.home, 'btn-success': vm.selectedShift.shift.home }"

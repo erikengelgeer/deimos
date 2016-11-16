@@ -64,6 +64,7 @@ function HomeController($rootScope, Api, $timeout) {
 
     function showModal(shift) {
         vm.info = shift;
+
         $('#index-modal').modal('show');
     }
 
@@ -83,7 +84,7 @@ function HomeController($rootScope, Api, $timeout) {
         $rootScope.loading = true;
 
         var startDate = vm.startDate.getFullYear() + "-" + (vm.startDate.getMonth() + 1) + "-" + vm.startDate.getDate();
-        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks).then(function (response) {
+        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks, $rootScope.team.timezone).then(function (response) {
             vm.shifts = response.data;
 
             buildSchedule(teamId);
@@ -100,6 +101,7 @@ function HomeController($rootScope, Api, $timeout) {
         var today = getMonday(vm.startDate);
         var date = today.getTime();
         var week = [];
+
 
         for (var i = 0; i <= (vm.totalWeeks - 1); i++) {
 
@@ -329,43 +331,41 @@ function HomeController($rootScope, Api, $timeout) {
     function editShift(shift) {
         vm.message = null;
         $('#edit-shift-modal').modal();
-        vm.selectedShift = shift;
-        vm.selectedShift.shift.wholeDay = false;
 
-        var startTime = new Date(vm.selectedShift.shift.startTime);
-        var startTimeHours = (startTime.getHours() <= 9) ? "0" + startTime.getHours() : startTime.getHours();
-        var startTimeMinutes = (startTime.getMinutes() <= 9) ? "0" + startTime.getMinutes() : startTime.getMinutes();
-        vm.selectedShift.shift.newStartTime = startTimeHours + ":" + startTimeMinutes;
-        // saves the time in a var for when you toggle whole day on and off.
-        saveStartTime = vm.selectedShift.shift.newStartTime;
+        vm.selectedShift = angular.copy(shift);
 
-        var endTime = new Date(vm.selectedShift.shift.endTime);
-        var endTimeHours = (endTime.getHours() <= 9) ? "0" + endTime.getHours() : endTime.getHours();
-        var endTimeMinutes = (endTime.getMinutes() <= 9) ? "0" + endTime.getMinutes() : endTime.getMinutes();
-        vm.selectedShift.shift.newEndTime = endTimeHours + ":" + endTimeMinutes;
-        // saves the time in a var for when you toggle whole day on and off.
-        saveEndTime = vm.selectedShift.shift.newEndTime;
+        if (vm.selectedShift.shift.wholeDay == undefined) {
+            vm.selectedShift.shift.wholeDay = false;
+        }
 
-        if (vm.selectedShift.shift.newStartTime == '00:00' && vm.selectedShift.shift.newEndTime == '23:59') {
-            vm.selectedShift.shift.newStartTime = '00:00';
-            vm.selectedShift.shift.newEndTime = '00:00';
+        // DIRTY FIX YO
+        if (vm.selectedShift.shift.startTime.length > 5) {
+            vm.selectedShift.shift.startTime = vm.selectedShift.shift.startTime.substring(11, 16);
+        }
+        // DIRTY FIX YO
+        if (vm.selectedShift.shift.endTime.length > 5) {
+            vm.selectedShift.shift.endTime = vm.selectedShift.shift.endTime.substring(11, 16);
+        }
+
+
+        saveStartTime = vm.selectedShift.shift.startTime;
+        saveEndTime = vm.selectedShift.shift.endTime;
+
+        if (vm.selectedShift.shift.startTime == '00:00' && vm.selectedShift.shift.endTime == '23:59') {
+            vm.selectedShift.shift.startTime = '00:00';
+            vm.selectedShift.shift.endTime = '00:00';
 
             vm.selectedShift.shift.wholeDay = !vm.selectedShift.shift.wholeDay;
         }
-        
     }
 
     function updateShift() {
         vm.message = null;
 
-        vm.dataLoading = true;
+        var startDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.startTime));
+        var endDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.endTime));
 
-        var startDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.newStartTime));
-        var endDate = (Date.parse('01/01/1970 ' + vm.selectedShift.shift.newEndTime));
-
-        if (endDate >= startDate &&
-            startDate <= endDate) {
-
+        if (endDate >= startDate && startDate <= endDate) {
             var startTime = new Date(startDate);
             var endTime = new Date(endDate);
 
@@ -377,7 +377,7 @@ function HomeController($rootScope, Api, $timeout) {
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 };
-                vm.dataLoading = false;
+
             } else if ((endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) && !vm.selectedShift.shift.wholeDay) {
 
                 vm.message = {
@@ -386,12 +386,11 @@ function HomeController($rootScope, Api, $timeout) {
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 };
-                vm.dataLoading = false;
-            } else {
-                vm.selectedShift.shift.setStartTime = startDate;
-                vm.selectedShift.shift.setEndTime = endDate;
 
-                Api.shifts.update(vm.selectedShift.shift).then(function () {
+            } else {
+                vm.dataLoading = true;
+
+                Api.shifts.update(vm.selectedShift.shift, $rootScope.team.timezone).then(function () {
                     vm.message = {
                         'title': 'Successfully updated',
                         'content': 'The shift has successfully been updated.',
@@ -399,24 +398,30 @@ function HomeController($rootScope, Api, $timeout) {
                         'type': 'alert-success'
                     };
 
-                    vm.selectedShift.shift.startTime = startDate;
-                    vm.selectedShift.shift.endTime = endDate;
+                    for (var i = 0; i < vm.shifts.length; i++) {
+                        if (vm.shifts[i][0].id == vm.selectedShift.shift.id) {
+                            vm.shifts[i][0].startTime = vm.selectedShift.shift.startTime;
+                            vm.shifts[i][0].endTime = vm.selectedShift.shift.endTime;
+                            vm.shifts[i][0].home = vm.selectedShift.shift.home;
+                            break;
+                        }
+                    }
 
-                    saveStartTime = vm.selectedShift.shift.newStartTime;
-                    saveEndTime = vm.selectedShift.shift.newEndTime;
+                    $('#edit-shift-modal').modal('hide')
 
+                    vm.dataLoading = false;
+                }).finally(function () {
                     vm.dataLoading = false;
                 })
             }
-        }
-        else {
+
+        } else {
             vm.message = {
                 'title': 'Invalid time',
                 'content': 'The end time may not be lower than the start time. Please try again.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
-            vm.dataLoading = false;
         }
     }
 
@@ -431,20 +436,20 @@ function HomeController($rootScope, Api, $timeout) {
 
         // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
         if (vm.selectedShift.shift.wholeDay == true) {
-            vm.selectedShift.shift.newStartTime = '00:00';
-            vm.selectedShift.shift.newEndTime = '23:59';
+            vm.selectedShift.shift.startTime = '00:00';
+            vm.selectedShift.shift.endTime = '23:59';
 
             // checks if wholeDay is false and then sets the start time as the saved starTime from when you opened the edit modal.
         } else if (vm.selectedShift.shift.wholeDay == false) {
-            vm.selectedShift.shift.newStartTime = saveStartTime;
+            vm.selectedShift.shift.startTime = saveStartTime;
 
             // if saveEndTime equals 23:59 sets it to 00:00 for editing purposes
             if (saveEndTime == '23:59') {
-                vm.selectedShift.shift.newEndTime = '00:00';
+                vm.selectedShift.shift.endTime = '00:00';
 
                 // if end time is not 23:59 then set the end time as the saved endTime from when you opened the edit modal
             } else {
-                vm.selectedShift.shift.newEndTime = saveEndTime;
+                vm.selectedShift.shift.endTime = saveEndTime;
             }
         }
     }

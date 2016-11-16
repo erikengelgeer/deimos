@@ -39,7 +39,7 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
             $rootScope.$watch('team.id', function () {
 
                 // reloads the shiftTypes to show
-                Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+                Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
                     $rootScope.shiftTypes = response.data;
                 });
             });

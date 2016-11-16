@@ -45,6 +45,7 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity="Shift")
      * @ORM\JoinColumn(name="shift_fk", referencedColumnName="pk")
+     *
      */
     private $shiftFk;
 

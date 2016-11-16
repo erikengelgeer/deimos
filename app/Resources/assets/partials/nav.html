@@ -50,7 +50,7 @@
      ng-if="vm.checkStates()">
     <ul class="list-unstyled">
         <li class="list-header">Plan</li>
-        <li><a ui-sref="plan-users"><i class="fa fa-calendar"></i>Users</a></li>
+        <li><a ui-sref="plan-users"><i class="fa fa-calendar"></i>Shifts</a></li>
         <li><a ui-sref="plan-tasks"><i class="fa fa-tasks"></i>Tasks</a></li>
         <li class="list-header" ng-hide="$root.user.role_fk.role.toLowerCase() == 'planner'">Manage</li>
         <li ng-hide="$root.user.role_fk.role.toLowerCase() == 'planner'"><a ui-sref="manage-teams"><i

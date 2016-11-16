@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("api/shifts")
@@ -29,6 +30,7 @@ class ShiftsController extends Controller
         $params = $request->query;
         $startDate = new \DateTime($params->get('startDate'));
         $weeks = $params->get('weeks');
+        $timezone = $params->get('timezone');
 
         // mktime (0,0,0, M, D, Y)
         $timestamp = strtotime('monday this week', mktime(0, 0, 0, $startDate->format('m'), $startDate->format('d'), $startDate->format('Y')));
@@ -49,10 +51,33 @@ class ShiftsController extends Controller
 
             $previousId = $shift['id'];
 
+            $startTime = new \DateTime($shift['startTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+            $shift['startTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($shift['endTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+            $shift['endTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
+
+            if ($shift['startTime']->format('Z') / 3600 > 0) {
+                $shift['timezoneOffset'] = "+" . strval($shift['startTime']->format('Z') / 3600);
+            } else {
+                $shift['timezoneOffset'] = strval($shift['startTime']->format('Z') / 3600);
+            }
+
+
             foreach ($shifts as $otherShift) {
                 if ($shift['id'] == $otherShift['id']) {
 
                     $newShift = [];
+
+                    if($otherShift['taskStartTime'] != null) {
+                        $startTime = new \DateTime($otherShift['taskStartTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+                        $otherShift['taskStartTime'] = $startTime->setTimezone(new \DateTimeZone($timezone));
+                    }
+
+                    if($otherShift['taskEndTime'] != null) {
+                        $endTime = new \DateTime($otherShift['taskEndTime']->format('H:i:s'), new \DateTimeZone('UTC'));
+                        $otherShift['taskEndTime'] = $endTime->setTimezone(new \DateTimeZone($timezone));
+                    }
 
                     $newShift['taskId'] = $otherShift['taskId'];
                     $newShift['taskDescription'] = $otherShift['taskDescription'];
@@ -90,10 +115,9 @@ class ShiftsController extends Controller
         $content = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
-
         foreach ($content->selectedDates as $date) {
 
-            
+
             foreach ($content->shifts as $item) {
                 $user = $em->getRepository('AppBundle:User')->find($item->userId);
                 $shiftType = $em->getRepository('AppBundle:ShiftType')->find($item->shiftId);
@@ -147,15 +171,29 @@ class ShiftsController extends Controller
      *
      * Get all shifts by users
      */
-    function findAllByUser(User $user)
+    function findAllByUser(User $user, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
+
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
         $today = new \DateTime();
         $aMonthAgo = ($today->format('Y') - 1) . "-" . ($today->format('m')) . "-1";
 
         $shifts = $repository->findShiftsByUser($user->getId(), new \DateTime($aMonthAgo));
+
+        $newShifts = [];
+
+        foreach ($shifts as $shift) {
+            $date = new \DateTime($shift['date']->format('Y-m-d H:i:s'), new \DateTimeZone($timezone));
+            $shift['date'] = $date;
+
+            array_push($newShifts, $shift);
+        }
+
+        $shifts = $newShifts;
 
         $data = $this->get('serializer')->serialize($shifts, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
@@ -167,14 +205,52 @@ class ShiftsController extends Controller
      *
      * Get all shifts by user and date
      */
-    function findByUserAndDate(User $user, $date)
+    function findByUserAndDate(User $user, $date, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Shift');
 
-        $shifts = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
-        $data = $this->get('serializer')->serialize($shifts, 'json');
+        $shift = $repository->findOneBy(array('userFk' => $user, 'date' => new \DateTime($date)));
+
+        if($shift == null) {
+            $data = $this->get('serializer')->serialize([], 'json');
+            return new Response($data, 200, ['Content-Type' => 'application/json']);
+        }
+
+        $startTime = new \DateTime($shift->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+        $endTime = new \DateTime($shift->getEndTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+
+        $startTime->setTimezone(new \DateTimeZone($timezone));
+        $endTime->setTimezone(new \DateTimeZone($timezone));
+
+        $shift->setStartTime($startTime);
+        $shift->setEndTime($endTime);
+
+        if ($startTime->format('Z') / 3600 > 0) {
+            $shift->setTimezoneOffset("+" . strval($startTime->format('Z') / 3600));
+        } else {
+            $shift->setTimezoneOffset(strval($startTime->format('Z') / 3600));
+        }
+
+        foreach ($shift->getTasks() as $task) {
+            $shift->removeTask($task);
+
+            $startTime = new \DateTime($task->getStartTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+            $endTime = new \DateTime($task->getEndTime()->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+
+            $startTime->setTimezone(new \DateTimeZone($timezone));
+            $endTime->setTimezone(new \DateTimeZone($timezone));
+
+            $task->setStartTime($startTime);
+            $task->setEndTime($endTime);
+
+            $shift->addTask($task);
+        }
+
+        $data = $this->get('serializer')->serialize($shift, 'json');
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 
@@ -189,17 +265,21 @@ class ShiftsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
-        if ($content->wholeDay) {
-            $shift->setStartTime(new \DateTime("1970-01-01 00:00:00"));
-            $shift->setEndTime(new \DateTime("1970-01-01 23:59:59"));
+        $params = $request->query;
+        $timezone = $params->get('timezone');
 
+        if ($content->wholeDay) {
+            $shift->setStartTime(new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone)));
+            $shift->setEndTime(new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone)));
         } else {
-            $shift->setStartTime(new \DateTime(date('Y-m-d H:i', ($content->setStartTime / 1000))));
-            $shift->setEndTime(new \DateTime(date('Y-m-d H:i', ($content->setEndTime / 1000))));
+            $shift->setStartTime(new \DateTime("1970-01-01 " . $content->startTime, new \DateTimeZone($timezone)));
+            $shift->setEndTime(new \DateTime("1970-01-01 " . $content->endTime, new \DateTimeZone($timezone)));
         }
 
-        $shift->setHome($content->home);
+        $shift->setStartTime($shift->getStartTime()->setTimezone(new \DateTimeZone('UTC')));
+        $shift->setEndTime($shift->getEndTime()->setTimezone(new \DateTimeZone('UTC')));
 
+        $shift->setHome($content->home);
         $em->flush();
 
         $data = $this->get('serializer')->serialize($shift, 'json');

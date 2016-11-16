@@ -70,8 +70,9 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             datepicker.datepicker('destroy');
         }
 
-        Api.shifts.findByUser(vm.selectedUser).then(function (response) {
+        Api.shifts.findByUser(vm.selectedUser, $rootScope.team.timezone).then(function (response) {
             vm.activeDates = response.data;
+
             if (vm.activeDates.length > 0) {
                 buildDatepicker();
             } else {
@@ -144,11 +145,15 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'type': 'alert-danger'
             }
         } else {
-            var shiftStartTime = new Date(vm.selectedShift.start_time);
-            var shiftEndTime = new Date(vm.selectedShift.end_time);
+            // DIRTY FIX YO
+            if (vm.selectedShift.start_time.length > 5) {
+                var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
+            }
 
-            shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
-            shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
+            // DIRTY FIX YO
+            if (vm.selectedShift.end_time.length > 5) {
+                var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
+            }
 
             if (Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
                 Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
@@ -183,7 +188,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 } else {
                     task.shift = vm.selectedShift;
                     vm.dataLoading = true;
-                    Api.tasks.add(task).then(function (response) {
+
+                    Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
                         vm.selectedShift.tasks.push(response.data);
                         vm.task = null;
 
@@ -209,52 +215,24 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     function showModal(task) {
         vm.message = null;
-        var startHour;
-        var startMin;
-        var endHour;
-        var endMin;
-        if(task.start_time.length > 6) {
-            startTime = new Date(task.start_time);
-            endTime = new Date(task.end_time);
+        $('#plan-task-modal').modal();
 
-            startHour = startTime.getHours();
-            startMin = startTime.getMinutes();
+        vm.selectedTask = angular.copy(task);
 
-            if(startHour < 10)
-            {
-                startHour = "0" + startHour;
-            }
-
-            if(startMin < 10) {
-                startMin = "0" + startMin;
-            }
-
-            endHour = endTime.getHours();
-            endMin = endTime.getMinutes();
-
-            if(endHour < 10)
-            {
-                endHour = "0" + endHour;
-            }
-
-            if(endMin < 10) {
-                endMin = "0" + endMin;
-            }
-
-            startTime = startHour + ":" + startMin;
-            endTime = endHour + ":"  + endMin;
-
-            task.start_time = startTime;
-            task.end_time = endTime;
+        // DIRTY FIX YO
+        if (vm.selectedTask.start_time.length > 5) {
+            vm.selectedTask.start_time = vm.selectedTask.start_time.substring(11, 16);
         }
-
-        vm.editTask = task;
-        $('#plan-task-modal').modal('show');
+        // DIRTY FIX YO
+        if (vm.selectedTask.end_time.length > 5) {
+            vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
+        }
     }
 
     function updateTask(task) {
 
-        if (task.start_time == null || task.end_time == null || task.task_type_fk == null) {
+
+        if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null) {
             vm.message = {
                 'title': 'All fields are required',
                 'content': 'You can\'t add an empty task to the shift.',
@@ -262,16 +240,21 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'type': 'alert-danger'
             }
         } else {
-            var shiftStartTime = new Date(vm.selectedShift.start_time);
-            var shiftEndTime = new Date(vm.selectedShift.end_time);
 
-            shiftStartTime = shiftStartTime.getHours() + ":" + shiftStartTime.getMinutes();
-            shiftEndTime = shiftEndTime.getHours() + ":" + shiftEndTime.getMinutes();
+            // DIRTY FIX YO
+            if (vm.selectedShift.start_time.length > 5) {
+                var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
+            }
 
-            if (Date.parse('01/01/1970 ' + task.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                Date.parse('01/01/1970 ' + task.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                Date.parse('01/01/1970 ' + task.end_time) <= Date.parse('01/01/1970 ' + task.start_time) ||
-                Date.parse('01/01/1970 ' + task.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
+            // DIRTY FIX YO
+            if (vm.selectedShift.end_time.length > 5) {
+                var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
+            }
+
+            if (Date.parse('01/01/1970 ' + vm.selectedTask.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                Date.parse('01/01/1970 ' + vm.selectedTask.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                Date.parse('01/01/1970 ' + vm.selectedTask.end_time) <= Date.parse('01/01/1970 ' + vm.selectedTask.start_time) ||
+                Date.parse('01/01/1970 ' + vm.selectedTask.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
 
                 vm.message = {
                     'title': 'The given times are invalid.',
@@ -281,8 +264,8 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 }
 
             } else {
-                var startTime = task.start_time.split(':');
-                var endTime = task.end_time.split(':');
+                var startTime = vm.selectedTask.start_time.split(':');
+                var endTime = vm.selectedTask.end_time.split(':');
 
                 if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                     vm.message = {
@@ -301,7 +284,17 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 } else {
                     $('#plan-task-modal').modal('hide');
                     vm.dataLoading = true;
-                    Api.tasks.update(task).then(function () {
+                    Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
+                        vm.selectedTask.description = response.data.description;
+
+                        for(var i =0; i < vm.selectedShift.tasks.length; i++){
+                            if(vm.selectedShift.tasks[i].id == vm.selectedTask.id){
+                                vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
+                                vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
+                                vm.selectedShift.tasks[i].description = vm.selectedTask.description;
+                                break
+                            }
+                        }
 
                     }).finally(function () {
                         vm.message = {
@@ -341,7 +334,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
         vm.dataLoading = true;
 
-        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate).then(function (response) {
+        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
             vm.selectedShift = response.data;
             vm.dataLoading = false;
         })
