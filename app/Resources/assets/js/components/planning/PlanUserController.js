@@ -135,7 +135,6 @@ function PlanUserController($rootScope, Api, $q,$state) {
                 }
             } else {
                 vm.dataLoading = true;
-                console.log($rootScope.team.timezone);
                 Api.shifts.add(data).then(function () {
 
                     vm.message = {

@@ -42,8 +42,6 @@ function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         vm.shift = response.data;
         vm.shift.wholeDay = false;
 
-        console.log(vm.shift);
-
         vm.shift.start_time = vm.shift.default_start_time.split(":");
         vm.shift.start_time[0] = vm.shift.start_time[0].substr(11, 2);
 
