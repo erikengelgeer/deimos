@@ -49,7 +49,7 @@
                         <div class="task" style="max-height: 200px" ng-if="key > 0 && today.tasks[0].length != 0"
                              ng-repeat="task in today.tasks" ng-click="vm.redirect(task.taskUrl)"
                              ng-class="{'clickable': task.taskUrl != null && task.taskUrl != ''}">
-                        <span ng-if="(task.taskStartTime | date: 'H:mm') != '0:00' && (task.taskEndTime | date: 'H:mm') != '0:00'">
+                        <span ng-if="(task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset) != '0:00' && (task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset) != '0:00'">
                             <i ng-if="task.taskUrl != null && task.taskUrl != ''" class="fa fa-link link-icon"></i>
                             {{ task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset }}
 
