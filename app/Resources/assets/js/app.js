@@ -28,9 +28,9 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
                 $rootScope.team = $rootScope.teams[0];
             }
 
-            Api.shiftType.findByTeam($rootScope.team.id).then(function (response) {
+           /* Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
                 $rootScope.shiftTypes = response.data;
-            });
+            });*/
 
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();

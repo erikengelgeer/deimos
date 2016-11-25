@@ -141,6 +141,7 @@
   .nav-bar .logo {
     padding: 0 15px;
     height: 64px;
+    width: 148px;
     background-color: #06AECE;
     display: inline-block;
     float: left; }
@@ -273,7 +274,7 @@
       width: 50px;
       text-align: left; }
   .menu:hover {
-    width: 155px; }
+    width: 148px; }
     .menu:hover ul li.list-header {
       visibility: visible;
       opacity: 1; }
