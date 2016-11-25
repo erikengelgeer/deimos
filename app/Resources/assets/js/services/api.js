@@ -69,7 +69,7 @@ function Api($http) {
                 return $http.post('api/users/request-password', email);
             },
             findByToken: function (token) {
-                return $http.post('api/users/token', token)
+                return $http.get('api/users/token/' + token)
             },
             passwordReset: function (data) {
                 return $http.post('api/users/reset-password', data);

@@ -133,6 +133,7 @@ class UsersController extends Controller
 
         $user->setConfirmationToken(null);
         $user->setCredentialsExpired(false);
+        $user->setCredentialsExpireAt(null);
         $user->setPasswordRequestedAt(null);
         $user->setPlainPassword($content->newPassword);
 
@@ -192,21 +193,18 @@ class UsersController extends Controller
         $this->get('fos_user.user_manager')->updateUser($user);
     }
 
-    /**$content
-     * @Route("/token")
-     * @Method("POST")
-     * @param Request $request
-     * @return Response
+    /**
+     * @Route("/token/{token}")
+     * @Method("GET")
      *
      * Get a single user a token
      */
-    public function getUserByTokenAction(Request $request)
+    public function getUserByTokenAction($token)
     {
-        $content = $request->getContent();
         $manager = $this->get('fos_user.user_manager');
 
         /** @var \AppBundle\Entity\User $user */
-        $user = $manager->findUserByConfirmationToken($content);
+        $user = $manager->findUserByConfirmationToken($token);
 
         if ($user == null) {
             $data = $this->get('serializer')->serialize(null, 'json');
