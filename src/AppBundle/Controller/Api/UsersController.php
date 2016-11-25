@@ -133,6 +133,7 @@ class UsersController extends Controller
 
         $user->setConfirmationToken(null);
         $user->setCredentialsExpired(false);
+        $user->setPasswordRequestedAt(null);
         $user->setPlainPassword($content->newPassword);
 
         $manager->updateUser($user);
