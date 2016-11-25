@@ -72,7 +72,7 @@ class DefaultController extends Controller
 
             $manager->updateUser($user);*/
 
-             if ($user->getUsername() == 'ao_nick') {
+             if (strtoupper($user->getUsername()) == 'AXBTS') {
                  $tokenGenerator = $this->get('fos_user.util.token_generator');
                  $token = $tokenGenerator->generateToken();
 
