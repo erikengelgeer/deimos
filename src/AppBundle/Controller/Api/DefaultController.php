@@ -45,6 +45,9 @@ class DefaultController extends Controller
      */
     public function startTestAction()
     {
+        $data = $this->get('serializer')->serialize("", 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
+        
         $manager = $this->get('fos_user.user_manager');
 
         $users = $manager->findUsers();
