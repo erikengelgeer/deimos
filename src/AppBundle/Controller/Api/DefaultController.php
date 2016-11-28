@@ -45,8 +45,8 @@ class DefaultController extends Controller
      */
     public function startTestAction()
     {
-        $data = $this->get('serializer')->serialize("", 'json');
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
+        //$data = $this->get('serializer')->serialize("", 'json');
+        //return new Response($data, 200, ['Content-Type' => 'application/json']);
         
         $manager = $this->get('fos_user.user_manager');
 
@@ -57,22 +57,11 @@ class DefaultController extends Controller
 
         /** @var \AppBundle\Entity\User $user */
         foreach ($users as $user) {
-           /* if ($user->getUsername() == 'ao_ezcev') {
+            if ($user->getUsername() == 'ao_ezcev') {
                 continue;
             }
 
-            $user->setPassword(null);
-            $user->setPlainPassword('Agfa-' . $user->getId());
-            $user->setLastLogin(null);
-            $user->setCredentialsExpireAt($today);
-            $user->setCredentialsExpired(true);
-
-            $user->setExpired(false);
-            $user->setLocked(false);
-
-            $manager->updateUser($user);*/
-
-             if (strtoupper($user->getUsername()) == 'AXBTS') {
+             if ($user->getUsername() == 'ao_nena') {
                  $tokenGenerator = $this->get('fos_user.util.token_generator');
                  $token = $tokenGenerator->generateToken();
 
