@@ -61,28 +61,28 @@ class DefaultController extends Controller
                 continue;
             }
 
-            if ($user->getEnabled()) {
-                if ($user->getUsername() == 'ao_axdyo') {
-                    $tokenGenerator = $this->get('fos_user.util.token_generator');
-                    $token = $tokenGenerator->generateToken();
 
-                    $user->setLastLogin(null);
-                    $user->setConfirmationToken($token);
-                    $user->setCredentialsExpired(true);
-                    $user->setPasswordRequestedAt(null);
-                    $manager->updateUser($user);
+            if ($user->getUsername() == 'ao_axdyo') {
+                $tokenGenerator = $this->get('fos_user.util.token_generator');
+                $token = $tokenGenerator->generateToken();
 
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject('Deimos - Welcome to Deimos')
-                        ->setFrom('noreply@agfa.com')
-                        ->setTo($user->getEmail())
-                        ->setBody(
-                            $this->renderView('emails/first-time.html.twig', array("user" => $user, "token" => $token)), 'text/html'
-                        );
+                $user->setLastLogin(null);
+                $user->setConfirmationToken($token);
+                $user->setCredentialsExpired(true);
+                $user->setPasswordRequestedAt(null);
+                $manager->updateUser($user);
 
-                    $this->get('mailer')->send($message);
-                }
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Deimos - Welcome to Deimos')
+                    ->setFrom('noreply@agfa.com')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        $this->renderView('emails/first-time.html.twig', array("user" => $user, "token" => $token)), 'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
             }
+            
         }
 
         $data = $this->get('serializer')->serialize($users, 'json');
