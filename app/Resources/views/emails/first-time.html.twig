@@ -1,4 +1,4 @@
-<p style="font-family: sans-serif">Hello {{ user.realName }},<br><br>
+<p>Hello {{ user.realName }},<br><br>
 Welcome to Deimos, the new and improved GRIP scheduling tool.<br><br>
 We've created a brand new web portal where not only you can see the current schedule for your team and the other team(s), you can also go back and forward in time, and get an separate overview of your tasks for the current day.<br><br>
 A new account has been created for you, your account name is <strong>{{ user.username }}</strong>, you will need this username to login. <br>
@@ -18,3 +18,4 @@ If you notice anything missing, please contact your local scheduler.<br><br>
 As this is not an extensive manual, and Deimos is not that complicated, you may find other functionality whilst using Deimos. We've tried to list the most important ones here but we would like to encourage you to simply start using Deimos. You may find some other handy functionality whilst trying it out.<br><br>
 We will of course continue to improve Deimos, so please let us know what you think and what we could change / improve.
 </p>
+<p><a href="{{ url('homepage') }}">Deimos</a></p>
