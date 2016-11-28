@@ -47,7 +47,7 @@ class DefaultController extends Controller
     {
         //$data = $this->get('serializer')->serialize("", 'json');
         //return new Response($data, 200, ['Content-Type' => 'application/json']);
-        
+
         $manager = $this->get('fos_user.user_manager');
 
         $users = $manager->findUsers();
@@ -61,25 +61,27 @@ class DefaultController extends Controller
                 continue;
             }
 
-             if ($user->getUsername() == 'ao_nena') {
-                 $tokenGenerator = $this->get('fos_user.util.token_generator');
-                 $token = $tokenGenerator->generateToken();
+            if ($user->getEnabled()) {
+                if ($user->getUsername() == 'ao_axdyo') {
+                    $tokenGenerator = $this->get('fos_user.util.token_generator');
+                    $token = $tokenGenerator->generateToken();
 
-                 $user->setLastLogin(null);
-                 $user->setConfirmationToken($token);
-                 $user->setCredentialsExpired(true);
-                 $user->setPasswordRequestedAt(null);
-                 $manager->updateUser($user);
+                    $user->setLastLogin(null);
+                    $user->setConfirmationToken($token);
+                    $user->setCredentialsExpired(true);
+                    $user->setPasswordRequestedAt(null);
+                    $manager->updateUser($user);
 
-                 $message = \Swift_Message::newInstance()
-                     ->setSubject('Deimos - Welcome to Deimos')
-                     ->setFrom('noreply@agfa.com')
-                     ->setTo($user->getEmail())
-                     ->setBody(
-                         $this->renderView('emails/new-user.html.twig', array("user" => $user, "token" => $token)), 'text/html'
-                     );
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Deimos - Welcome to Deimos')
+                        ->setFrom('noreply@agfa.com')
+                        ->setTo($user->getEmail())
+                        ->setBody(
+                            $this->renderView('emails/first-time.html.twig', array("user" => $user, "token" => $token)), 'text/html'
+                        );
 
-                 $this->get('mailer')->send($message);
+                    $this->get('mailer')->send($message);
+                }
             }
         }
 

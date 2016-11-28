@@ -1,0 +1,19 @@
+Hello {{ user.realName }},<br><br>
+Welcome to Deimos, the new and improved GRIP scheduling tool.<br><br>
+We've created a brand new web portal where not only you can see the current schedule for your team and the other team(s), you can also go back and forward in time, and get an separate overview of your tasks for the current day.<br><br>
+A new account has been created for you, your account name is {{ user.username }}, you will need this username to login.
+We have not set a password for you yet, you decide your own password. To set your password, click <a href="{{ url('homepage') }}#/change-password/{{ token }}">here</a>.<br>
+After you have set a password, you will be transported to the login page where you can login for the first time.<br><br>
+After you've logged in for the first time you will see the schedule for your team for the current month. This is a change from what you were used to, the current week will no longer always be at the top of the screen, you may have to scroll down a bit to get to the correct week. <br><br>
+The monthly schedule has been split up teams, weeks, and then persons.<br>
+Each person has one row per week, starting on Monday (ending on Sunday)<br>
+Each day shows the shift start - and end times including the name of the shift on the top row.<br>
+Below that you will find the assigned tasks (if any) and a colored bar that visualizes the type of shift, similar to how we used to display colors in the old schedule.
+You may find the colors have changed somewhat. A legend was provided which you can find by clicking the question mark icon at the top right in the black bar.
+The early shift is now green, the late shift bright yellow, and the normal shift is amber(ish) Not much else has changed.<br><br>
+Your 'Assigned tasks for today' can also be found in the menu bar by clicking the icon next to the question mark. <br>
+Due to the way the data was imported from the old schedule tool not much will happen in that screen for now, but newly assigned tasks (from now onwards) will appear in the screen that pops up when you click that icon.<br><br>
+To change months you simply click the month-year button and select wichever month (and year) you would like to view.  To get back to the current month, simply click the Today button.  Please note: the database contains the entire schedule for 2016 going forward. Everything should be there as long as Michael or Linda new about it and put it in the schedule. Anything before 2016 was not imported into the database.<br>
+If you notice anything missing, please contact your local scheduler.<br><br>
+As this is not an extensive manual, and Deimos is not that complicated, you may find other functionality whilst using Deimos. We've tried to list the most important ones here but we would like to encourage you to simply start using Deimos. You may find some other handy functionality whilst trying it out.<br><br>
+We will of course continue to improve Deimos, so please let us know what you think and what we could change / improve.
