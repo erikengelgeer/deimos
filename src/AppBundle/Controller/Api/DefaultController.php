@@ -61,24 +61,26 @@ class DefaultController extends Controller
                 continue;
             }
 
-            $tokenGenerator = $this->get('fos_user.util.token_generator');
-            $token = $tokenGenerator->generateToken();
+            if ($user->getConfirmationToken() == null) {
+                $tokenGenerator = $this->get('fos_user.util.token_generator');
+                $token = $tokenGenerator->generateToken();
 
-            $user->setLastLogin(null);
-            $user->setConfirmationToken($token);
-            $user->setCredentialsExpired(true);
-            $user->setPasswordRequestedAt(null);
-            $manager->updateUser($user);
+                $user->setLastLogin(null);
+                $user->setConfirmationToken($token);
+                $user->setCredentialsExpired(true);
+                $user->setPasswordRequestedAt(null);
+                $manager->updateUser($user);
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Deimos - Welcome to GRIP scheduling tool')
-                ->setFrom('noreply@agfa.com')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView('emails/first-time.html.twig', array("user" => $user, "token" => $token)), 'text/html'
-                );
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Deimos - Welcome to GRIP scheduling tool')
+                    ->setFrom('noreply@agfa.com')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        $this->renderView('emails/first-time.html.twig', array("user" => $user, "token" => $token)), 'text/html'
+                    );
 
-            $this->get('mailer')->send($message);
+                $this->get('mailer')->send($message);
+            }
 
         }
 
