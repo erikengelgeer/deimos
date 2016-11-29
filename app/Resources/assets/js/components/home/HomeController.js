@@ -16,6 +16,8 @@ function HomeController($rootScope, Api, $timeout) {
     var saveStartTime;
     var saveEndTime;
 
+    var today = new Date();
+    vm.formattedToday = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     // ---
     vm.currentYear = new Date().getFullYear();
     vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
@@ -161,9 +163,14 @@ function HomeController($rootScope, Api, $timeout) {
     function getPlanningContent(day, key, planningKey) {
 
         // get current date of a planning column
+        // console.log(day, key, planningKey)
         var date = new Date(vm.planning[planningKey][key]);
         var formattedDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-        var data = [];
+        var data = {};
+
+        if (formattedDate == vm.formattedToday) {
+            data.today = true;
+        }
 
         // Iterate trough shifts to find the right shift per column and user
         for (var i = 0; i < vm.shifts.length; i++) {
@@ -173,10 +180,9 @@ function HomeController($rootScope, Api, $timeout) {
 
             // checks if column user is equal to shift user
             if (vm.shifts[i][0]['userId'] == day.user.id && formattedDate == formattedShiftDate) {
-                data = {
-                    shift: vm.shifts[i][0],
-                    tasks: vm.shifts[i][1]
-                };
+                data.shift = vm.shifts[i][0];
+                data.tasks = vm.shifts[i][1];
+
 
                 // breaks to for to reduce load time
                 break;
@@ -262,6 +268,13 @@ function HomeController($rootScope, Api, $timeout) {
 
             // stops loading after everything is built
             $rootScope.loading = false;
+
+            setTimeout(function () {
+                $('.schedule-container').animate({
+                    scrollTop: $('.today-heading').offset().top - 135
+                }, 1000, "swing");
+            }, 0)
+
         });
     }
 

@@ -427,6 +427,13 @@
           color: inherit;
           font-size: 80%;
           transition: background-color .15s ease-in-out; }
+      .schedule .body .body-row .item.today {
+        background-color: #e8e8e8; }
+        .schedule .body .body-row .item.today .shift {
+          background-color: #e8e8e8;
+          border-color: #d3d3d3; }
+        .schedule .body .body-row .item.today .task {
+          background-color: #cacaca; }
       .schedule .body .body-row .item:hover .shift .actions {
         visibility: visible;
         opacity: 1; }
@@ -474,7 +481,7 @@
   position: absolute;
   width: 8px;
   height: 100%;
-  background-color: #000; }
+  background-color: transparent; }
 
 .schedule-filter {
   height: 50px;

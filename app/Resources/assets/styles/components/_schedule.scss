@@ -98,6 +98,19 @@
                     }
                 }
 
+                &.today {
+                    background-color: #e8e8e8;
+
+                    .shift {
+                        background-color: #e8e8e8;
+                        border-color: #d3d3d3;
+                    }
+
+                    .task {
+                        background-color: #cacaca;
+                    }
+                }
+
                 &:hover {
                     .shift {
                         .actions {
@@ -170,7 +183,7 @@
     //top:28px;
     width: 8px;
     height: 100%;
-    background-color: #000;
+    background-color: transparent;
 }
 
 .schedule-filter {
@@ -193,8 +206,8 @@
     }
 
     em {
-        color:rgba(0,0,0,.5);
-        font-size:90%;
+        color: rgba(0, 0, 0, .5);
+        font-size: 90%;
         line-height: 50px;
     }
 }
