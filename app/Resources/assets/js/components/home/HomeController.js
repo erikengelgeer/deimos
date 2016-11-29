@@ -17,7 +17,7 @@ function HomeController($rootScope, Api, $timeout) {
     var saveEndTime;
 
     var today = new Date();
-    vm.formattedToday = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
+    vm.formattedToday = (today.getDate() + 1) + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     // ---
     vm.currentYear = new Date().getFullYear();
     vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
@@ -67,6 +67,11 @@ function HomeController($rootScope, Api, $timeout) {
     function showModal(shift) {
         vm.info = shift;
 
+        var date = vm.info.date.substr(0, 10);
+        date = date.split('-');
+
+        vm.info.formattedDate = date[2] + ' ' + vm.months[parseInt(date[1])-1] + ' ' + date[0];
+
         $('#index-modal').modal('show');
     }
 
@@ -99,9 +104,10 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function buildScheduleStructure() {
-        // Builds the schedule in a 7 days per 4 weeks structure.
+        // Builds the schedule in a 7 days per x weeks structure.
         var today = getMonday(vm.startDate);
-        var date = today.getTime();
+        // var date = today.getTime();
+        var date = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
         var week = [];
 
 
@@ -165,7 +171,9 @@ function HomeController($rootScope, Api, $timeout) {
         // get current date of a planning column
         // console.log(day, key, planningKey)
         var date = new Date(vm.planning[planningKey][key]);
+        date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
         var formattedDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+
         var data = {};
 
         if (formattedDate == vm.formattedToday) {
@@ -175,6 +183,7 @@ function HomeController($rootScope, Api, $timeout) {
         // Iterate trough shifts to find the right shift per column and user
         for (var i = 0; i < vm.shifts.length; i++) {
             var shiftDate = new Date(vm.shifts[i][0]['date']);
+            shiftDate = new Date(Date.UTC(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate(), 0, 0, 0));
             var formattedShiftDate = shiftDate.getDate() + "-" + (shiftDate.getMonth() + 1) + "-" + shiftDate.getFullYear();
 
 
@@ -346,6 +355,11 @@ function HomeController($rootScope, Api, $timeout) {
         $('#edit-shift-modal').modal();
 
         vm.selectedShift = angular.copy(shift);
+
+        var date = vm.selectedShift.shift.date.substr(0, 10);
+        date = date.split('-');
+
+        vm.selectedShift.formattedDate = date[2] + ' ' + vm.months[parseInt(date[1])-1] + ' ' + date[0];
 
         if (vm.selectedShift.shift.wholeDay == undefined) {
             vm.selectedShift.shift.wholeDay = false;
