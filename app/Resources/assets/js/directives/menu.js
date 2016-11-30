@@ -18,6 +18,7 @@ function menu() {
 
             vm.toggleTeamSelectMenu = toggleTeamSelectMenu;
             vm.selectTeam = selectTeam;
+            vm.checkAdmin = checkAdmin;
 
             vm.selectedTeam = null;
             vm.selectTeamActive = false;
@@ -71,6 +72,12 @@ function menu() {
             function selectTeam(team) {
                 $rootScope.team = team;
                 vm.selectTeamActive = false;
+            }
+
+            function checkAdmin() {
+                if($rootScope.user.role_fk.role.toLowerCase() != 'administrator') {
+                    return true;
+                }
             }
         }
     }

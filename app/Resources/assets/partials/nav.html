@@ -57,9 +57,9 @@
                 class="fa fa-globe"></i>Teams</a></li>
         <li ng-hide="$root.user.role_fk.role.toLowerCase() == 'planner'"><a ui-sref="manage-users"><i
                 class="fa fa-users"></i>Users</a></li>
-        <li ng-hide="$root.user.role_fk.role.toLowerCase() == 'planner'"><a ui-sref="manage-shifts"><i
+        <li ng-hide="vm.checkAdmin()"><a ui-sref="manage-shifts"><i
                 class="fa fa-calendar-o"></i>Shifts</a></li>
-        <li ng-hide="$root.user.role_fk.role.toLowerCase() == 'planner'"><a ui-sref="manage-tasks"><i
+        <li ng-hide="vm.checkAdmin()"><a ui-sref="manage-tasks"><i
                 class="fa fa-tasks"></i>Tasks</a></li>
     </ul>
 </div>
