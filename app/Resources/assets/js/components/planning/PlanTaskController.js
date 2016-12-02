@@ -137,7 +137,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
-        } else if(task.taskType.override_description == false && task.description != null){
+        } else if (task.taskType.override_description == false && task.description != null) {
             vm.message = {
                 'title': 'This task can\'t have a description',
                 'content': 'You can only add a description to a task that can be overridden.',
@@ -168,177 +168,186 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 }
 
             } else {
-                var startTime = task.startTime.split(':');
-                var endTime = task.endTime.split(':');
-
-                if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
-                    vm.message = {
-                        'title': 'Start time is invalid',
-                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-danger'
-                    }
-                } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
-                    vm.message = {
-                        'title': 'End time is invalid',
-                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-danger'
-                    }
+                if (task.startTime.length == 4) {
+                    var startTime = task.startTime.match(/.{1,2}/g);
                 } else {
-                    task.shift = vm.selectedShift;
-                    vm.dataLoading = true;
-
-                    Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
-                        vm.selectedShift.tasks.push(response.data);
-                        vm.task = null;
-
-                        vm.message = {
-                            'title': 'Task added',
-                            'content': 'The task is added to the shift',
-                            'icon': 'fa-check',
-                            'type': 'alert-success'
-                        }
-                    }).finally(function () {
-                        vm.dataLoading = false;
-                    })
+                    var startTime = task.startTime.split(':');
                 }
 
-            }
-        }
-    }
+                if (task.endTime.length == 4) {
+                    var endTime = task.endTime.match(/.{1,2}/g);
+                } else {
+                    var endTime = task.endTime.split(':');
+                }
 
-    function hideModal() {
-        vm.editTask = null;
-        $('#plan-task-modal').modal('hide');
-    }
-
-    function showModal(task) {
-        vm.message = null;
-        $('#plan-task-modal').modal();
-
-        vm.selectedTask = angular.copy(task);
-
-        // DIRTY FIX YO
-        if (vm.selectedTask.start_time.length > 5) {
-            vm.selectedTask.start_time = vm.selectedTask.start_time.substring(11, 16);
-        }
-        // DIRTY FIX YO
-        if (vm.selectedTask.end_time.length > 5) {
-            vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
-        }
-    }
-
-    function updateTask(task) {
-
-
-        if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null) {
-            vm.message = {
-                'title': 'All fields are required',
-                'content': 'You can\'t add an empty task to the shift.',
-                'icon': 'fa-exclamation',
-                'type': 'alert-danger'
-            }
-        } else {
-
-            // DIRTY FIX YO
-            if (vm.selectedShift.start_time.length > 5) {
-                var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
-            }
-
-            // DIRTY FIX YO
-            if (vm.selectedShift.end_time.length > 5) {
-                var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
-            }
-
-            if (Date.parse('01/01/1970 ' + vm.selectedTask.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                Date.parse('01/01/1970 ' + vm.selectedTask.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                Date.parse('01/01/1970 ' + vm.selectedTask.end_time) <= Date.parse('01/01/1970 ' + vm.selectedTask.start_time) ||
-                Date.parse('01/01/1970 ' + vm.selectedTask.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
-
+            if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                 vm.message = {
-                    'title': 'The given times are invalid.',
-                    'content': 'The chosen time is invalid, please try again.',
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again',
                     'icon': 'fa-exclamation',
                     'type': 'alert-danger'
                 }
-
-            } else {
-                var startTime = vm.selectedTask.start_time.split(':');
-                var endTime = vm.selectedTask.end_time.split(':');
-
-                if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
-                    vm.message = {
-                        'title': 'Start time is invalid',
-                        'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-danger'
-                    }
-                } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
-                    vm.message = {
-                        'title': 'End time is invalid',
-                        'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
-                        'icon': 'fa-exclamation',
-                        'type': 'alert-danger'
-                    }
-                } else {
-                    $('#plan-task-modal').modal('hide');
-                    vm.dataLoading = true;
-                    Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
-                        vm.selectedTask.description = response.data.description;
-
-                        for(var i =0; i < vm.selectedShift.tasks.length; i++){
-                            if(vm.selectedShift.tasks[i].id == vm.selectedTask.id){
-                                vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
-                                vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
-                                vm.selectedShift.tasks[i].description = vm.selectedTask.description;
-                                break
-                            }
-                        }
-
-                    }).finally(function () {
-                        vm.message = {
-                            'title': 'Task updated',
-                            'content': 'The task is successfully updated',
-                            'icon': 'fa-check',
-                            'type': 'alert-success'
-                        };
-                        vm.editTask = null;
-                        vm.dataLoading = false;
-                    })
+            } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen end time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
                 }
+            } else {
+                task.shift = vm.selectedShift;
+                vm.dataLoading = true;
+
+                Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
+                    vm.selectedShift.tasks.push(response.data);
+                    vm.task = null;
+
+                    vm.message = {
+                        'title': 'Task added',
+                        'content': 'The task is added to the shift',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    }
+                }).finally(function () {
+                    vm.dataLoading = false;
+                })
+            }
+
+        }
+    }
+}
+
+function hideModal() {
+    vm.editTask = null;
+    $('#plan-task-modal').modal('hide');
+}
+
+function showModal(task) {
+    vm.message = null;
+    $('#plan-task-modal').modal();
+
+    vm.selectedTask = angular.copy(task);
+
+    // DIRTY FIX YO
+    if (vm.selectedTask.start_time.length > 5) {
+        vm.selectedTask.start_time = vm.selectedTask.start_time.substring(11, 16);
+    }
+    // DIRTY FIX YO
+    if (vm.selectedTask.end_time.length > 5) {
+        vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
+    }
+}
+
+function updateTask(task) {
+
+
+    if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null) {
+        vm.message = {
+            'title': 'All fields are required',
+            'content': 'You can\'t add an empty task to the shift.',
+            'icon': 'fa-exclamation',
+            'type': 'alert-danger'
+        }
+    } else {
+
+        // DIRTY FIX YO
+        if (vm.selectedShift.start_time.length > 5) {
+            var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
+        }
+
+        // DIRTY FIX YO
+        if (vm.selectedShift.end_time.length > 5) {
+            var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
+        }
+
+        if (Date.parse('01/01/1970 ' + vm.selectedTask.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+            Date.parse('01/01/1970 ' + vm.selectedTask.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+            Date.parse('01/01/1970 ' + vm.selectedTask.end_time) <= Date.parse('01/01/1970 ' + vm.selectedTask.start_time) ||
+            Date.parse('01/01/1970 ' + vm.selectedTask.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
+
+            vm.message = {
+                'title': 'The given times are invalid.',
+                'content': 'The chosen time is invalid, please try again.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+
+        } else {
+            var startTime = vm.selectedTask.start_time.split(':');
+            var endTime = vm.selectedTask.end_time.split(':');
+
+            if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
+                vm.message = {
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+            } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                }
+            } else {
+                $('#plan-task-modal').modal('hide');
+                vm.dataLoading = true;
+                Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
+                    vm.selectedTask.description = response.data.description;
+
+                    for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
+                        if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
+                            vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
+                            vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
+                            vm.selectedShift.tasks[i].description = vm.selectedTask.description;
+                            break
+                        }
+                    }
+
+                }).finally(function () {
+                    vm.message = {
+                        'title': 'Task updated',
+                        'content': 'The task is successfully updated',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    };
+                    vm.editTask = null;
+                    vm.dataLoading = false;
+                })
             }
         }
     }
+}
 
-    function deleteTask(task) {
-        vm.dataLoading = true;
-        Api.tasks.delete(task.id).then(function () {
-            vm.message = {
-                'title': 'Task deleted',
-                'content': 'The task is deleted from the shift',
-                'icon': 'fa-check',
-                'type': 'alert-success'
-            }
+function deleteTask(task) {
+    vm.dataLoading = true;
+    Api.tasks.delete(task.id).then(function () {
+        vm.message = {
+            'title': 'Task deleted',
+            'content': 'The task is deleted from the shift',
+            'icon': 'fa-check',
+            'type': 'alert-success'
+        }
 
-            _.remove(vm.selectedShift.tasks, function (t) {
-                return t.id == task.id;
-            });
-        }).finally(function () {
-            vm.dataLoading = false;
-        })
-    }
+        _.remove(vm.selectedShift.tasks, function (t) {
+            return t.id == task.id;
+        });
+    }).finally(function () {
+        vm.dataLoading = false;
+    })
+}
 
-    datepicker.datepicker().on('changeDate', function (e) {
-        var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
+datepicker.datepicker().on('changeDate', function (e) {
+    var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
 
-        vm.dataLoading = true;
+    vm.dataLoading = true;
 
-        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
-            vm.selectedShift = response.data;
-            vm.dataLoading = false;
-        })
-    });
+    Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
+        vm.selectedShift = response.data;
+        vm.dataLoading = false;
+    })
+});
 
 
 }
