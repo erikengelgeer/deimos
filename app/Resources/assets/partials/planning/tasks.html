@@ -49,8 +49,10 @@
                             </div>
 
                             <div class="task" ng-repeat="task in vm.selectedShift.tasks">
+                                <span ng-if="task.url"><i class="fa fa-link"></i></span>
                                 <span>{{ task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset}} - {{ task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset}}</span>
                                 <span>{{ task.description }}</span>
+
                                 <div class="actions">
                                     <!--<a href="#" class="fa fa-pencil"></a>-->
                                     <a href="" class="fa fa-pencil" ng-click="vm.showModal(task)"></a>
