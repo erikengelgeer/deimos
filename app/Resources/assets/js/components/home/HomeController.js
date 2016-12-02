@@ -17,11 +17,15 @@ function HomeController($rootScope, Api, $timeout) {
     var saveEndTime;
 
     var today = new Date();
+
     vm.formattedToday = (today.getDate() + 1) + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     // ---
     vm.currentYear = new Date().getFullYear();
-    vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
-    vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+    // vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+    // vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+    vm.startDate = getMonday(new Date());
+    vm.endDate = getSundayIn3Weeks(new Date());
+
 
     // 604800000 = 1 week
     vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
@@ -166,6 +170,15 @@ function HomeController($rootScope, Api, $timeout) {
         return new Date(d.setDate(diff));
     }
 
+    function getSundayIn3Weeks(d){
+        d = new Date(d);
+
+        var day = d.getDay();
+        var diff = d.getDate() - day + (day == 7 ? +6 : 28);
+
+        return new Date(d.setDate(diff));
+    }
+
     function getPlanningContent(day, key, planningKey) {
 
         // get current date of a planning column
@@ -278,12 +291,6 @@ function HomeController($rootScope, Api, $timeout) {
             // stops loading after everything is built
             $rootScope.loading = false;
 
-            setTimeout(function () {
-                $('.schedule-container').animate({
-                    scrollTop: $('.today-heading').offset().top - 135
-                }, 1000, "swing");
-            }, 0)
-
         });
     }
 
@@ -312,12 +319,16 @@ function HomeController($rootScope, Api, $timeout) {
 
     function filterToday() {
         vm.currentYear = new Date().getFullYear();
-        vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
-        vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+        // vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+        vm.startDate = getMonday(new Date());
+        // vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+        vm.endDate = getSundayIn3Weeks(new Date());
+
+        console.log(vm.startDate, vm.endDate);
 
         // 604800000 = 1 week
         vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
-
+        //
         vm.selectedYear = vm.currentYear;
         vm.selectedMonth = vm.months[new Date().getMonth()];
 
