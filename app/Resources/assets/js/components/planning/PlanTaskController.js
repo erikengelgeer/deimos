@@ -155,10 +155,16 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
             }
 
-            if (Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                Date.parse('01/01/1970 ' + task.endTime) <= Date.parse('01/01/1970 ' + task.startTime) ||
-                Date.parse('01/01/1970 ' + task.endTime) > Date.parse('01/01/1970 ' + shiftEndTime)) {
+            var controlStartTimeArray = task.startTime.match(/.{1,2}/g);
+            var controlStartTime = controlStartTimeArray[0] + ':' + controlStartTimeArray[1];
+
+            var controlEndTimeArray = task.endTime.match(/.{1,2}/g);
+            var controlEndTime = controlEndTimeArray[0] + ':' + controlEndTimeArray[1];
+
+            if (Date.parse('01/01/1970 ' + controlStartTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                Date.parse('01/01/1970 ' + controlStartTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                Date.parse('01/01/1970 ' + controlEndTime) <= Date.parse('01/01/1970 ' + controlStartTime) ||
+                Date.parse('01/01/1970 ' + controlEndTime) > Date.parse('01/01/1970 ' + shiftEndTime)) {
 
                 vm.message = {
                     'title': 'The given times are invalid.',
@@ -168,16 +174,19 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 }
 
             } else {
+                var startTime;
+                var endTime;
+
                 if (task.startTime.length == 4) {
-                    var startTime = task.startTime.match(/.{1,2}/g);
+                    startTime = task.startTime.match(/.{1,2}/g);
                 } else {
-                    var startTime = task.startTime.split(':');
+                    startTime = task.startTime.split(':');
                 }
 
                 if (task.endTime.length == 4) {
-                    var endTime = task.endTime.match(/.{1,2}/g);
+                    endTime = task.endTime.match(/.{1,2}/g);
                 } else {
-                    var endTime = task.endTime.split(':');
+                    endTime = task.endTime.split(':');
                 }
 
             if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
