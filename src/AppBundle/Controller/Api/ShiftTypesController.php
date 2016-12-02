@@ -39,6 +39,23 @@ class ShiftTypesController extends Controller
     }
 
     /**
+     * @Route("/legend")
+     * @Method("GET")
+     *
+     * Get all the shiftTypes for legend
+     */
+    public function findLegendAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:ShiftType");
+
+        $shiftTypes = $repository->findBy(array("enabled" => true));
+
+        $data = $this->get('serializer')->serialize($shiftTypes, 'json');
+        return new Response($data, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
      * @Route("/{team}")
      * @Method("GET")
      *

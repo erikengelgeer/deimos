@@ -69,7 +69,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
                         }));
 
                         promises.push(Api.shiftType.find().then(function (response) {
-                            $rootScope.shiftTypes = response.data;
+                            $rootScope.shiftTypes = _.uniqBy(response.data, 'description');
                         }));
 
                         $q.all(promises).then(function () {

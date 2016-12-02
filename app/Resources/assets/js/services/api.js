@@ -107,6 +107,12 @@ function Api($http) {
                         timezone: timezone
                     }
                 })
+            },
+            findLegend: function () {
+                return $http({
+                    url: 'api/shift-types/legend',
+                    method: "GET"
+                })
             }
         },
         teams: {
