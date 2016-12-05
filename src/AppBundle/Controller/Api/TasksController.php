@@ -107,7 +107,8 @@ class TasksController extends Controller
         $task->setEndTime($endTime);
 
         $task->setTaskTypeFk($taskType);
-        $task->setDescription($taskType->getDescription());
+
+        $task->setDescription($content->description);
 
         if(isset($content->url)){
             $task->setUrl($content->url);

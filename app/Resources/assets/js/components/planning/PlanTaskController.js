@@ -22,6 +22,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     vm.deleteTask = deleteTask;
     vm.addTask = addTask;
     vm.updateTask = updateTask;
+    vm.changeDescription = changeDescription;
 
     if ($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
         $state.go('index');
@@ -229,10 +230,23 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         }
     }
 
+    function changeDescription(task) {
+        var taskId = angular.copy(task);
+        for(var i = 0; i < vm.taskTypes.length; i++){
+            if(taskId == vm.taskTypes[i].id){
+
+                vm.selectedTask.task_type_fk.id = vm.taskTypes[i].id;
+                vm.selectedTask.task_type_fk.short = vm.taskTypes[i].short;
+                vm.selectedTask.task_type_fk.override_description = vm.taskTypes[i].override_description;
+                vm.selectedTask.description = vm.taskTypes[i].description;
+                break;
+            }
+        }
+
+    }
+
     function updateTask(task) {
-
-
-        if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null) {
+        if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null || vm.selectedTask.description == []) {
             vm.message = {
                 'title': 'All fields are required',
                 'content': 'You can\'t add an empty task to the shift.',

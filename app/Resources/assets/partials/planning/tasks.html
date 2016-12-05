@@ -150,7 +150,7 @@
                             <span class="input-group-addon" id="sizing-addon6"><i
                                     class="fa fa-tasks"></i></span>
                             <select class="form-control" ng-model="vm.selectedTask.task_type_fk.id"
-                                    ng-options="taskType.id as taskType.description for taskType in vm.taskTypes">
+                                    ng-options="taskType.id as taskType.description for taskType in vm.taskTypes" ng-change="vm.changeDescription(vm.selectedTask.task_type_fk.id)">
                                 <option value="" ng-disabled="!!vm.selectedTask.task_type_fk">Select a task</option>
                             </select>
                         </div>
@@ -164,6 +164,15 @@
                     </div>
                     <div class="col-md-7">
                         <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.selectedTask.url">
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="input-group" ng-if="vm.selectedTask.task_type_fk.override_description">
+                                    <span class="input-group-addon task-link" id="sizing-addon1">
+                                        <i class="fa fa-info"></i>
+                                    </span>
+                            <input type="text" id="description" class="form-control"
+                                   ng-model="vm.selectedTask.description">
+                        </div>
                     </div>
                 </div>
             </div>
