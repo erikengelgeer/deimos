@@ -97,17 +97,17 @@ class TasksController extends Controller
 
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
 
-        $startTime = new \DateTime($content->start_time);
-        $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
-        $startTime->setTimezone(new \DateTimeZone('UTC'));
+//        $startTime = new \DateTime($content->start_time);
+//        $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+//        $startTime->setTimezone(new \DateTimeZone('UTC'));
+//
+//
+//        $endTime = new \DateTime($content->end_time);
+//        $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
+//        $endTime->setTimezone(new \DateTimeZone('UTC'));
 
-
-        $endTime = new \DateTime($content->end_time);
-        $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
-        $endTime->setTimezone(new \DateTimeZone('UTC'));
-
-        $task->setStartTime($startTime);
-        $task->setEndTime($endTime);
+//        $task->setStartTime($startTime);
+//        $task->setEndTime($endTime);
 
         $task->setTaskTypeFk($taskType);
 
@@ -116,6 +116,23 @@ class TasksController extends Controller
         if(isset($content->url)){
             $task->setUrl('https://agfa.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=' . $content->url);
         }
+
+        if($content->wholeDay){
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->start_time);
+            $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($content->end_time);
+            $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
+        }
+
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
+        $endTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $task->setStartTime($startTime);
+        $task->setEndTime($endTime);
 
         $em->flush();
 

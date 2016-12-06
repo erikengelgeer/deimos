@@ -141,10 +141,10 @@
                                     <span class="input-group-addon" id="sizing-addon4"><i
                                             class="fa fa-clock-o"></i></span>
                             <input type="text" class="form-control" placeholder="Start"
-                                   aria-describedby="sizing-addon1" ng-model="vm.selectedTask.start_time">
+                                   aria-describedby="sizing-addon1" ng-model="vm.selectedTask.start_time" ng-disabled="vm.selectedTask.wholeDay">
                             <span class="input-group-addon mid" id="sizing-addon5">-</span>
                             <input type="text" class="form-control" placeholder="End"
-                                   aria-describedby="sizing-addon2" ng-model="vm.selectedTask.end_time">
+                                   aria-describedby="sizing-addon2" ng-model="vm.selectedTask.end_time" ng-disabled="vm.selectedTask.wholeDay">
                         </div>
                     </div>
                 </div>
@@ -185,6 +185,13 @@
                                             </span>
                             <input type="text" class="form-control" ng-disabled="!link" ng-model="vm.selectedTask.url" placeholder="Service Now Ticket">
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Whole Day:</label>
+                        <br>
+                        <button class="btn" ng-class="{'btn-gray': !vm.selectedTask.wholeDay, 'btn-success': vm.selectedTask.wholeDay }" ng-click="vm.editToggleWholeDay()"><i class="fa fa-check"></i></button>
                     </div>
                 </div>
             </div>

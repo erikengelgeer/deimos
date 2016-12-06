@@ -26,6 +26,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
     vm.updateTask = updateTask;
     vm.changeDescription = changeDescription;
     vm.toggleWholeDay = toggleWholeDay;
+    vm.editToggleWholeDay = editToggleWholeDay;
 
     if ($rootScope.user.role_fk.role.toLowerCase() == 'agent') {
         $state.go('index');
@@ -230,6 +231,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         if (vm.selectedTask.end_time.length > 5) {
             vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
         }
+
+        if((vm.selectedTask.start_time == "0:00" || vm.selectedTask.start_time == "00:00") && vm.selectedTask.end_time == "23:59"){
+            vm.selectedTask.wholeDay = true;
+        } else {
+            vm.selectedTask.wholeDay = false;
+        }
+        console.log(vm.selectedTask);
     }
 
     function changeDescription(task) {
@@ -306,8 +314,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
                         for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                             if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
-                                vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
-                                vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
+                                if(vm.selectedTask.wholeDay == true){
+                                    vm.selectedShift.tasks[i].start_time = "0:00";
+                                    vm.selectedShift.tasks[i].end_time = "23:59";
+                                } else {
+                                    vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
+                                    vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
+                                }
                                 vm.selectedShift.tasks[i].description = vm.selectedTask.description;
                                 if (vm.selectedTask.description == 'Other' || vm.selectedTask.description == 'SuperService') {
                                     vm.selectedShift.tasks[i].url = vm.selectedTask.url;
@@ -365,6 +378,10 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
     function toggleWholeDay() {
         vm.task.wholeDay = !vm.task.wholeDay;
+    }
+
+    function editToggleWholeDay() {
+        vm.selectedTask.wholeDay = !vm.selectedTask.wholeDay;
     }
 
 
