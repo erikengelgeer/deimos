@@ -172,7 +172,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     var startTime = task.startTime.split(':');
                     var endTime = task.endTime.split(':');
 
-
                     if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                         vm.message = {
                             'title': 'Start time is invalid',
@@ -187,28 +186,27 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                             'icon': 'fa-exclamation',
                             'type': 'alert-danger'
                         }
+                    } else {
+                        task.shift = vm.selectedShift;
+                        vm.dataLoading = true;
+
+                        Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
+                            vm.selectedShift.tasks.push(response.data);
+                            vm.task = {};
+                            vm.task.wholeDay = false;
+
+                            vm.message = {
+                                'title': 'Task added',
+                                'content': 'The task is added to the shift',
+                                'icon': 'fa-check',
+                                'type': 'alert-success'
+                            }
+                        }).finally(function () {
+                            vm.dataLoading = false;
+                        })
                     }
                 }
             }
-
-            task.shift = vm.selectedShift;
-            vm.dataLoading = true;
-
-            Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
-                vm.selectedShift.tasks.push(response.data);
-                vm.task = {};
-                vm.task.wholeDay = false;
-
-                vm.message = {
-                    'title': 'Task added',
-                    'content': 'The task is added to the shift',
-                    'icon': 'fa-check',
-                    'type': 'alert-success'
-                }
-            }).finally(function () {
-                vm.dataLoading = false;
-            })
-
         }
     }
 
@@ -232,12 +230,18 @@ function PlanTaskController($rootScope, Api, $q, $state) {
             vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
         }
 
-        if((vm.selectedTask.start_time == "0:00" || vm.selectedTask.start_time == "00:00") && vm.selectedTask.end_time == "23:59"){
+        if ((vm.selectedTask.start_time == "0:00" || vm.selectedTask.start_time == "00:00") && vm.selectedTask.end_time == "23:59") {
             vm.selectedTask.wholeDay = true;
         } else {
             vm.selectedTask.wholeDay = false;
         }
-        console.log(vm.selectedTask);
+
+        if(vm.selectedTask.description != "SuperService" && vm.selectedTask.description != "Other"){
+            vm.selectedTask.url = null;
+        }else{
+            var countedUrl = vm.selectedTask.url.length;
+            vm.selectedTask.url = vm.selectedTask.url.substring(72, (countedUrl));
+        }
     }
 
     function changeDescription(task) {
@@ -314,7 +318,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
 
                         for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                             if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
-                                if(vm.selectedTask.wholeDay == true){
+                                if (vm.selectedTask.wholeDay == true) {
                                     vm.selectedShift.tasks[i].start_time = "0:00";
                                     vm.selectedShift.tasks[i].end_time = "23:59";
                                 } else {
