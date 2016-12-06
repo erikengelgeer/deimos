@@ -158,8 +158,17 @@ function Api($http) {
             findByUserAndDate: function (userId, date, timezone) {
                 return $http.get('api/shifts/user/' + userId + '/' + date + '?timezone=' + timezone);
             },
-            findByTeam: function (team, startDate, weeks, timezone) {
-                return $http.get('api/shifts/' + team + '?startDate=' + startDate + '&weeks=' + weeks + '&timezone=' + timezone);
+            findByTeam: function (team, startDate, weeks, timezone, user) {
+                return $http({
+                    url: 'api/shifts/' + team,
+                    method: "GET",
+                    params: {
+                        startDate: startDate,
+                        weeks: weeks,
+                        timezone: timezone,
+                        user: user
+                    }
+                });
             },
             add: function (data) {
                 return $http.post('api/shifts/', data);

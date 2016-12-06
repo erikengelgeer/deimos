@@ -199,6 +199,10 @@
         border-radius: 9999px;
         cursor: pointer;
 
+        i {
+            margin-left: 5px;
+        }
+
         &:hover {
             background-color: $primary-color;
             color: #fff;
@@ -226,5 +230,31 @@
             background-color: $primary-color;
             color: #fff;
         }
+    }
+}
+
+.user-filter {
+    height: 50px;
+    background-color: #fff;
+    padding: 0 15px;
+
+    .filter {
+        padding: 5px 10px;
+        display: inline-block;
+        background-color: #e8e8e8;
+        margin: 10px 10px 10px 0;
+        border-radius: 9999px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $primary-color;
+            color: #fff;
+        }
+    }
+
+    em {
+        color: rgba(0, 0, 0, .5);
+        font-size: 90%;
+        line-height: 50px;
     }
 }

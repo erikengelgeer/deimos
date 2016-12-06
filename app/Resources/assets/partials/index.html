@@ -1,6 +1,8 @@
 <div class="schedule-filter">
     <div class="filter" ng-click="vm.filter()">{{ vm.selectedMonth }} - {{ vm.selectedYear }}</div>
     <div class="filter" ng-click="vm.filterToday()">Today</div>
+    <div class="filter pull-right" ng-if="vm.userFilterSelected" ng-click="vm.clearUserFilter()">{{ vm.selectedUserTemp.real_name }}<i class="fa fa-times"></i></div>
+    <div class="filter pull-right" ng-if="!vm.userFilterSelected" ng-click="vm.filterUser()">Select a user</div>
 </div>
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
@@ -194,6 +196,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="vm.applyFilter()">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="filter-user">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Filter Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row filter-modal">
+                    <div class="col-md-7">
+                        <h4>Users</h4>
+                        <div class="filter" ng-repeat="(key, user) in vm.users"
+                             ng-class="{'active': user.real_name == vm.selectedUserTemp.real_name}" ng-click="vm.filterUser(key)">
+                            {{ user.real_name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.applyUserFilter()">Apply</button>
             </div>
         </div>
     </div>
