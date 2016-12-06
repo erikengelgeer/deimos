@@ -68,10 +68,10 @@
                                     <span class="input-group-addon" id="sizing-addon1"><i
                                             class="fa fa-clock-o"></i></span>
                                     <input type="text" class="form-control" placeholder="Start"
-                                           aria-describedby="sizing-addon1" ng-model="vm.task.startTime">
+                                           aria-describedby="sizing-addon1" ng-model="vm.task.startTime" ng-disabled="vm.task.wholeDay">
                                     <span class="input-group-addon mid" id="sizing-addon2">-</span>
                                     <input type="text" class="form-control" placeholder="End"
-                                           aria-describedby="sizing-addon2" ng-model="vm.task.endTime">
+                                           aria-describedby="sizing-addon2" ng-model="vm.task.endTime" ng-disabled="vm.task.wholeDay">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -103,6 +103,11 @@
                                     <input type="text" id="description" class="form-control"
                                            ng-model="vm.task.description">
                                 </div>
+                            </div>
+                            <div class="col-md-12 ">
+                                <label>Whole Day:</label>
+                                <br>
+                                <button class="btn" ng-class="{'btn-gray': !vm.task.wholeDay, 'btn-success': vm.task.wholeDay }" ng-click="vm.toggleWholeDay()"><i class="fa fa-check"></i></button>
                             </div>
                         </div>
                         <div class="row">
