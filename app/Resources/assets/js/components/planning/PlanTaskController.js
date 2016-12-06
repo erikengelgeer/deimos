@@ -238,6 +238,7 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 vm.selectedTask.task_type_fk.id = vm.taskTypes[i].id;
                 vm.selectedTask.task_type_fk.short = vm.taskTypes[i].short;
                 vm.selectedTask.task_type_fk.override_description = vm.taskTypes[i].override_description;
+                vm.selectedTask.task_type_fk.description = vm.taskTypes[i].description;
                 vm.selectedTask.description = vm.taskTypes[i].description;
                 break;
             }
@@ -306,7 +307,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                                 vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
                                 vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
                                 vm.selectedShift.tasks[i].description = vm.selectedTask.description;
-                                break
+                                if(vm.selectedTask.description == 'Other' || vm.selectedTask.description == 'SuperService') {
+                                    vm.selectedShift.tasks[i].url = vm.selectedTask.url;
+                                } else {
+                                    vm.selectedShift.tasks[i].url = null;
+                                }
+
+                                break;
                             }
                         }
 

@@ -111,7 +111,7 @@ class TasksController extends Controller
         $task->setDescription($content->description);
 
         if(isset($content->url)){
-            $task->setUrl($content->url);
+            $task->setUrl('https://agfa.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=' . $content->url);
         }
 
         $em->flush();
