@@ -126,15 +126,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         vm.message = null;
 
         if (task == undefined) {
-
             vm.message = {
                 'title': 'Error',
                 'content': 'You can\'t add an empty task to the shift.',
                 'icon': 'fa-exclamation',
                 'type': 'alert-danger'
             }
-
-        } else if (((task.startTime == null || task.endTime == null) && !task.wholeDay ) || task.taskType == null) {
+        } else if (((task.startTime == null || task.endTime == null) && task.wholeDay == false ) || task.taskType == null) {
             vm.message = {
                 'title': 'All fields are required',
                 'content': 'You can\'t add an empty task to the shift.',
@@ -149,7 +147,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 'type': 'alert-danger'
             }
         } else {
-            // DIRTY FIX YO
             if (task.wholeDay == false) {
                 if (vm.selectedShift.start_time.length > 5) {
                     var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
@@ -159,78 +156,58 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 if (vm.selectedShift.end_time.length > 5) {
                     var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
                 }
-            }
+                if ((Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                    Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                    Date.parse('01/01/1970 ' + task.endTime) <= Date.parse('01/01/1970 ' + task.startTime) ||
+                    Date.parse('01/01/1970 ' + task.endTime) > Date.parse('01/01/1970 ' + shiftEndTime))) {
 
-            if ((Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                Date.parse('01/01/1970 ' + task.endTime) <= Date.parse('01/01/1970 ' + task.startTime) ||
-                Date.parse('01/01/1970 ' + task.endTime) > Date.parse('01/01/1970 ' + shiftEndTime)) && task.wholeDay == false) {
-
-                vm.message = {
-                    'title': 'The given times are invalid.',
-                    'content': 'The chosen time is invalid, please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
-
-            } else {
-                if (task.wholeDay == false) {
+                    vm.message = {
+                        'title': 'The given times are invalid.',
+                        'content': 'The chosen time is invalid, please try again.',
+                        'icon': 'fa-exclamation',
+                        'type': 'alert-danger'
+                    }
+                } else {
                     var startTime = task.startTime.split(':');
                     var endTime = task.endTime.split(':');
 
 
-                    if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0 && task.wholeDay == false) {
+                    if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                         vm.message = {
                             'title': 'Start time is invalid',
                             'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                             'icon': 'fa-exclamation',
                             'type': 'alert-danger'
                         }
-                    } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0 && task.wholeDay == false) {
+                    } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
                         vm.message = {
                             'title': 'End time is invalid',
                             'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes. Please try again.',
                             'icon': 'fa-exclamation',
                             'type': 'alert-danger'
                         }
-                    } else {
-                        task.shift = vm.selectedShift;
-                        vm.dataLoading = true;
-
-                        Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
-                            vm.selectedShift.tasks.push(response.data);
-                            vm.task = {};
-
-                            vm.message = {
-                                'title': 'Task added',
-                                'content': 'The task is added to the shift',
-                                'icon': 'fa-check',
-                                'type': 'alert-success'
-                            }
-                        }).finally(function () {
-                            vm.dataLoading = false;
-                        })
                     }
-                } else {
-                    task.shift = vm.selectedShift;
-                    vm.dataLoading = true;
-
-                    Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
-                        vm.selectedShift.tasks.push(response.data);
-                        vm.task = {};
-
-                        vm.message = {
-                            'title': 'Task added',
-                            'content': 'The task is added to the shift',
-                            'icon': 'fa-check',
-                            'type': 'alert-success'
-                        }
-                    }).finally(function () {
-                        vm.dataLoading = false;
-                    })
                 }
-
             }
+
+            task.shift = vm.selectedShift;
+            vm.dataLoading = true;
+
+            Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
+                vm.selectedShift.tasks.push(response.data);
+                vm.task = {};
+                vm.task.wholeDay = false;
+
+                vm.message = {
+                    'title': 'Task added',
+                    'content': 'The task is added to the shift',
+                    'icon': 'fa-check',
+                    'type': 'alert-success'
+                }
+            }).finally(function () {
+                vm.dataLoading = false;
+            })
+
         }
     }
 
