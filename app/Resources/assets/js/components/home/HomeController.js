@@ -10,6 +10,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTeam = null;
     vm.info = [];
     vm.selectedShift = null;
+    vm.selectedTask = null;
     vm.message = null;
 
     // saves the start and endTime from the editShift function for the toggleWholeDay function
@@ -51,7 +52,10 @@ function HomeController($rootScope, Api, $timeout) {
     vm.editShift = editShift;
     vm.updateShift = updateShift;
     vm.toggleHome = toggleHome;
-    vm.toggleWholeDay = toggleWholeDay;
+    vm.toggleWholeDayShift = toggleWholeDayShift;
+    vm.toggleWholeDayTask = toggleWholeDayTask;
+    vm.editTask = editTask;
+    vm.updateTask = updateTask;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -458,7 +462,7 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     // toggle for wholeDay
-    function toggleWholeDay(shift) {
+    function toggleWholeDayShift(shift) {
         shift.wholeDay = !shift.wholeDay;
 
         // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
@@ -479,5 +483,65 @@ function HomeController($rootScope, Api, $timeout) {
                 vm.selectedShift.shift.endTime = saveEndTime;
             }
         }
+    }
+
+    function toggleWholeDayTask(task){
+        task.wholeDay = !task.wholeDay;
+
+        // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
+        if (vm.selectedTask.wholeDay == true) {
+            vm.selectedTask.startTime = '00:00';
+            vm.selectedTask.endTime = '23:59';
+
+            // checks if wholeDay is false and then sets the start time as the saved starTime from when you opened the edit modal.
+        } else if (vm.selectedTask.wholeDay == false) {
+            vm.selectedTask.startTime = saveStartTime;
+
+            // if saveEndTime equals 23:59 sets it to 00:00 for editing purposes
+            if (saveEndTime == '23:59') {
+                vm.selectedTask.endTime = '00:00';
+
+                // if end time is not 23:59 then set the end time as the saved endTime from when you opened the edit modal
+            } else {
+                vm.selectedTask.endTime = saveEndTime;
+            }
+        }
+    }
+
+    //edit task on the fly
+    function editTask(task, shift) {
+        vm.message = null;
+        $('#edit-task-modal').modal();
+        vm.selectedTask = angular.copy(task);
+        vm.selectedShift = angular.copy(shift);
+        console.log(vm.selectedTask);
+
+        if(vm.selectedTask.wholeDay == undefined) {
+            vm.selectedTask.wholeDay = false;
+        }
+
+        // DIRTY FIX YO
+        if (vm.selectedTask.taskStartTime.length > 5) {
+            vm.selectedTask.startTime = vm.selectedTask.taskStartTime.substring(11, 16);
+        }
+        // DIRTY FIX YO
+        if (vm.selectedTask.taskEndTime.length > 5) {
+            vm.selectedTask.endTime = vm.selectedTask.taskEndTime.substring(11, 16);
+        }
+        console.log(vm.selectedTask);
+
+        saveStartTime = vm.selectedTask.startTime;
+        saveEndTime = vm.selectedTask.endTime;
+
+        if (vm.selectedTask.startTime == '00:00' && vm.selectedTask.endTime == '23:59') {
+            vm.selectedTask.startTime = '00:00';
+            vm.selectedTask.endTime = '00:00';
+
+            vm.selectedTask.wholeDay = !vm.selectedTask.wholeDay;
+        }
+    }
+
+    function updateTask() {
+
     }
 }

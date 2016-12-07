@@ -172,6 +172,27 @@
             color: #000000;
         }
     }
+
+    .task-pencil {
+        //margin-top: 7px;
+        padding: 4px;
+        cursor: pointer;
+
+        color: rgba(125, 125, 125, 0.7);
+        display: block;
+        float: right;
+        width: 20px;
+        height: 20px;
+        border-radius: 9999px;
+        text-align: center;
+
+        transition: all .15s ease-in-out;
+
+        &:hover {
+            background: rgba(0, 0, 0, .125);
+            color: #000000;
+        }
+    }
 }
 
 .not-planned {
@@ -228,3 +249,4 @@
         }
     }
 }
+
