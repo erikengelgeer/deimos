@@ -11,6 +11,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.info = [];
     vm.selectedShift = null;
     vm.message = null;
+    vm.userFilterSelected = false;
 
     // saves the start and endTime from the editShift function for the toggleWholeDay function
     var saveStartTime;
@@ -52,6 +53,10 @@ function HomeController($rootScope, Api, $timeout) {
     vm.updateShift = updateShift;
     vm.toggleHome = toggleHome;
     vm.toggleWholeDay = toggleWholeDay;
+    vm.filterUser = filterUser;
+    vm.applyUserFilter = applyUserFilter;
+    vm.clearUserFilter = clearUserFilter;
+    vm.buildScheduleLoop = buildScheduleLoop;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -81,7 +86,7 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     function loadShiftsByTeam(teamId) {
-
+        vm.userFilterSelected = false;
         // Makes sure that everything will be cleared
         vm.users = [];
         vm.planning = [];
@@ -92,6 +97,24 @@ function HomeController($rootScope, Api, $timeout) {
 
         var startDate = vm.startDate.getFullYear() + "-" + (vm.startDate.getMonth() + 1) + "-" + vm.startDate.getDate();
         Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks, $rootScope.team.timezone).then(function (response) {
+            vm.shifts = response.data;
+
+            buildSchedule(teamId);
+        });
+    }
+
+    function loadShiftsByUser(userId, teamId) {
+
+        // Makes sure that everything will be cleared
+        vm.users = [];
+        vm.planning = [];
+        vm.planningUsers = [];
+        vm.shifts = [];
+
+        $rootScope.loading = true;
+
+        var startDate = vm.startDate.getFullYear() + "-" + (vm.startDate.getMonth() + 1) + "-" + vm.startDate.getDate();
+        Api.shifts.findByTeam(teamId, startDate, vm.totalWeeks, $rootScope.team.timezone, vm.selectedUserTemp, userId).then(function (response) {
             vm.shifts = response.data;
 
             buildSchedule(teamId);
@@ -128,33 +151,47 @@ function HomeController($rootScope, Api, $timeout) {
 
     function buildScheduleContent(teamId) {
         // Adds content to the schedule, users but not shifts and tasks yet.
-        Api.users.findByTeam(teamId).then(function (response) {
-            vm.users = response.data;
+        console.log(vm.userFilterSelected);
+        if (vm.userFilterSelected) {
+            Api.users.findOne(vm.selectedUserTemp.id).then(function (response) {
+                vm.users = [response.data];
 
-            var user = [];
-            var week = [];
+                buildScheduleLoop()
+            });
+        }
+        else {
+            Api.users.findByTeam(teamId).then(function (response) {
+                vm.users = response.data;
 
-            for (var w = 0; w <= (vm.totalWeeks - 1); w++) {
+                buildScheduleLoop()
+            });
+        }
+    }
 
-                for (var i = 0; i < vm.users.length; i++) {
+    function buildScheduleLoop() {
+        var user = [];
+        var week = [];
 
-                    for (var j = 0; j <= 7; j++) {
-                        user.push({
-                            day: j,
-                            user: vm.users[i]
-                        });
-                    }
+        for (var w = 0; w <= (vm.totalWeeks - 1); w++) {
 
-                    week.push(user);
-                    user = [];
+            for (var i = 0; i < vm.users.length; i++) {
 
+                for (var j = 0; j <= 7; j++) {
+                    user.push({
+                        day: j,
+                        user: vm.users[i]
+                    });
                 }
-                vm.planningUsers.push(week);
-                week = [];
-            }
 
-            buildScheduleCss();
-        });
+                week.push(user);
+                user = [];
+
+            }
+            vm.planningUsers.push(week);
+            week = [];
+        }
+
+        buildScheduleCss();
     }
 
     function getMonday(d) {
@@ -327,6 +364,28 @@ function HomeController($rootScope, Api, $timeout) {
         loadShiftsByTeam($rootScope.team.id);
     }
 
+
+    function filterUser(key) {
+        vm.selectedUserTemp = vm.users[key];
+
+        $('#filter-user').modal();
+    }
+
+    function applyUserFilter() {
+        vm.planningUsers.user = vm.selectedUserTemp;
+        vm.selectedUser = true;
+
+        // console.log(vm.selectedUserTemp);
+
+
+        if(vm.selectedUserTemp != null) {
+            vm.userFilterSelected = true;
+            $('#filter-user').modal('hide');
+            loadShiftsByUser(vm.selectedUserTemp.id, $rootScope.team.id);
+        }
+
+    }
+
     function applyFilter() {
         vm.selectedYear = vm.selectedYearTemp;
         vm.selectedMonth = vm.selectedMonthTemp;
@@ -347,6 +406,11 @@ function HomeController($rootScope, Api, $timeout) {
         vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
 
         $('#filter-modal').modal('hide');
+        loadShiftsByTeam($rootScope.team.id);
+    }
+
+    function clearUserFilter() {
+        vm.userFilterSelected = false;
         loadShiftsByTeam($rootScope.team.id);
     }
 
