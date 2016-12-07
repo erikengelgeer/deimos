@@ -76,9 +76,8 @@ class TasksController extends Controller
         $task->setStartTime($startTime);
         $task->setEndTime($endTime);
 
-        dump($task);
-//        $em->persist($task);
-//        $em->flush();
+        $em->persist($task);
+        $em->flush();
 
         $data = $this->get('serializer')->serialize($task, 'json');
         return new Response($data, 200, ['Content-type' => 'application/json']);
@@ -103,15 +102,11 @@ class TasksController extends Controller
 
         $task->setDescription($content->description);
 
-        dump($content->url);
-
-        if (isset($content->url)) {
-            if ($content->url != null) {
+        if ($content->task_type_fk->description == "Other" || $content->task_type_fk->description == "SuperService") {
+            if (isset($content->url)) {
                 $task->setUrl('https://agfa.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=' . $content->url);
-            }else {
-                $task->setUrl(null);
             }
-        } else{
+        } else {
             $task->setUrl(null);
         }
 
