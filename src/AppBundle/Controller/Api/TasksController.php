@@ -134,6 +134,43 @@ class TasksController extends Controller
     }
 
     /**
+     * @Route("/edit/{id}")
+     * @Method("PUT")
+     * @param Task $task
+     * @return response
+     * Update a task on the fly
+     */
+    public function updateOnTheFlyAction(Task $task, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $content = json_decode($request->getContent());
+
+        $timezone = $request->query->get('timezone');
+
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->startTime);
+            $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($content->endTime);
+            $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
+        }
+
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
+        $endTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $task->setStartTime($startTime);
+        $task->setEndTime($endTime);
+
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize($task, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
      * @Route("/{id}")
      * @Method("DELETE")
      * @param Task $task

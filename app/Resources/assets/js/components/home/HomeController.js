@@ -55,7 +55,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.toggleWholeDayShift = toggleWholeDayShift;
     vm.toggleWholeDayTask = toggleWholeDayTask;
     vm.editTask = editTask;
-    vm.updateTask = updateTask;
+    vm.updateTaskOnTheFly = updateTaskOnTheFly;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -514,7 +514,6 @@ function HomeController($rootScope, Api, $timeout) {
         $('#edit-task-modal').modal();
         vm.selectedTask = angular.copy(task);
         vm.selectedShift = angular.copy(shift);
-        console.log(vm.selectedTask);
 
         if(vm.selectedTask.wholeDay == undefined) {
             vm.selectedTask.wholeDay = false;
@@ -528,7 +527,6 @@ function HomeController($rootScope, Api, $timeout) {
         if (vm.selectedTask.taskEndTime.length > 5) {
             vm.selectedTask.endTime = vm.selectedTask.taskEndTime.substring(11, 16);
         }
-        console.log(vm.selectedTask);
 
         saveStartTime = vm.selectedTask.startTime;
         saveEndTime = vm.selectedTask.endTime;
@@ -541,7 +539,62 @@ function HomeController($rootScope, Api, $timeout) {
         }
     }
 
-    function updateTask() {
+    function updateTaskOnTheFly() {
+        vm.message = null;
 
+        var startDate = (Date.parse('01/01/1970 ' + vm.selectedTask.startTime));
+        var endDate = (Date.parse('01/01/1970 ' + vm.selectedTask.endTime));
+
+        if (endDate >= startDate && startDate <= endDate) {
+            var startTime = new Date(startDate);
+            var endTime = new Date(endDate);
+
+            if ((startTime.getMinutes() % 15 != 0 || startTime.getHours() < 0 || startTime.getHours() > 23 || startTime.getMinutes() > 59 || startTime.getMinutes() < 0) && !vm.selectedTask.wholeDay) {
+
+                vm.message = {
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes, and the hours should be between 00-23. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+
+            } else if ((endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) && !vm.selectedTask.wholeDay) {
+
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes, and the hours should be between 00-23. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+
+            } else {
+                vm.dataLoading = true;
+
+                Api.tasks.updateOnTheFy(vm.selectedTask, $rootScope.team.timezone).then(function () {
+                    vm.message = {
+                        'title': 'Successfully updated',
+                        'content': 'The task has successfully been updated.',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    };
+
+                    $('#edit-task-modal').modal('hide')
+
+                    loadShiftsByTeam($rootScope.team.id);
+
+                    vm.dataLoading = false;
+                }).finally(function () {
+                    vm.dataLoading = false;
+                })
+            }
+
+        } else {
+            vm.message = {
+                'title': 'Invalid time',
+                'content': 'The end time may not be lower than the start time. Please try again.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
+            }
+        }
     }
 }

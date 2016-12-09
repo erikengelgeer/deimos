@@ -186,6 +186,9 @@ function Api($http) {
             },
             update: function (data, timezone) {
                 return $http.put('api/tasks/' + data.id + '?timezone=' + timezone, data);
+            },
+            updateOnTheFy: function (data, timezone) {
+                return $http.put('api/tasks/edit/' + data.taskId + '?timezone=' +timezone, data);
             }
         }
     }
