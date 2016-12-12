@@ -25,6 +25,7 @@
             &:first-child {
                 line-height: 58px;
                 padding: 0;
+                background-color: #eff0f1;
             }
         }
 
@@ -98,18 +99,18 @@
                     }
                 }
 
-                &.today {
-                    background-color: #e8e8e8;
-
-                    .shift {
-                        background-color: #e8e8e8;
-                        border-color: #d3d3d3;
-                    }
-
-                    .task {
-                        background-color: #cacaca;
-                    }
-                }
+                //&.today {
+                //    background-color: #e8e8e8;
+                //
+                //    .shift {
+                //        background-color: #e8e8e8;
+                //        border-color: #d3d3d3;
+                //    }
+                //
+                //    .task {
+                //        background-color: #cacaca;
+                //    }
+                //}
 
                 &:hover {
                     .shift {
@@ -221,10 +222,12 @@
         border-radius: 9999px;
         cursor: pointer;
 
+
         &.active,
         &:hover {
             background-color: $primary-color;
             color: #fff;
+
         }
     }
 }

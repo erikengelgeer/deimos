@@ -1,6 +1,6 @@
 <div class="schedule-filter">
-    <div class="filter" ng-click="vm.filter()">{{ vm.selectedMonth }} - {{ vm.selectedYear }}</div>
     <div class="filter" ng-click="vm.filterToday()">Today</div>
+    <div class="filter" ng-click="vm.filter()">{{ vm.selectedMonth }} - {{ vm.selectedYear }}</div>
 </div>
 <div class="schedule-container">
     <div class="schedule" ng-repeat="(key, planning) in vm.planning" id="{{ key + 1 }}" ng-init="planningKey = key">
@@ -28,7 +28,7 @@
             <div class="body-row" ng-repeat="user in vm.planningUsers[key]"
                  ng-class="{'active': $root.user.id == user[0].user.id } ">
                 <div class="item" ng-repeat="(key, day) in user"
-                     ng-init="today = vm.getPlanningContent(day, key, planningKey)" ng-class="{'today': today.today}">
+                     ng-init="today = vm.getPlanningContent(day, key, planningKey)" ng-class="{'today': today.today && key > 0}">
                     <span ng-if="key == 0">
                         {{ day.user.real_name }}
                     </span>
