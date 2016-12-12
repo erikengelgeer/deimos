@@ -52,22 +52,25 @@ class TasksController extends Controller
         $shift = $em->getRepository('AppBundle:Shift')->find($content->shift->id);
 
         $task = new Task();
-        $task->setStartTime(new \DateTime($content->startTime));
-        $task->setEndTime(new \DateTime($content->endTime));
         $task->setDescription($content->taskType->description);
         $task->setShiftFk($shift);
         $task->setTaskTypeFk($taskType);
 
         (isset($content->description)) ? $task->setDescription($content->taskType->description . " - " . $content->description) : $task->setDescription($content->taskType->description);
 
-        if(isset($content->url)){
+        if (isset($content->url)) {
             $task->setUrl('https://agfa.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=' . $content->url);
         }
 
-        $startTime = new \DateTime($task->getStartTime()->format('H:i:s'), new \DateTimeZone($timezone));
-        $startTime->setTimezone(new \DateTimeZone('UTC'));
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->startTime, new \DateTimeZone($timezone));
+            $endTime = new \DateTime($content->endTime, new \DateTimeZone($timezone));
+        }
 
-        $endTime = new \DateTime($task->getEndTime()->format('H:i:s'), new \DateTimeZone($timezone));
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
         $endTime->setTimezone(new \DateTimeZone('UTC'));
 
         $task->setStartTime($startTime);
@@ -86,7 +89,8 @@ class TasksController extends Controller
      *
      * Update a single task
      */
-    public function updateAction(Task $task, Request $request) {
+    public function updateAction(Task $task, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $content = json_decode($request->getContent());
 
@@ -94,24 +98,71 @@ class TasksController extends Controller
 
         $taskType = $em->getRepository('AppBundle:TaskType')->find($content->task_type_fk->id);
 
-        $startTime = new \DateTime($content->start_time);
-        $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+        $task->setTaskTypeFk($taskType);
+
+        $task->setDescription($content->description);
+
+        if ($content->task_type_fk->description == "Other" || $content->task_type_fk->description == "SuperService") {
+            if (isset($content->url)) {
+                $task->setUrl('https://agfa.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=' . $content->url);
+            }
+        } else {
+            $task->setUrl(null);
+        }
+
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->start_time);
+            $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($content->end_time);
+            $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
+        }
+
         $startTime->setTimezone(new \DateTimeZone('UTC'));
-
-
-        $endTime = new \DateTime($content->end_time);
-        $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
         $endTime->setTimezone(new \DateTimeZone('UTC'));
 
         $task->setStartTime($startTime);
         $task->setEndTime($endTime);
 
-        $task->setTaskTypeFk($taskType);
-        $task->setDescription($taskType->getDescription());
+        $em->flush();
 
-        if(isset($content->url)){
-            $task->setUrl($content->url);
+        $data = $this->get('serializer')->serialize($task, 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
+    /**
+     * @Route("/edit/{id}")
+     * @Method("PUT")
+     * @param Task $task
+     * @return response
+     * Update a task on the fly
+     */
+    public function updateOnTheFlyAction(Task $task, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $content = json_decode($request->getContent());
+
+        $timezone = $request->query->get('timezone');
+
+        if ($content->wholeDay) {
+            $startTime = new \DateTime("1970-01-01 00:00:00", new \DateTimeZone($timezone));
+            $endTime = new \DateTime("1970-01-01 23:59:59", new \DateTimeZone($timezone));
+        } else {
+            $startTime = new \DateTime($content->startTime);
+            $startTime = new \DateTime($startTime->format('H:i:s'), new \DateTimeZone($timezone));
+
+            $endTime = new \DateTime($content->endTime);
+            $endTime = new \DateTime($endTime->format('H:i:s'), new \DateTimeZone($timezone));
         }
+
+        $startTime->setTimezone(new \DateTimeZone('UTC'));
+        $endTime->setTimezone(new \DateTimeZone('UTC'));
+
+        $task->setStartTime($startTime);
+        $task->setEndTime($endTime);
 
         $em->flush();
 
