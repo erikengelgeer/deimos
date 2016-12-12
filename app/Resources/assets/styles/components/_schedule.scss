@@ -25,6 +25,7 @@
             &:first-child {
                 line-height: 58px;
                 padding: 0;
+                background-color: #eff0f1;
             }
         }
 
@@ -98,18 +99,18 @@
                     }
                 }
 
-                &.today {
-                    background-color: #e8e8e8;
-
-                    .shift {
-                        background-color: #e8e8e8;
-                        border-color: #d3d3d3;
-                    }
-
-                    .task {
-                        background-color: #cacaca;
-                    }
-                }
+                //&.today {
+                //    background-color: #e8e8e8;
+                //
+                //    .shift {
+                //        background-color: #e8e8e8;
+                //        border-color: #d3d3d3;
+                //    }
+                //
+                //    .task {
+                //        background-color: #cacaca;
+                //    }
+                //}
 
                 &:hover {
                     .shift {
@@ -154,6 +155,27 @@
 
     .index-info {
         margin-top: 7px;
+        padding: 4px;
+        cursor: pointer;
+
+        color: rgba(125, 125, 125, 0.7);
+        display: block;
+        float: right;
+        width: 20px;
+        height: 20px;
+        border-radius: 9999px;
+        text-align: center;
+
+        transition: all .15s ease-in-out;
+
+        &:hover {
+            background: rgba(0, 0, 0, .125);
+            color: #000000;
+        }
+    }
+
+    .task-pencil {
+        //margin-top: 7px;
         padding: 4px;
         cursor: pointer;
 
@@ -225,10 +247,12 @@
         border-radius: 9999px;
         cursor: pointer;
 
+
         &.active,
         &:hover {
             background-color: $primary-color;
             color: #fff;
+
         }
     }
 }
@@ -258,3 +282,4 @@
         line-height: 50px;
     }
 }
+

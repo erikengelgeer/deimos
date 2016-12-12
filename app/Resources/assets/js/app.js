@@ -34,15 +34,14 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
 
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
-
             // watches for changes in team.id
-            $rootScope.$watch('team.id', function () {
+            //     $rootScope.$watch('team.id', function () {
 
                 // reloads the shiftTypes to show
-                Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
-                    $rootScope.shiftTypes = response.data;
+                Api.shiftType.findLegend().then(function (response) {
+                    $rootScope.shiftTypes = _.uniqBy(response.data, 'description');
                 });
-            });
+            // });
 
         }).catch(function (err) {
             if (err.status == 401) {

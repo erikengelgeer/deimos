@@ -10,6 +10,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTeam = null;
     vm.info = [];
     vm.selectedShift = null;
+    vm.selectedTask = null;
     vm.message = null;
     vm.userFilterSelected = false;
 
@@ -18,11 +19,15 @@ function HomeController($rootScope, Api, $timeout) {
     var saveEndTime;
 
     var today = new Date();
+
     vm.formattedToday = (today.getDate() + 1) + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     // ---
     vm.currentYear = new Date().getFullYear();
-    vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
-    vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+    // vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+    // vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+    vm.startDate = getMonday(new Date());
+    vm.endDate = getSundayIn3Weeks(new Date());
+
 
     // 604800000 = 1 week
     vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
@@ -52,11 +57,14 @@ function HomeController($rootScope, Api, $timeout) {
     vm.editShift = editShift;
     vm.updateShift = updateShift;
     vm.toggleHome = toggleHome;
-    vm.toggleWholeDay = toggleWholeDay;
     vm.filterUser = filterUser;
     vm.applyUserFilter = applyUserFilter;
     vm.clearUserFilter = clearUserFilter;
     vm.buildScheduleLoop = buildScheduleLoop;
+    vm.toggleWholeDayShift = toggleWholeDayShift;
+    vm.toggleWholeDayTask = toggleWholeDayTask;
+    vm.editTask = editTask;
+    vm.updateTaskOnTheFly = updateTaskOnTheFly;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -203,6 +211,15 @@ function HomeController($rootScope, Api, $timeout) {
         return new Date(d.setDate(diff));
     }
 
+    function getSundayIn3Weeks(d){
+        d = new Date(d);
+
+        var day = d.getDay();
+        var diff = d.getDate() - day + (day == 7 ? +6 : 28);
+
+        return new Date(d.setDate(diff));
+    }
+
     function getPlanningContent(day, key, planningKey) {
 
         // get current date of a planning column
@@ -315,12 +332,6 @@ function HomeController($rootScope, Api, $timeout) {
             // stops loading after everything is built
             $rootScope.loading = false;
 
-            setTimeout(function () {
-                $('.schedule-container').animate({
-                    scrollTop: $('.today-heading').offset().top - 135
-                }, 1000, "swing");
-            }, 0)
-
         });
     }
 
@@ -349,12 +360,16 @@ function HomeController($rootScope, Api, $timeout) {
 
     function filterToday() {
         vm.currentYear = new Date().getFullYear();
-        vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
-        vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+        // vm.startDate = new Date(vm.currentYear + '-' + (parseInt(new Date().getMonth()) + 1) + '-1');
+        vm.startDate = getMonday(new Date());
+        // vm.endDate = new Date(vm.currentYear, (parseInt(new Date().getMonth()) + 1), 0);
+        vm.endDate = getSundayIn3Weeks(new Date());
+
+        console.log(vm.startDate, vm.endDate);
 
         // 604800000 = 1 week
         vm.totalWeeks = Math.ceil((vm.endDate - vm.startDate) / 604800000);
-
+        //
         vm.selectedYear = vm.currentYear;
         vm.selectedMonth = vm.months[new Date().getMonth()];
 
@@ -522,7 +537,7 @@ function HomeController($rootScope, Api, $timeout) {
     }
 
     // toggle for wholeDay
-    function toggleWholeDay(shift) {
+    function toggleWholeDayShift(shift) {
         shift.wholeDay = !shift.wholeDay;
 
         // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
@@ -541,6 +556,119 @@ function HomeController($rootScope, Api, $timeout) {
                 // if end time is not 23:59 then set the end time as the saved endTime from when you opened the edit modal
             } else {
                 vm.selectedShift.shift.endTime = saveEndTime;
+            }
+        }
+    }
+
+    function toggleWholeDayTask(task){
+        task.wholeDay = !task.wholeDay;
+
+        // checks if wholeDay = true and then changes the time to 00:00 and 23:59 so that it shows as whole day on the planner
+        if (vm.selectedTask.wholeDay == true) {
+            vm.selectedTask.startTime = '00:00';
+            vm.selectedTask.endTime = '23:59';
+
+            // checks if wholeDay is false and then sets the start time as the saved starTime from when you opened the edit modal.
+        } else if (vm.selectedTask.wholeDay == false) {
+            vm.selectedTask.startTime = saveStartTime;
+
+            // if saveEndTime equals 23:59 sets it to 00:00 for editing purposes
+            if (saveEndTime == '23:59') {
+                vm.selectedTask.endTime = '00:00';
+
+                // if end time is not 23:59 then set the end time as the saved endTime from when you opened the edit modal
+            } else {
+                vm.selectedTask.endTime = saveEndTime;
+            }
+        }
+    }
+
+    //edit task on the fly
+    function editTask(task, shift) {
+        vm.message = null;
+        $('#edit-task-modal').modal();
+        vm.selectedTask = angular.copy(task);
+        vm.selectedShift = angular.copy(shift);
+
+        if(vm.selectedTask.wholeDay == undefined) {
+            vm.selectedTask.wholeDay = false;
+        }
+
+        // DIRTY FIX YO
+        if (vm.selectedTask.taskStartTime.length > 5) {
+            vm.selectedTask.startTime = vm.selectedTask.taskStartTime.substring(11, 16);
+        }
+        // DIRTY FIX YO
+        if (vm.selectedTask.taskEndTime.length > 5) {
+            vm.selectedTask.endTime = vm.selectedTask.taskEndTime.substring(11, 16);
+        }
+
+        saveStartTime = vm.selectedTask.startTime;
+        saveEndTime = vm.selectedTask.endTime;
+
+        if (vm.selectedTask.startTime == '00:00' && vm.selectedTask.endTime == '23:59') {
+            vm.selectedTask.startTime = '00:00';
+            vm.selectedTask.endTime = '00:00';
+
+            vm.selectedTask.wholeDay = !vm.selectedTask.wholeDay;
+        }
+    }
+
+    function updateTaskOnTheFly() {
+        vm.message = null;
+
+        var startDate = (Date.parse('01/01/1970 ' + vm.selectedTask.startTime));
+        var endDate = (Date.parse('01/01/1970 ' + vm.selectedTask.endTime));
+
+        if (endDate >= startDate && startDate <= endDate) {
+            var startTime = new Date(startDate);
+            var endTime = new Date(endDate);
+
+            if ((startTime.getMinutes() % 15 != 0 || startTime.getHours() < 0 || startTime.getHours() > 23 || startTime.getMinutes() > 59 || startTime.getMinutes() < 0) && !vm.selectedTask.wholeDay) {
+
+                vm.message = {
+                    'title': 'Start time is invalid',
+                    'content': 'The chosen start time is invalid, the time must be set in steps of 15 minutes, and the hours should be between 00-23. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+
+            } else if ((endTime.getMinutes() % 15 != 0 || endTime.getHours() < 0 || endTime.getHours() > 23 || endTime.getMinutes() > 59 || endTime.getMinutes() < 0) && !vm.selectedTask.wholeDay) {
+
+                vm.message = {
+                    'title': 'End time is invalid',
+                    'content': 'The chosen end time is invalid, the time must be set in steps of 15 minutes, and the hours should be between 00-23. Please try again.',
+                    'icon': 'fa-exclamation',
+                    'type': 'alert-danger'
+                };
+
+            } else {
+                vm.dataLoading = true;
+
+                Api.tasks.updateOnTheFy(vm.selectedTask, $rootScope.team.timezone).then(function () {
+                    vm.message = {
+                        'title': 'Successfully updated',
+                        'content': 'The task has successfully been updated.',
+                        'icon': 'fa-check',
+                        'type': 'alert-success'
+                    };
+
+                    $('#edit-task-modal').modal('hide')
+
+                    loadShiftsByTeam($rootScope.team.id);
+
+                    vm.dataLoading = false;
+                }).finally(function () {
+                    vm.dataLoading = false;
+                })
+            }
+
+        } else {
+            vm.message = {
+                'title': 'Invalid time',
+                'content': 'The end time may not be lower than the start time. Please try again.',
+                'icon': 'fa-exclamation',
+                'type': 'alert-danger'
             }
         }
     }
