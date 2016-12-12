@@ -153,29 +153,20 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                     var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
                 }
 
-            // DIRTY FIX YO
-            if (vm.selectedShift.end_time.length > 5) {
-                var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
-            }
-
-            var controlStartTimeArray = task.startTime.match(/.{1,2}/g);
-            var controlStartTime = controlStartTimeArray[0] + ':' + controlStartTimeArray[1];
-
-            var controlEndTimeArray = task.endTime.match(/.{1,2}/g);
-            var controlEndTime = controlEndTimeArray[0] + ':' + controlEndTimeArray[1];
-
-            if (Date.parse('01/01/1970 ' + controlStartTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                Date.parse('01/01/1970 ' + controlStartTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                Date.parse('01/01/1970 ' + controlEndTime) <= Date.parse('01/01/1970 ' + controlStartTime) ||
-                Date.parse('01/01/1970 ' + controlEndTime) > Date.parse('01/01/1970 ' + shiftEndTime)) {
                 // DIRTY FIX YO
                 if (vm.selectedShift.end_time.length > 5) {
                     var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
                 }
-                if ((Date.parse('01/01/1970 ' + task.startTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-                    Date.parse('01/01/1970 ' + task.startTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-                    Date.parse('01/01/1970 ' + task.endTime) <= Date.parse('01/01/1970 ' + task.startTime) ||
-                    Date.parse('01/01/1970 ' + task.endTime) > Date.parse('01/01/1970 ' + shiftEndTime))) {
+                var controlStartTimeArray = task.startTime.match(/.{1,2}/g);
+                var controlStartTime = controlStartTimeArray[0] + ':' + controlStartTimeArray[1];
+
+                var controlEndTimeArray = task.endTime.match(/.{1,2}/g);
+                var controlEndTime = controlEndTimeArray[0] + ':' + controlEndTimeArray[1];
+
+                if (Date.parse('01/01/1970 ' + controlStartTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
+                    Date.parse('01/01/1970 ' + controlStartTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
+                    Date.parse('01/01/1970 ' + controlEndTime) <= Date.parse('01/01/1970 ' + controlStartTime) ||
+                    Date.parse('01/01/1970 ' + controlEndTime) > Date.parse('01/01/1970 ' + shiftEndTime)) {
 
                     vm.message = {
                         'title': 'The given times are invalid.',
@@ -184,30 +175,20 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                         'type': 'alert-danger'
                     }
                 } else {
-                    var startTime = task.startTime.split(':');
-                    var endTime = task.endTime.split(':');
-                vm.message = {
-                    'title': 'The given times are invalid.',
-                    'content': 'The chosen time is invalid, please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
+                    var startTime;
+                    var endTime;
 
-            } else {
-                var startTime;
-                var endTime;
+                    if (task.startTime.length == 4) {
+                        startTime = task.startTime.match(/.{1,2}/g);
+                    } else {
+                        startTime = task.startTime.split(':');
+                    }
 
-                if (task.startTime.length == 4) {
-                    startTime = task.startTime.match(/.{1,2}/g);
-                } else {
-                    startTime = task.startTime.split(':');
-                }
-
-                if (task.endTime.length == 4) {
-                    endTime = task.endTime.match(/.{1,2}/g);
-                } else {
-                    endTime = task.endTime.split(':');
-                }
+                    if (task.endTime.length == 4) {
+                        endTime = task.endTime.match(/.{1,2}/g);
+                    } else {
+                        endTime = task.endTime.split(':');
+                    }
 
                     if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                         vm.message = {
@@ -227,42 +208,12 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                         // find a way to make this work without calling the exact same code twice, once for false and one for true
                         task.shift = vm.selectedShift;
                         vm.dataLoading = true;
-            if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
-                vm.message = {
-                    'title': 'Start time is invalid',
-                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
-            } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
-                vm.message = {
-                    'title': 'End time is invalid',
-                    'content': 'The chosen end time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
-            } else {
-                task.shift = vm.selectedShift;
-                vm.dataLoading = true;
 
-                Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
-                    vm.selectedShift.tasks.push(response.data);
-                    vm.task = null;
                         Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
                             vm.selectedShift.tasks.push(response.data);
                             vm.task = {};
                             vm.task.wholeDay = false;
 
-                    vm.message = {
-                        'title': 'Task added',
-                        'content': 'The task is added to the shift',
-                        'icon': 'fa-check',
-                        'type': 'alert-success'
-                    }
-                }).finally(function () {
-                    vm.dataLoading = false;
-                })
-            }
                             vm.message = {
                                 'title': 'Task added',
                                 'content': 'The task is added to the shift',
@@ -279,9 +230,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 task.shift = vm.selectedShift;
                 vm.dataLoading = true;
 
-        }
-    }
-}
                 Api.tasks.add(task, $rootScope.team.timezone).then(function (response) {
                     vm.selectedShift.tasks.push(response.data);
                     vm.task = {};
@@ -300,26 +248,17 @@ function PlanTaskController($rootScope, Api, $q, $state) {
         }
     }
 
-function hideModal() {
-    vm.editTask = null;
-    $('#plan-task-modal').modal('hide');
-}
-
-function showModal(task) {
-    vm.message = null;
-    $('#plan-task-modal').modal();
-
-    vm.selectedTask = angular.copy(task);
-
-    // DIRTY FIX YO
-    if (vm.selectedTask.start_time.length > 5) {
-        vm.selectedTask.start_time = vm.selectedTask.start_time.substring(11, 16);
+    function hideModal() {
+        vm.editTask = null;
+        $('#plan-task-modal').modal('hide');
     }
-    // DIRTY FIX YO
-    if (vm.selectedTask.end_time.length > 5) {
-        vm.selectedTask.end_time = vm.selectedTask.end_time.substring(11, 16);
-    }
-}
+
+    function showModal(task) {
+        vm.message = null;
+        $('#plan-task-modal').modal();
+
+        vm.selectedTask = angular.copy(task);
+
         // DIRTY FIX YO
         if (vm.selectedTask.start_time.length > 5) {
             vm.selectedTask.start_time = vm.selectedTask.start_time.substring(11, 16);
@@ -338,7 +277,7 @@ function showModal(task) {
         if (vm.selectedTask.description != "SuperService" && vm.selectedTask.description != "Other") {
             vm.selectedTask.url = null;
         } else {
-            if(vm.selectedTask.url != null) {
+            if (vm.selectedTask.url != null) {
                 var countedUrl = vm.selectedTask.url.length;
                 vm.selectedTask.url = vm.selectedTask.url.substring(72, (countedUrl));
             }
@@ -361,24 +300,9 @@ function showModal(task) {
 
     }
 
-function updateTask(task) {
     function updateTask(task) {
         vm.messages = null;
 
-
-    if (vm.selectedTask.start_time == null || vm.selectedTask.end_time == null || vm.selectedTask.task_type_fk == null) {
-        vm.message = {
-            'title': 'All fields are required',
-            'content': 'You can\'t add an empty task to the shift.',
-            'icon': 'fa-exclamation',
-            'type': 'alert-danger'
-        }
-    } else {
-
-        // DIRTY FIX YO
-        if (vm.selectedShift.start_time.length > 5) {
-            var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
-        }
         if (((vm.selectedTask.start_time == null || vm.selectedTask.end_time == null) && vm.selectedTask.wholeDay == false) || vm.selectedTask.task_type_fk == null || vm.selectedTask.description == []) {
             vm.message = {
                 'title': 'All fields are required',
@@ -400,30 +324,16 @@ function updateTask(task) {
                     var shiftStartTime = vm.selectedShift.start_time.substring(11, 16);
                 }
 
-        // DIRTY FIX YO
-        if (vm.selectedShift.end_time.length > 5) {
-            var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
-        }
                 // DIRTY FIX YO
                 if (vm.selectedShift.end_time.length > 5) {
                     var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
                 }
 
-        if (Date.parse('01/01/1970 ' + vm.selectedTask.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
-            Date.parse('01/01/1970 ' + vm.selectedTask.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
-            Date.parse('01/01/1970 ' + vm.selectedTask.end_time) <= Date.parse('01/01/1970 ' + vm.selectedTask.start_time) ||
-            Date.parse('01/01/1970 ' + vm.selectedTask.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
                 if (Date.parse('01/01/1970 ' + vm.selectedTask.start_time) < Date.parse('01/01/1970 ' + shiftStartTime) ||
                     Date.parse('01/01/1970 ' + vm.selectedTask.start_time) > Date.parse('01/01/1970 ' + shiftEndTime) ||
                     Date.parse('01/01/1970 ' + vm.selectedTask.end_time) <= Date.parse('01/01/1970 ' + vm.selectedTask.start_time) ||
                     Date.parse('01/01/1970 ' + vm.selectedTask.end_time) > Date.parse('01/01/1970 ' + shiftEndTime)) {
 
-            vm.message = {
-                'title': 'The given times are invalid.',
-                'content': 'The chosen time is invalid, please try again.',
-                'icon': 'fa-exclamation',
-                'type': 'alert-danger'
-            }
                     vm.message = {
                         'title': 'The given times are invalid.',
                         'content': 'The chosen time is invalid, please try again.',
@@ -431,32 +341,10 @@ function updateTask(task) {
                         'type': 'alert-danger'
                     }
 
-        } else {
-            var startTime = vm.selectedTask.start_time.split(':');
-            var endTime = vm.selectedTask.end_time.split(':');
                 } else {
                     var startTime = vm.selectedTask.start_time.split(':');
                     var endTime = vm.selectedTask.end_time.split(':');
 
-            if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
-                vm.message = {
-                    'title': 'Start time is invalid',
-                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
-            } else if (endTime[1] % 15 != 0 || endTime[0] < 0 || endTime[0] > 23 || endTime[1] > 59 || endTime[1] < 0) {
-                vm.message = {
-                    'title': 'End time is invalid',
-                    'content': 'The chosen start time is invalid, hours should be between 00-23 and the minutes should be in steps of 15. Please try again.',
-                    'icon': 'fa-exclamation',
-                    'type': 'alert-danger'
-                }
-            } else {
-                $('#plan-task-modal').modal('hide');
-                vm.dataLoading = true;
-                Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
-                    vm.selectedTask.description = response.data.description;
                     if (startTime[1] % 15 != 0 || startTime[0] < 0 || startTime[0] > 23 || startTime[1] > 59 || startTime[1] < 0) {
                         vm.message = {
                             'title': 'Start time is invalid',
@@ -479,14 +367,6 @@ function updateTask(task) {
                             vm.selectedTask.description = response.data.description;
                             console.log(response.data);
 
-                    for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
-                        if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
-                            vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
-                            vm.selectedShift.tasks[i].end_time = vm.selectedTask.end_time;
-                            vm.selectedShift.tasks[i].description = vm.selectedTask.description;
-                            break
-                        }
-                    }
                             for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                                 if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
                                     vm.selectedShift.tasks[i].start_time = vm.selectedTask.start_time;
@@ -498,20 +378,6 @@ function updateTask(task) {
                                         vm.selectedShift.tasks[i].url = null;
                                     }
 
-                }).finally(function () {
-                    vm.message = {
-                        'title': 'Task updated',
-                        'content': 'The task is successfully updated',
-                        'icon': 'fa-check',
-                        'type': 'alert-success'
-                    };
-                    vm.editTask = null;
-                    vm.dataLoading = false;
-                })
-            }
-        }
-    }
-}
                                     break;
                                 }
                             }
@@ -533,7 +399,6 @@ function updateTask(task) {
                 vm.dataLoading = true;
                 Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
                     vm.selectedTask.description = response.data.description;
-                    console.log(response.data);
 
                     for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                         if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
@@ -567,34 +432,34 @@ function updateTask(task) {
         }
     }
 
-function deleteTask(task) {
-    vm.dataLoading = true;
-    Api.tasks.delete(task.id).then(function () {
-        vm.message = {
-            'title': 'Task deleted',
-            'content': 'The task is deleted from the shift',
-            'icon': 'fa-check',
-            'type': 'alert-success'
-        }
+    function deleteTask(task) {
+        vm.dataLoading = true;
+        Api.tasks.delete(task.id).then(function () {
+            vm.message = {
+                'title': 'Task deleted',
+                'content': 'The task is deleted from the shift',
+                'icon': 'fa-check',
+                'type': 'alert-success'
+            }
 
-        _.remove(vm.selectedShift.tasks, function (t) {
-            return t.id == task.id;
-        });
-    }).finally(function () {
-        vm.dataLoading = false;
-    })
-}
+            _.remove(vm.selectedShift.tasks, function (t) {
+                return t.id == task.id;
+            });
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
+    }
 
-datepicker.datepicker().on('changeDate', function (e) {
-    var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
+    datepicker.datepicker().on('changeDate', function (e) {
+        var formattedDate = e.date.getFullYear() + "-" + (e.date.getMonth() + 1) + "-" + e.date.getDate();
 
-    vm.dataLoading = true;
+        vm.dataLoading = true;
 
-    Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
-        vm.selectedShift = response.data;
-        vm.dataLoading = false;
-    })
-});
+        Api.shifts.findByUserAndDate(vm.selectedUser, formattedDate, $rootScope.team.timezone).then(function (response) {
+            vm.selectedShift = response.data;
+            vm.dataLoading = false;
+        })
+    });
 
     function toggleWholeDay() {
         vm.task.wholeDay = !vm.task.wholeDay;
