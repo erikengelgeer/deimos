@@ -386,7 +386,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                         vm.dataLoading = true;
                         Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
                             vm.selectedTask.description = response.data.description;
-                            console.log(response.data);
 
                             for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                                 if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {
@@ -420,7 +419,6 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 vm.dataLoading = true;
                 Api.tasks.update(vm.selectedTask, $rootScope.team.timezone).then(function (response) {
                     vm.selectedTask.description = response.data.description;
-                    console.log(response.data);
 
                     for (var i = 0; i < vm.selectedShift.tasks.length; i++) {
                         if (vm.selectedShift.tasks[i].id == vm.selectedTask.id) {

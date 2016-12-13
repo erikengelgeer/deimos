@@ -28,20 +28,16 @@ function AppRun($rootScope, $state, $localStorage, $http, $q, Api) {
                 $rootScope.team = $rootScope.teams[0];
             }
 
-           /* Api.shiftType.findByTeam($rootScope.team.id, $rootScope.team.timezone).then(function (response) {
-                $rootScope.shiftTypes = response.data;
-            });*/
-
             var dateToday = new Date();
             var date = dateToday.getFullYear() + "-" + (dateToday.getMonth() + 1) + "-" + dateToday.getDate();
-            // watches for changes in team.id
-            //     $rootScope.$watch('team.id', function () {
 
-                // reloads the shiftTypes to show
-                Api.shiftType.findLegend().then(function (response) {
-                    $rootScope.shiftTypes = _.uniqBy(response.data, 'description');
-                });
-            // });
+            // reloads the shiftTypes to show
+            Api.shiftType.findLegend().then(function (response) {
+                $rootScope.shiftTypes = _.uniqBy(response.data, 'description');
+            });
+            Api.shifts.findByUserAndDate($rootScope.user.id, date, $rootScope.team.timezone).then(function (response) {
+                $rootScope.dailyShift = response.data;
+            });
 
         }).catch(function (err) {
             if (err.status == 401) {

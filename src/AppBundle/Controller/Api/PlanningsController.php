@@ -40,7 +40,6 @@ class PlanningsController extends Controller
 
         $diff = $mondayThisWeek->diff($fourWeeksLater);
         $totalDays = intval($diff->format('%d'));
-//        dump($totalDays);
 
         $weekArray = array();
         $planningArray = array();
@@ -55,7 +54,6 @@ class PlanningsController extends Controller
 //                array_push($weekArray, $date);
 //
 //            } else {
-//                dump("new week");
 //                array_push($planningArray, $weekArray);
 //                $weekArray = array();
 //                $dayCount = 0;
@@ -64,8 +62,6 @@ class PlanningsController extends Controller
 ////
 ////            $test = new \DateTime();
 ////            $test->setTimestamp($currentTimestamp);
-////            dump($test);
-////           dump(new \DateTime($currentTimestamp));
 ////            array_push($testArray, $currentTimestamp);
 //            $dayCount++;
 //            $currentTimestamp += 86400;
@@ -73,7 +69,6 @@ class PlanningsController extends Controller
 
         $repositoryUsers = $em->getRepository("AppBundle:User");
         $users = $repositoryUsers->findAll();
-//        dump($users);
 
 //        for ($i = 0; $i <= 3; $i++) {
 //            for ($j = 0; $j <= 7; $j++) {

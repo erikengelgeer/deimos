@@ -13,7 +13,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
     vm.checkLogin = checkLogin;
 
     document.getElementById("password")
-        .addEventListener("keyup", function(event) {
+        .addEventListener("keyup", function (event) {
             event.preventDefault();
             if (event.keyCode == 13) {
                 checkLogin();
@@ -60,7 +60,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
 
                         promises.push(Api.teams.find().then(function (response) {
                             $rootScope.teams = response.data;
-                            
+
                             if ($rootScope.user.team_fk.visible) {
                                 $rootScope.team = $rootScope.user.team_fk;
                             } else {
@@ -73,10 +73,7 @@ function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
                         }));
 
                         $q.all(promises).then(function () {
-                            Api.shifts.findByUserAndDate($rootScope.user.id, date, $rootScope.team.timezone).then(function (response) {
-                                $rootScope.dailyShift = response.data;
-                                $state.go('index');
-                            })
+                            $state.go('index');
                         });
                     }
                 });
