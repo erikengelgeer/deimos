@@ -61,8 +61,7 @@
                              ng-repeat="task in today.tasks">
                             <span ng-click="vm.redirect(task.taskUrl)" ng-class="{'clickable': task.taskUrl != null && task.taskUrl != ''}">
                             <span ng-if="task.taskUrl"><i class="fa fa-link"></i></span>
-                        <span ng-if="(task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset) != '0:00' && (task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset) != '0:00'">
-
+                        <span ng-if="((task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset) != '0:00' || (task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset) == '0:00') && (task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset) != '23:59'">
                             {{ task.taskStartTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ task.taskEndTime | date: 'H:mm' : today.shift.timezoneOffset }}
                         </span> {{ task.taskDescription }}</span>
                             <i class="fa task-pencil fa-pencil"
