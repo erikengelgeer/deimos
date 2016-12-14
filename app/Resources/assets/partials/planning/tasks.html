@@ -40,7 +40,13 @@
                     <div class="shift-container col-md-8" ng-show="vm.selectedShift">
                         <div class=" shift">
                             <i class="fa fa-circle" style="color: {{vm.selectedShift.shift_type_fk.color}}"></i>
-                            <span>{{ vm.selectedShift.start_time | date: 'H:mm' : vm.selectedShift.timezone_offset }} - {{ vm.selectedShift.end_time | date: 'H:mm' : vm.selectedShift.timezone_offset }}</span>
+                            <!--<span>{{ vm.selectedShift.start_time | date: 'H:mm' : vm.selectedShift.timezone_offset }} - {{ vm.selectedShift.end_time | date: 'H:mm' : vm.selectedShift.timezone_offset }}</span>-->
+                            <span ng-if="(vm.selectedShift.start_time | date: 'H:mm' : vm.selectedShift.timezone_offset) == '0:00' && (vm.selectedShift.end_time | date: 'H:mm' : vm.selectedShift.timezone_offset) == '23:59'">
+                                    Whole Day
+                                </span>
+                                <span ng-if="!((vm.selectedShift.start_time | date: 'H:mm' : vm.selectedShift.timezone_offset) == '0:00' && (vm.selectedShift.end_time | date: 'H:mm' : vm.selectedShift.timezone_offset) == '23:59')">
+                                    {{ vm.selectedShift.start_time | date: 'H:mm' : vm.selectedShift.timezone_offset}} - {{ vm.selectedShift.end_time | date: 'H:mm' : vm.selectedShift.timezone_offset}}
+                                </span>
                         </div>
                         <div class="tasks-container">
                             <div class="alert alert-info" ng-if="vm.selectedShift.tasks.length == 0">
@@ -48,9 +54,15 @@
                                 <span>There are no tasks yet on this shift, please add a task.</span>
                             </div>
 
-                            <div class="task" ng-repeat="task in vm.selectedShift.tasks">
+                            <div class="task" ng-repeat="task in vm.selectedShift.tasks | orderBy:['start_time','end_time']">
                                 <span ng-if="task.url"><i class="fa fa-link"></i></span>
-                                <span>{{ task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset}} - {{ task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset}}</span>
+                                <!--<span>{{ task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset}} - {{ task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset}}</span>-->
+                                <span ng-if="(task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset) == '0:00' && (task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset) == '23:59'">
+                                    Whole Day
+                                </span>
+                                <span ng-if="!((task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset) == '0:00' && (task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset) == '23:59')">
+                                    {{ task.start_time | date:'H:mm' : vm.selectedShift.timezone_offset}} - {{ task.end_time | date:'H:mm' : vm.selectedShift.timezone_offset}}
+                                </span>
                                 <span>{{ task.description }}</span>
 
                                 <div class="actions">

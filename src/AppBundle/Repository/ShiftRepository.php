@@ -21,6 +21,7 @@ class ShiftRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('u.enabled = 1')
             ->addOrderBy('s.id')
             ->addOrderBy('t.startTime', 'ASC')
+            ->addOrderBy('t.endTime', 'ASC')
             ->setParameter('firstDate', $firstDate)
             ->setParameter('lastDate', $lastDate)
             ->setParameter('teamId', $teamId);

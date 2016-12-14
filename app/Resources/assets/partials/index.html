@@ -39,13 +39,13 @@
 
                     <div class="shift" ng-if="key > 0">
 
-                        <span ng-if="(today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59'">Whole day <i>{{today.shift.description
-                            | limitTo:10 }}<span
-                                    ng-if="today.shift.description.length > 10">...</span></i></span>
+                        <span ng-if="(today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59'">
+                            Whole day
+                            <i>{{today.shift.description | limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i>
+                        </span>
                         <span ng-if="!((today.shift.startTime | date: 'H:mm': today.shift.timezoneOffset) == '0:00' && (today.shift.endTime | date: 'H:mm': today.shift.timezoneOffset) == '23:59')">
-                            {{ today.shift.startTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ today.shift.endTime | date: 'H:mm' : today.shift.timezoneOffset }} <i>{{today.shift.description
-                            | limitTo:10 }}<span
-                                    ng-if="today.shift.description.length > 10">...</span></i>
+                            {{ today.shift.startTime | date: 'H:mm' : today.shift.timezoneOffset }} - {{ today.shift.endTime | date: 'H:mm' : today.shift.timezoneOffset }}
+                            <i>{{today.shift.description| limitTo:10 }}<span ng-if="today.shift.description.length > 10">...</span></i>
                         </span>
 
                         <i class="fa index-info fa-pencil"
