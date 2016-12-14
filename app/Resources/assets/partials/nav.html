@@ -80,7 +80,7 @@
                         <span>{{ task.description }}</span>
                     </div>
 
-                    <div class="alert alert-info" ng-show="!$root.dailyShift || $root.dailyShift.length == 0">
+                    <div class="alert alert-info" ng-show="!$root.dailyShift || $root.dailyShift.tasks.length == 0 || $root.dailyShift.length == 0">
                         <strong><i class="fa fa-info"></i>No tasks today</strong> <br>
                         <span>It appears that you don't have any tasks today.</span>
                     </div>
