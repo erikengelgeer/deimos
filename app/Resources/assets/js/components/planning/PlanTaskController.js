@@ -157,11 +157,13 @@ function PlanTaskController($rootScope, Api, $q, $state) {
                 if (vm.selectedShift.end_time.length > 5) {
                     var shiftEndTime = vm.selectedShift.end_time.substring(11, 16);
                 }
-                var controlStartTimeArray = task.startTime.match(/.{1,2}/g);
-                var controlStartTime = controlStartTimeArray[0] + ':' + controlStartTimeArray[1];
+                var controlStartTimeArray = task.startTime.match(/.{1,3}/g);
+                var controlStartTime = controlStartTimeArray[0] + controlStartTimeArray[1];
 
-                var controlEndTimeArray = task.endTime.match(/.{1,2}/g);
-                var controlEndTime = controlEndTimeArray[0] + ':' + controlEndTimeArray[1];
+                var controlEndTimeArray = task.endTime.match(/.{1,3}/g);
+                var controlEndTime = controlEndTimeArray[0] + controlEndTimeArray[1];
+
+                console.log(vm.selectedShift.start_time, vm.selectedShift.end_time + "-------" + controlStartTime, controlEndTime);
 
                 if (Date.parse('01/01/1970 ' + controlStartTime) < Date.parse('01/01/1970 ' + shiftStartTime) ||
                     Date.parse('01/01/1970 ' + controlStartTime) > Date.parse('01/01/1970 ' + shiftEndTime) ||
