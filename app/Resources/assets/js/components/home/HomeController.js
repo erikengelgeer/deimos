@@ -13,6 +13,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTask = null;
     vm.message = null;
     vm.userFilterSelected = false;
+    vm.checkForDeleteShift = false;
 
     // saves the start and endTime from the editShift function for the toggleWholeDay function
     var saveStartTime;
@@ -576,62 +577,33 @@ function HomeController($rootScope, Api, $timeout) {
 
     function deletePlannedShift() {
         $('#index-modal').modal("hide");
-
+        vm.message = null;
         $('#check-for-delete-modal').modal("show");
-
-        console.log($rootScope.user);
     }
 
     function checkForDeleteShift() {
         vm.id = parseInt(vm.info.id);
 
-        vm.passwordConfirmation = document.getElementById('deleteShiftPassword').value;
+        vm.dataLoading = true;
 
-        if (!vm.passwordConfirmation) {
+        Api.shifts.delete(vm.id).then(function () {
             vm.message = {
-                title: "Login failed",
-                content: "The password is required to continue. Please try again.",
-                type: "alert-danger"
+                'title': 'Successfully deleted',
+                'content': 'The shift has successfully been deleted.',
+                'icon': 'fa-check',
+                'type': 'alert-success'
             };
-            console.log("Geen wachtwoord ingevoerd.");
-        }
-        else {
-            vm.dataLoading = true;
-            console.log(vm.passwordConfirmation);
-            // checks the password
-            Api.login.checkPassword($rootScope.user.password).then(function (response) {
-                var password = response.password;
-                console.log(password);
 
-                if(password == vm.passwordConfirmation) {
-                    Api.shifts.delete(vm.id).then(function () {
-                        vm.message = {
-                            'title': 'Successfully deleted',
-                            'content': 'The shift has successfully been deleted.',
-                            'icon': 'fa-check',
-                            'type': 'alert-success'
-                        };
+            $('#index-modal').modal('hide')
+            $('#check-for-delete-modal').modal("hide");
 
-                        $('#index-modal').modal('hide')
+            loadShiftsByTeam($rootScope.team.id);
 
-                        vm.dataLoading = false;
-                    }).finally(function () {
-                        vm.dataLoading = false;
-                    })
-                }
+            vm.dataLoading = false;
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
 
-            }).catch(function (error) {
-                vm.dataLoading = false;
-                if (error.status == 401) {
-                    vm.message = {
-                        title: "Login failed",
-                        content: "Your password is incorrect. Please try again.",
-                        type: "alert-danger"
-                    };
-                    console.log("Wachtwoord is incorrect.");
-                }
-            });
-        }
     }
 
     // toggled home for a shift

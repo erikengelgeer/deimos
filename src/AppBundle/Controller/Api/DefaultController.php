@@ -39,16 +39,4 @@ class DefaultController extends Controller
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }
 
-    /**
-     * @Route("/check_password")
-     * @Method("POST")
-     *
-     *Checks the password for deleting shifts.
-     */
-    public function checkPassword(Response $response)
-    {
-        $data = json_decode($response->getContent());
-
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
-    }
 }

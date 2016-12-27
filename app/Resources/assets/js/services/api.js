@@ -22,9 +22,6 @@ function Api($http) {
             checkRole: function (username) {
                 return $http.post('api/users/user/check_role', username);
             },
-            checkPassword: function(password) {
-                return $http.post('api/check_password', password);
-            }
         },
         users: {
             find: function (id) {
