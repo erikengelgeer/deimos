@@ -21,6 +21,9 @@ function Api($http) {
             },
             checkRole: function (username) {
                 return $http.post('api/users/user/check_role', username);
+            },
+            checkPassword: function(password) {
+                return $http.post('api/check_password', password);
             }
         },
         users: {
@@ -181,6 +184,9 @@ function Api($http) {
             },
             update: function (data, timezone) {
                 return $http.put('api/shifts/' + data.id + '?timezone=' + timezone, data);
+            },
+            delete: function (shiftId) {
+                return $http.delete('api/shifts/' + shiftId);
             }
         },
         tasks: {

@@ -94,6 +94,11 @@
                 <strong>Description:</strong> {{ vm.info.description }}<br>
             </div>
             <div class="modal-footer">
+                <div>
+                    <a style="float: left;" ng-click="vm.deletePlannedShift()">Click here to delete this shift.</a>
+                </div>
+                <br>
+
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -295,6 +300,58 @@
                     <button type="button" class="btn btn-primary" ng-click="vm.updateTaskOnTheFly()">Save changes</button>
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+//Check for delete shift modal
+<div class="modal fade" tabindex="-1" role="dialog" id="check-for-delete-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete shift confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="loading-container" ng-if="vm.dataLoading">
+                    <div class="loading">
+                        <div class="loading-logo">
+                            <img src="images/logo.png" alt="Deimos">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            Enter password to confirm deleting the shift.
+                        </p>
+                        <div class="alert" ng-class="vm.message.type" ng-if="vm.message">
+                            <strong><i class="fa" ng-class="vm.message.icon"></i>{{ vm.message.title }}</strong> <br>
+                            <span ng-bind-html="vm.message.content"></span>
+                        </div>
+                        <hr>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Password</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="password" id="deleteShiftPassword" class="form-control" placeholder="Password" ng-model="vm.passwordConfirmation">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" ng-click="vm.checkForDeleteShift()">Delete shift</button>
+                </div>
             </div>
         </div>
     </div>

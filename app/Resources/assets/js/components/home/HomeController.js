@@ -65,6 +65,8 @@ function HomeController($rootScope, Api, $timeout) {
     vm.toggleWholeDayTask = toggleWholeDayTask;
     vm.editTask = editTask;
     vm.updateTaskOnTheFly = updateTaskOnTheFly;
+    vm.deletePlannedShift = deletePlannedShift;
+    vm.checkForDeleteShift = checkForDeleteShift;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -569,6 +571,66 @@ function HomeController($rootScope, Api, $timeout) {
             }).finally(function () {
                 vm.dataLoading = false;
             })
+        }
+    }
+
+    function deletePlannedShift() {
+        $('#index-modal').modal("hide");
+
+        $('#check-for-delete-modal').modal("show");
+
+        console.log($rootScope.user);
+    }
+
+    function checkForDeleteShift() {
+        vm.id = parseInt(vm.info.id);
+
+        vm.passwordConfirmation = document.getElementById('deleteShiftPassword').value;
+
+        if (!vm.passwordConfirmation) {
+            vm.message = {
+                title: "Login failed",
+                content: "The password is required to continue. Please try again.",
+                type: "alert-danger"
+            };
+            console.log("Geen wachtwoord ingevoerd.");
+        }
+        else {
+            vm.dataLoading = true;
+            console.log(vm.passwordConfirmation);
+            // checks the password
+            Api.login.checkPassword($rootScope.user.password).then(function (response) {
+                var password = response.password;
+                console.log(password);
+
+                if(password == vm.passwordConfirmation) {
+                    Api.shifts.delete(vm.id).then(function () {
+                        vm.message = {
+                            'title': 'Successfully deleted',
+                            'content': 'The shift has successfully been deleted.',
+                            'icon': 'fa-check',
+                            'type': 'alert-success'
+                        };
+
+                        $('#index-modal').modal('hide')
+
+                        vm.dataLoading = false;
+                    }).finally(function () {
+                        vm.dataLoading = false;
+                    })
+                }
+
+            }).catch(function (error) {
+                vm.dataLoading = false;
+                if (error.status == 401) {
+                    vm.message = {
+                        title: "Login failed",
+                        content: "Your password is incorrect. Please try again.",
+                        type: "alert-danger"
+                    };
+                    console.log("Wachtwoord is incorrect.");
+                }
+            });
         }
     }
 

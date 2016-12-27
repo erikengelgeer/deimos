@@ -286,4 +286,20 @@ class ShiftsController extends Controller
         return new Response($data, 200, ['Content-type' => 'application/json']);
     }
 
+    /**
+     * @Route("/{id}")
+     * @Method("DELETE")
+     *
+     * Deletes a single shift
+     */
+    public function deleteAction(Shift $shift) {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($shift);
+        $em->flush();
+
+        $data = $this->get('serializer')->serialize(array("success" => true), 'json');
+        return new Response($data, 200, ['Content-type' => 'application/json']);
+    }
+
 }
