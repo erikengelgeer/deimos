@@ -380,7 +380,8 @@
     color: #999; }
     .schedule .heading .item:first-child {
       line-height: 58px;
-      padding: 0; }
+      padding: 0;
+      background-color: #eff0f1; }
   .schedule .heading:after {
     content: ' ';
     display: table;
@@ -427,13 +428,6 @@
           color: inherit;
           font-size: 80%;
           transition: background-color .15s ease-in-out; }
-      .schedule .body .body-row .item.today {
-        background-color: #e8e8e8; }
-        .schedule .body .body-row .item.today .shift {
-          background-color: #e8e8e8;
-          border-color: #d3d3d3; }
-        .schedule .body .body-row .item.today .task {
-          background-color: #cacaca; }
       .schedule .body .body-row .item:hover .shift .actions {
         visibility: visible;
         opacity: 1; }
@@ -474,6 +468,21 @@
     background: rgba(0, 0, 0, 0.125);
     color: #000000; }
 
+.schedule .task-pencil {
+  padding: 4px;
+  cursor: pointer;
+  color: rgba(125, 125, 125, 0.7);
+  display: block;
+  float: right;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  text-align: center;
+  transition: all .15s ease-in-out; }
+  .schedule .task-pencil:hover {
+    background: rgba(0, 0, 0, 0.125);
+    color: #000000; }
+
 .not-planned {
   background-color: rgba(0, 0, 0, 0.1); }
 
@@ -494,6 +503,8 @@
     margin: 10px 10px 10px 0;
     border-radius: 9999px;
     cursor: pointer; }
+    .schedule-filter .filter i {
+      margin-left: 5px; }
     .schedule-filter .filter:hover {
       background-color: #06AECE;
       color: #fff; }
@@ -512,6 +523,25 @@
   .filter-modal .filter.active, .filter-modal .filter:hover {
     background-color: #06AECE;
     color: #fff; }
+
+.user-filter {
+  height: 50px;
+  background-color: #fff;
+  padding: 0 15px; }
+  .user-filter .filter {
+    padding: 5px 10px;
+    display: inline-block;
+    background-color: #e8e8e8;
+    margin: 10px 10px 10px 0;
+    border-radius: 9999px;
+    cursor: pointer; }
+    .user-filter .filter:hover {
+      background-color: #06AECE;
+      color: #fff; }
+  .user-filter em {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 90%;
+    line-height: 50px; }
 
 .shift-container .shift {
   margin-bottom: 20px;

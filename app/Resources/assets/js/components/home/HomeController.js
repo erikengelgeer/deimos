@@ -13,6 +13,7 @@ function HomeController($rootScope, Api, $timeout) {
     vm.selectedTask = null;
     vm.message = null;
     vm.userFilterSelected = false;
+    vm.checkForDeleteShift = false;
 
     // saves the start and endTime from the editShift function for the toggleWholeDay function
     var saveStartTime;
@@ -65,6 +66,8 @@ function HomeController($rootScope, Api, $timeout) {
     vm.toggleWholeDayTask = toggleWholeDayTask;
     vm.editTask = editTask;
     vm.updateTaskOnTheFly = updateTaskOnTheFly;
+    vm.deletePlannedShift = deletePlannedShift;
+    vm.checkForDeleteShift = checkForDeleteShift;
 
     Api.teams.find().then(function (response) {
         vm.teams = response.data;
@@ -570,6 +573,37 @@ function HomeController($rootScope, Api, $timeout) {
                 vm.dataLoading = false;
             })
         }
+    }
+
+    function deletePlannedShift() {
+        $('#index-modal').modal("hide");
+        vm.message = null;
+        $('#check-for-delete-modal').modal("show");
+    }
+
+    function checkForDeleteShift() {
+        vm.id = parseInt(vm.info.id);
+
+        vm.dataLoading = true;
+
+        Api.shifts.delete(vm.id).then(function () {
+            vm.message = {
+                'title': 'Successfully deleted',
+                'content': 'The shift has successfully been deleted.',
+                'icon': 'fa-check',
+                'type': 'alert-success'
+            };
+
+            $('#index-modal').modal('hide');
+            $('#check-for-delete-modal').modal("hide");
+
+            loadShiftsByTeam($rootScope.team.id);
+
+            vm.dataLoading = false;
+        }).finally(function () {
+            vm.dataLoading = false;
+        })
+
     }
 
     // toggled home for a shift

@@ -21,7 +21,7 @@ function Api($http) {
             },
             checkRole: function (username) {
                 return $http.post('api/users/user/check_role', username);
-            }
+            },
         },
         users: {
             find: function (id) {
@@ -181,6 +181,9 @@ function Api($http) {
             },
             update: function (data, timezone) {
                 return $http.put('api/shifts/' + data.id + '?timezone=' + timezone, data);
+            },
+            delete: function (shiftId) {
+                return $http.delete('api/shifts/' + shiftId);
             }
         },
         tasks: {
