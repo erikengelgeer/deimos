@@ -594,7 +594,7 @@ function HomeController($rootScope, Api, $timeout) {
                 'type': 'alert-success'
             };
 
-            $('#index-modal').modal('hide')
+            $('#index-modal').modal('hide');
             $('#check-for-delete-modal').modal("hide");
 
             loadShiftsByTeam($rootScope.team.id);

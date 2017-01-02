@@ -99,8 +99,8 @@
                 <strong>Description:</strong> {{ vm.info.description }}<br>
             </div>
             <div class="modal-footer">
-                <div>
-                    <a style="float: left;" ng-click="vm.deletePlannedShift()">Click here to delete this shift.</a>
+                <div  ng-if="$root.user.role_fk.role != 'Agent'">
+                    <a style="float: left; cursor: pointer" ng-click="vm.deletePlannedShift()">Click here to delete this shift.</a>
                 </div>
                 <br>
 
@@ -313,7 +313,7 @@
         </div>
     </div>
 </div>
-//Check for delete shift modal
+<!--Check for delete shift modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="check-for-delete-modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
