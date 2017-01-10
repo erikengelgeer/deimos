@@ -1,85 +1,87 @@
-angular.module('app').controller('ChangePasswordController', ChangePasswordController);
+(function () {
+    angular.module('app').controller('ChangePasswordController', ['$rootScope', '$stateParams', 'Api', '$state' , ChangePasswordController]);
 
-function ChangePasswordController($rootScope, $stateParams, Api, $state, $localStorage) {
-    var vm = this;
+    function ChangePasswordController($rootScope, $stateParams, Api, $state) {
+        var vm = this;
 
-    vm.password = '';
-    vm.confirmationPassword = '';
-    vm.message = null;
-    vm.user = null;
-    vm.dataLoading = false;
+        vm.password = '';
+        vm.confirmationPassword = '';
+        vm.message = null;
+        vm.user = null;
+        vm.dataLoading = false;
 
-    vm.changePassword = changePassword;
+        vm.changePassword = changePassword;
 
-    Api.users.findByToken($stateParams.token).then(function (response) {
-        if (response.data == null) {
-            $state.go('login');
-        } else {
-            vm.user = response.data;
-        }
-    }).finally(function () {
-        $rootScope.loading = false;
-    });
-
-    document.getElementById("password")
-        .addEventListener("keyup", function(event) {
-            event.preventDefault();
-            if (event.keyCode == 13) {
-                changePassword();
+        Api.users.findByToken($stateParams.token).then(function (response) {
+            if (response.data == null) {
+                $state.go('login');
+            } else {
+                vm.user = response.data;
             }
+        }).finally(function () {
+            $rootScope.loading = false;
         });
 
-    function changePassword() {
-        vm.message = null;
+        document.getElementById("password")
+            .addEventListener("keyup", function (event) {
+                event.preventDefault();
+                if (event.keyCode == 13) {
+                    changePassword();
+                }
+            });
 
-        if (vm.password.trim() == '' || vm.confirmationPassword.trim() == '') {
-            // error if empty
-            vm.message = {
-                title: "Fields may not be blank",
-                content: "Fill in both required fields to change password.",
-                type: "alert-danger"
-            };
-        } else {
-            if (vm.password.trim() == vm.confirmationPassword.trim()) {
+        function changePassword() {
+            vm.message = null;
 
-                vm.dataLoading = true;
-                vm.user.newPassword = vm.password;
-
-                Api.users.passwordReset(vm.user).then(function () {
-
-                    Api.login.check(vm.user.username, vm.user.newPassword).then(function (response) {
-                        var token = response.data.token;
-
-                        // calls a api call to find the current logged in user.
-                        return Api.users.findLoggedIn().then(function (response) {
-                            if (response.data.locked) {
-                                vm.dataLoading = false;
-                                vm.message = {
-                                    title: "Locked",
-                                    content: "Your account is locked. Please contact the admin.",
-                                    type: "alert-danger"
-                                };
-
-                                // removes the default header authorization
-                                // Adds $http to the injections
-                                $http.defaults.headers.common['Authorization'] = null;
-                            }
-                            else {
-                                $state.go('login');
-                            }
-                        });
-                    }).finally(function () {
-                        vm.dataLoading = false;
-                    });
-                });
-
-            } else {
+            if (vm.password.trim() == '' || vm.confirmationPassword.trim() == '') {
+                // error if empty
                 vm.message = {
-                    title: "Fields do not match",
-                    content: "The two required fields do not match, please try again.",
+                    title: "Fields may not be blank",
+                    content: "Fill in both required fields to change password.",
                     type: "alert-danger"
                 };
+            } else {
+                if (vm.password.trim() == vm.confirmationPassword.trim()) {
+
+                    vm.dataLoading = true;
+                    vm.user.newPassword = vm.password;
+
+                    Api.users.passwordReset(vm.user).then(function () {
+
+                        Api.login.check(vm.user.username, vm.user.newPassword).then(function (response) {
+                            var token = response.data.token;
+
+                            // calls a api call to find the current logged in user.
+                            return Api.users.findLoggedIn().then(function (response) {
+                                if (response.data.locked) {
+                                    vm.dataLoading = false;
+                                    vm.message = {
+                                        title: "Locked",
+                                        content: "Your account is locked. Please contact the admin.",
+                                        type: "alert-danger"
+                                    };
+
+                                    // removes the default header authorization
+                                    // Adds $http to the injections
+                                    $http.defaults.headers.common['Authorization'] = null;
+                                }
+                                else {
+                                    $state.go('login');
+                                }
+                            });
+                        }).finally(function () {
+                            vm.dataLoading = false;
+                        });
+                    });
+
+                } else {
+                    vm.message = {
+                        title: "Fields do not match",
+                        content: "The two required fields do not match, please try again.",
+                        type: "alert-danger"
+                    };
+                }
             }
         }
     }
-}
+}());
