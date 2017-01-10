@@ -10,7 +10,9 @@ class ShiftRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('s.id', 's.description', 's.startTime', 's.endTime', 's.date', 's.home', 'u.id as userId', 'u.username', 'u.realName', 'tm.id as team_fk', 'st.id as shiftTypeId', 'st.short as shiftTypeShort', 'st.color as shiftColor', 't.id as taskId', 't.description as taskDescription', 't.url as taskUrl', 't.startTime as taskStartTime', 't.endTime as taskEndTime'))
+        $qb->select(array('s.id', 's.description', 's.startTime', 's.endTime', 's.date', 's.home', 'u.id as userId', 'u.username',
+                    'u.realName', 'tm.id as team_fk', 'st.id as shiftTypeId', 'st.short as shiftTypeShort', 'st.color as shiftColor', 't.id as taskId',
+                    't.description as taskDescription', 't.url as taskUrl', 't.startTime as taskStartTime', 't.endTime as taskEndTime'))
             ->from('AppBundle:Shift', 's')
             ->leftJoin('s.userFk', 'u', 'WITH', 's.userFk = u.id')
             ->leftJoin('s.shiftTypeFk', 'st', 'WITH', 's.shiftTypeFk = st.id')
