@@ -1,7 +1,7 @@
 (function () {
-    angular.module('app').controller('ChangePasswordController', ['$rootScope', '$stateParams', 'Api', '$state', '$localStorage' ,ChangePasswordController]);
+    angular.module('app').controller('ChangePasswordController', ['$rootScope', '$stateParams', 'Api', '$state' , ChangePasswordController]);
 
-    function ChangePasswordController($rootScope, $stateParams, Api, $state, $localStorage) {
+    function ChangePasswordController($rootScope, $stateParams, Api, $state) {
         var vm = this;
 
         vm.password = '';

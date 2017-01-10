@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app').controller('LoginController', ['$rootScope', '$state', 'Api', '$localStorage', '$http', '$q',LoginController]);
+    angular.module('app').controller('LoginController', ['$rootScope', '$state', 'Api', '$localStorage', '$http', '$q', LoginController]);
 
     function LoginController($rootScope, $state, Api, $localStorage, $http, $q) {
         var vm = this;
