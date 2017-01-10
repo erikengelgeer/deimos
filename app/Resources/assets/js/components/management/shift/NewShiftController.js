@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app').controller('NewShiftController', NewShiftController, ['$rootScope', 'Api', '$state', '$q']);
+    angular.module('app').controller('NewShiftController', ['$rootScope', 'Api', '$state', '$q', NewShiftController]);
 
     function NewShiftController($rootScope, Api, $state, $q) {
         var vm = this;

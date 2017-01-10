@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app').controller('EditUserController', EditUserController, ['$rootScope', 'Api', '$stateParams', '$q', '$state']);
+    angular.module('app').controller('EditUserController', ['$rootScope', 'Api', '$stateParams', '$q', '$state', EditUserController]);
 
     function EditUserController($rootScope, Api, $stateParams, $q, $state) {
         var vm = this;

@@ -1,5 +1,5 @@
 (function () {
-    angular.module('app').controller('TeamController', TeamController, ['$rootScope', 'Api', '$state']);
+    angular.module('app').controller('TeamController', ['$rootScope', 'Api', '$state', TeamController]);
 
     function TeamController($rootScope, Api, $state) {
         var vm = this;

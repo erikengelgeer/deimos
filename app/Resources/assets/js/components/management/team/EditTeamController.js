@@ -2,7 +2,7 @@
  * Created by EAETV on 13/09/2016.
  */
 (function () {
-    angular.module('app').controller('EditTeamController', EditTeamController, ['$rootScope', 'Api', '$stateParams', '$q', '$state']);
+    angular.module('app').controller('EditTeamController', ['$rootScope', 'Api', '$stateParams', '$q', '$state', EditTeamController]);
 
     function EditTeamController($rootScope, Api, $stateParams, $q, $state) {
         var vm = this;

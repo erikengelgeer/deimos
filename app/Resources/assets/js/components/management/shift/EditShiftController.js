@@ -2,7 +2,7 @@
  * Created by EAETV on 13/09/2016.
  */
 (function () {
-    angular.module('app').controller('EditShiftController', EditShiftController, ['$rootScope', 'Api', '$stateParams', '$q', '$state']);
+    angular.module('app').controller('EditShiftController', ['$rootScope', 'Api', '$stateParams', '$q', '$state', EditShiftController]);
 
     function EditShiftController($rootScope, Api, $stateParams, $q, $state) {
         var vm = this;

@@ -2,7 +2,7 @@
  * Created by EAETV on 13/09/2016.
  */
 (function () {
-    angular.module('app').controller('EditTaskController', EditTaskController, ['$rootScope', 'Api', '$stateParams', '$q', '$state']);
+    angular.module('app').controller('EditTaskController', ['$rootScope', 'Api', '$stateParams', '$q', '$state', EditTaskController]);
 
     function EditTaskController($rootScope, Api, $stateParams, $q, $state) {
         var vm = this;

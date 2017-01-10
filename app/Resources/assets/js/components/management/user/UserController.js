@@ -2,7 +2,7 @@
  * Created by EAETV on 13/09/2016.
  */
 (function () {
-    angular.module('app').controller('UserController', UserController, ['$rootScope', 'Api', '$q', '$state']);
+    angular.module('app').controller('UserController', ['$rootScope', 'Api', '$q', '$state', UserController]);
 
     function UserController($rootScope, Api, $q, $state) {
         var vm = this;
